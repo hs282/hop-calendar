@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="DBBookDaoCRUDTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2020-09-24T18:31:01" hostname="MacBook-Pro.hsd1.nj.comcast.net" time="0.191">
+  <properties/>
+  <testcase name="testDeleteBooks" classname="DBBookDaoCRUDTest" time="0.165"/>
+  <testcase name="testUpdateBooks" classname="DBBookDaoCRUDTest" time="0.011"/>
+  <testcase name="testListBooks" classname="DBBookDaoCRUDTest" time="0.006"/>
+  <testcase name="testAddBooks" classname="DBBookDaoCRUDTest" time="0.009"/>
+  <system-out><![CDATA[00000000000002
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
