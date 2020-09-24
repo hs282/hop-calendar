@@ -9,6 +9,8 @@ Inpyo Ma - ima2
 Jang Woo Park - jpark278
 Hyunsu Shin - hshin28
 
+https://github.com/orgs/jhu-oose/teams/2020-fall-group-fantastic-sniffle
+
 Inpyo worked on adding the BookDao interface and implementing Sql2oBookDao and the delete methods in both Sql2oAuthorDao and Sql2oBookDao. Jangwoo worked on implementing the update method in both the Sql2oAuthorDao and Sql2oBookDao classes.
 Hyunsu worked on the unit tests for Sql2oAuthorDao. She also edited the delete method in Sql2oAuthorDao so that it would recognize the input string for the author’s name in the testing file. An assumption that was made was that deleting an author would delete all of the books associated with him/her.
 
