@@ -51,6 +51,29 @@ public class Server {
             return new Gson().toJson(a.toString());
         });
 
-        // TODO: add your new endpoints here
+        // books route; return list of books as JSON
+        get("/books", (req, res) -> {
+           Sql2oBookDao sql2oBook = new Sql2oBookDao(getSql2o());
+           String results = new Gson().toJson(sql2oBook.listAll());
+           res.type("application/json");
+           res.status(200);
+           return results;
+        });
+
+        // addbook route; add a new book
+        post("/addbook", (req, res) -> {
+            String title = req.queryParams("title");
+            String isbn = req.queryParams("isbn");
+            String publisher = req.queryParams("publisher");
+            int year = Integer.parseInt(req.queryParams("year"));
+            int authorId = Integer.parseInt(req.queryParams("authorId");
+            Book b = new Book(title, isbn, publisher, year, authorId);
+            new Sql2oBookDao(getSql2o()).add(b);
+            res.status(201);
+            res.type("application/json");
+            return new Gson().toJson(b.toString());
+        });
+
+
     }
 }
