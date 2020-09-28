@@ -74,6 +74,25 @@ public class Server {
             return new Gson().toJson(b.toString());
         });
 
+        // deleteauthor route; delete specified author
+        post("/delauthor", (req, res) -> {
+            String name = req.queryParams("name");
+            Author a = new Author(name, 0, " ");
+            new Sql2oAuthorDao(getSql2o()).delete(a);
+            res.status(201);
+            res.type("application/json");
+            return new Gson().toJson(a.toString());
+        });
 
+        //delbook route; delete specified book
+        post("/delbook", (req, res) -> {
+            String isbn = req.queryParams("isbn");
+            Book b = new Book(" ", isbn, " ", 0, 0);
+            new Sql2oBookDao(getSql2o()).delete(b);
+            res.status(201);
+            res.type("application/json");
+            return new Gson().toJson(b.toString());
+        });
     }
 }
+
