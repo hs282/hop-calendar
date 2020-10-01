@@ -71,13 +71,54 @@ public class RESTAPITest {
     public void testDelAuthor() throws IOException {
         RequestBody postBody = new FormBody.Builder()
                 .add("name", "Sadegh Hedayat")
+                .add("numOfBooks", "26")
+                .add("nationality", "Iranian")
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:7000/delauthor")
+                .url("http://localhost:7000/addauthor")
                 .post(postBody)
                 .build();
         Response response = client.newCall(request).execute();
-        assertEquals(200, response.code());
+        assertEquals(201, response.code());
+
+        RequestBody postBody_delauthor = new FormBody.Builder()
+                .add("name", "Sadegh Hedayat")
+                .build();
+        Request request_delauthor = new Request.Builder()
+                .url("http://localhost:7000/delauthor")
+                .post(postBody_delauthor)
+                .build();
+        Response response_delauthor = client.newCall(request_delauthor).execute();
+        assertEquals(200, response_delauthor.code());
+    }
+
+    @Test
+    public void testDelBook() throws IOException {
+        // add Moby Dick to Books
+        RequestBody postBody = new FormBody.Builder()
+                .add("title", "Moby Dick")
+                .add("isbn", "9780141199603")
+                .add("publisher", "Penguin")
+                .add("year", "2013")
+                // what TODO for authorId?
+                .add("authorId", "")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:7000/addbook")
+                .post(postBody)
+                .build();
+        Response response = client.newCall(request).execute();
+        assertEquals(201, response.code());
+
+        RequestBody delbook_postBody = new FormBody.Builder()
+                .add("isbn", "9780141199603")
+                .build();
+        Request delbook_request = new Request.Builder()
+                .url("http://localhost:7000/delbook")
+                .post(delbook_postBody)
+                .build();
+        Response delbook_response = client.newCall(delbook_request).execute();
+        assertEquals(200, delbook_response.code());
     }
 
 }
