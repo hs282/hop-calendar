@@ -1,10 +1,12 @@
 import com.google.gson.Gson;
 import model.Author;
+import model.Book;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
 import persistence.Sql2oAuthorDao;
+import persistence.Sql2oBookDao;
 import static spark.Spark.*;
 
 public class Server {
@@ -66,7 +68,7 @@ public class Server {
             String isbn = req.queryParams("isbn");
             String publisher = req.queryParams("publisher");
             int year = Integer.parseInt(req.queryParams("year"));
-            int authorId = Integer.parseInt(req.queryParams("authorId");
+            int authorId = Integer.parseInt(req.queryParams("authorId"));
             Book b = new Book(title, isbn, publisher, year, authorId);
             new Sql2oBookDao(getSql2o()).add(b);
             res.status(201);

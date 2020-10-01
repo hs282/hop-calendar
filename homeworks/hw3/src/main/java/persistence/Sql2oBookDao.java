@@ -43,7 +43,7 @@ public class Sql2oBookDao implements BookDao {
         }
     }
     // "delete" method from hw2
-    @Override
+    // @Override
     public boolean delete(Book bo) throws DaoException {
         try (Connection con = sql2o.open()) {
             String book_isbn = bo.getIsbn();
