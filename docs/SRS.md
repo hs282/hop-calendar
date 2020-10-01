@@ -49,6 +49,10 @@ This application will only be for Web (browswer) based users, although it will b
 
 
 ## Wireframes
-https://mydraft.cc/btqu7f6cktmn00q5aod0
+![Log-in Screen](file:///Users/hyunsushin/Desktop/Screen%20Shot%202020-10-01%20at%204.15.06%20PM.png)
 
-https://mydraft.cc/btqvkn6cktmn00q5aoe0
+![Calendar View](file:///Users/hyunsushin/Desktop/Screen%20Shot%202020-10-01%20at%204.09.36%20PM.png)
+
+
+
+
