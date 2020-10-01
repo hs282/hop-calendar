@@ -1,38 +1,54 @@
-# Software Requirements Specificatins
+# Software Requirements Specifications
 
 ## Problem Statement 
 
-> Write a few sentences that describes the problem you are trying to solve. In other words, justify why this software project is needed.
-
+After COVID, there has been a significant increase in the use of online materials (gradescope, zoom, blackboard, piazza, slack etc.). However, because the instructors use these online materials based on their personal preferences, students end up having to use and check multiple websites for their class materials. Talking to my friends, I realized that not only myself but a lot of other students also found this process very inconvenient and our group decided to come up with a platform that lets students to access and check the class materials and assignments that are separated among numerous different platforms.
 
 ## Potential Clients
-> Who are affected by this problem (and would benefit from the proposed solution)? I.e. the potential users of the software you are going to build.
-
+Current students, teaching staff & faculty member @ Hopkins
 
 ## Proposed Solution
-> Write a few sentences that describes how a software solution will solve the problem described above.
-
+Our app will be an assignment/deadline aggregator that helps students stay on top of their deadlines during online learning. Also, it will help teachers maintain student engagement through remote learning. Our deadline aggregator will be in the form of a monthly view calendar that has indicators for any upcoming deadlines and assignments. The indicators will also have distinguishing features so that the client will know which class it is for. This way, the client won't need to remember to manually input their assignments and deadlines from the syllabus and from various sources of annoucements. If instructors fully commit to using our app as their primary outlet to students, our app will be successful.
 ## Functional Requirements
-> List the (functional) requirements that software needs to have in order to solve the problem stated above. It is useful to write the requirements in form of **User Stories** and group them into those that are essential (must have), and those which are non-essential (but nice to have).
-
-
 ### Must have
+- Student can log in to the app
+- Instructor can log in to the app
+- Student can view all upcoming assignments in calendar view
+- Student can distinguish upcoming assignments by class
+- Student can expand an upcoming assignment object for more details
+- Student can enroll (subscribe) to a Instructor's class
+- Instructor can perform CRUD operations on their feed
 
 
 
 ### Nice to have
-
+- Q&A board for each upcoming assignment object
+- Switch between monthly and weekly calendar view
+- External links to Gradescope, Piazza platforms
+- Connection to SIS
 
 ## Software Architecture
-> Will this be a Web/desktop/mobile (all, or some other kind of) application? Would it conform to the Client-Server software architecture? 
-
+This application will only be for Web (browswer) based users, although it will be responsive to mobile browser aspect ratios. 
+  The application will conform to traditional Client-Server architecture with a database store.
 
 
 ## User Stories
-List major user stories here
+- AS A: Hopkins student using the app
+    - I WANT: to be able to see and manage all deadlines for assignments, quizzes, exams, etc.
+    - SO THAT: I can meet my academic requirements on time even in a 100% online learning environment
+  
+- AS A: member of the teaching staff at Hopkins using the app
+    - I WANT: to have a main hub where I can post all academic deadlines and manage them at once
+    - SO THAT: I can see how the workload is separated and communicate better with my students regarding academic work and workload
+  
+- AS A: first-year Hopkins student using the app
+    - I WANT: a calendar that tells me which assignments/quizzes/exams are coming up
+    - SO THAT: I can adjust better to the college academic setting and online learning
 
 
 
 
 ## Wireframes
-This should provide an overview of different views of the application's interface.
+https://mydraft.cc/btqu7f6cktmn00q5aod0
+
+https://mydraft.cc/btqvkn6cktmn00q5aoe0
