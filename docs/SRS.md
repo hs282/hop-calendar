@@ -49,6 +49,9 @@ This application will only be for Web (browswer) based users, although it will b
 
 
 ## Wireframes
-https://mydraft.cc/btqu7f6cktmn00q5aod0
+![Log-in Screen](https://www.dropbox.com/s/tjy4pxrmygoygi4/Screen%20Shot%202020-10-01%20at%204.15.06%20PM.png?dl=0&raw=1)
 
-https://mydraft.cc/btqvkn6cktmn00q5aoe0
+![Calendar View](https://www.dropbox.com/s/sdtxqg6qihyp6kp/Screen%20Shot%202020-10-01%20at%204.09.36%20PM.png?dl=0&raw=1)
+
+
+

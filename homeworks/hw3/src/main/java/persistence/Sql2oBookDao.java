@@ -18,6 +18,15 @@ public class Sql2oBookDao implements BookDao {
 
     @Override
     public int add(Book book) throws DaoException {
+        //used for checking author id exists condition?
+            /*
+            String conditionQuery = "SELECT * FROM Books WHERE authorId = ?";
+            PreparedStatement pstmt = con.getJdbcConnection().prepareStatement(conditionQuery);
+            int checkID = book.getAuthorId();
+            pstmt.setInt(1,checkID);
+            if (!(pstmt.executeQuery().getBoolean(0))){
+                throw new Sql2oException();
+            }*/
         try (Connection con = sql2o.open()) {
             String query = "INSERT INTO Books (id, title, isbn, publisher, year, authorId)" +
                     "VALUES (NULL, :title, :isbn, :publisher, :year, :authorId)";
@@ -27,6 +36,17 @@ public class Sql2oBookDao implements BookDao {
             book.setId(id);
             return id;
         }
+        //maybe needed to make sure id is not null
+            /*
+            book.setId(id);
+            String checkIsbn = book.getIsbn();
+            String updateQuery = "UPDATE Books id = ? WHERE isbn = ?";
+            PreparedStatement pstmt = con.getJdbcConnection().prepareStatement(updateQuery);
+            pstmt.setInt(1,id);
+            pstmt.setString(2,checkIsbn);
+            pstmt.executeUpdate();
+            return id;
+             */
         catch (Sql2oException ex) {
             throw new DaoException();
         }

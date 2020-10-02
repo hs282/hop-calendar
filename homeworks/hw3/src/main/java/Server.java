@@ -60,7 +60,8 @@ public class Server {
            res.type("application/json");
            res.status(200);
            return results;
-        });
+        }
+        );
 
         // addbook route; add a new book
         post("/addbook", (req, res) -> {
