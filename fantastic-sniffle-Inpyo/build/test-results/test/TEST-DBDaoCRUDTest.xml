@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DBDaoCRUDTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-24T19:15:55" hostname="MacBook-Pro.hsd1.nj.comcast.net" time="0.033">
-  <properties/>
-  <testcase name="testDeleteAuthor" classname="DBDaoCRUDTest" time="0.033"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
