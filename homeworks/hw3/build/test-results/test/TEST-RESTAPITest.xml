@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="RESTAPITest" tests="6" skipped="0" failures="0" errors="0" timestamp="2020-10-03T07:16:40" hostname="DESKTOP-46K75VG" time="0.406">
+<testsuite name="RESTAPITest" tests="6" skipped="0" failures="0" errors="0" timestamp="2020-10-03T09:00:23" hostname="Jangs-MacBook-Pro.local" time="0.124">
   <properties/>
-  <testcase name="testAddBook" classname="RESTAPITest" time="0.137"/>
-  <testcase name="testBooks" classname="RESTAPITest" time="0.02"/>
-  <testcase name="testListAuthors" classname="RESTAPITest" time="0.014"/>
-  <testcase name="testDelAuthor" classname="RESTAPITest" time="0.08"/>
-  <testcase name="testAddAuthor" classname="RESTAPITest" time="0.049"/>
-  <testcase name="testDelBook" classname="RESTAPITest" time="0.102"/>
+  <testcase name="testAddBook" classname="RESTAPITest" time="0.1"/>
+  <testcase name="testBooks" classname="RESTAPITest" time="0.006"/>
+  <testcase name="testListAuthors" classname="RESTAPITest" time="0.003"/>
+  <testcase name="testDelAuthor" classname="RESTAPITest" time="0.005"/>
+  <testcase name="testAddAuthor" classname="RESTAPITest" time="0.004"/>
+  <testcase name="testDelBook" classname="RESTAPITest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

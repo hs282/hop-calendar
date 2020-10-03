@@ -1,4 +1,5 @@
 import okhttp3.*;
+import org.eclipse.jetty.util.IO;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -70,21 +71,9 @@ public class RESTAPITest {
 
     @Test
     public void testDelAuthor() throws IOException {
-        //make sure you add new Author not in the book
-        RequestBody postBody = new FormBody.Builder()
-                .add("name", "Sadegh Hed")
-                .add("numOfBooks", "26")
-                .add("nationality", "Iranian")
-                .build();
-        Request request = new Request.Builder()
-                .url("http://localhost:7000/addauthor")
-                .post(postBody)
-                .build();
-        Response response = client.newCall(request).execute();
-        assertEquals(201, response.code());
 
         RequestBody postBody_delauthor = new FormBody.Builder()
-                .add("name", "Sadegh Hed")
+                .add("name", "Sadegh Hedayat")
                 .build();
         Request request_delauthor = new Request.Builder()
                 .url("http://localhost:7000/delauthor")
@@ -96,24 +85,9 @@ public class RESTAPITest {
 
     @Test
     public void testDelBook() throws IOException {
-        // add Some Books to Books
-        RequestBody postBody = new FormBody.Builder()
-                .add("title", "Some Books")
-                .add("isbn", "159159159")
-                .add("publisher", "Penguin")
-                .add("year", "2013")
-                // what TODO for authorId?
-                .add("authorId", "1")
-                .build();
-        Request request = new Request.Builder()
-                .url("http://localhost:7000/addbook")
-                .post(postBody)
-                .build();
-        Response response = client.newCall(request).execute();
-        assertEquals(201, response.code());
 
         RequestBody delbook_postBody = new FormBody.Builder()
-                .add("isbn", "159159159")
+                .add("isbn", "9780141199603")
                 .build();
         Request delbook_request = new Request.Builder()
                 .url("http://localhost:7000/delbook")
