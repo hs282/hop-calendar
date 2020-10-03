@@ -58,7 +58,7 @@ public class RESTAPITest {
                 .add("publisher", "Penguin")
                 .add("year", "2013")
                 // what TODO for authorId?
-                .add("authorId", "")
+                .add("authorId", "1")
                 .build();
         Request request = new Request.Builder()
                 .url("http://localhost:7000/addbook")
@@ -70,8 +70,9 @@ public class RESTAPITest {
 
     @Test
     public void testDelAuthor() throws IOException {
+        //make sure you add new Author not in the book
         RequestBody postBody = new FormBody.Builder()
-                .add("name", "Sadegh Hedayat")
+                .add("name", "Sadegh Hed")
                 .add("numOfBooks", "26")
                 .add("nationality", "Iranian")
                 .build();
@@ -83,7 +84,7 @@ public class RESTAPITest {
         assertEquals(201, response.code());
 
         RequestBody postBody_delauthor = new FormBody.Builder()
-                .add("name", "Sadegh Hedayat")
+                .add("name", "Sadegh Hed")
                 .build();
         Request request_delauthor = new Request.Builder()
                 .url("http://localhost:7000/delauthor")
@@ -95,14 +96,14 @@ public class RESTAPITest {
 
     @Test
     public void testDelBook() throws IOException {
-        // add Moby Dick to Books
+        // add Some Books to Books
         RequestBody postBody = new FormBody.Builder()
-                .add("title", "Moby Dick")
-                .add("isbn", "9780141199603")
+                .add("title", "Some Books")
+                .add("isbn", "159159159")
                 .add("publisher", "Penguin")
                 .add("year", "2013")
                 // what TODO for authorId?
-                .add("authorId", "")
+                .add("authorId", "1")
                 .build();
         Request request = new Request.Builder()
                 .url("http://localhost:7000/addbook")
@@ -112,7 +113,7 @@ public class RESTAPITest {
         assertEquals(201, response.code());
 
         RequestBody delbook_postBody = new FormBody.Builder()
-                .add("isbn", "9780141199603")
+                .add("isbn", "159159159")
                 .build();
         Request delbook_request = new Request.Builder()
                 .url("http://localhost:7000/delbook")
