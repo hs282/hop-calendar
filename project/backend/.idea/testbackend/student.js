@@ -4,16 +4,23 @@ class Student {
 		if (!student) {
 			this.studentId = 0
 			this.name = name
-			this.courses = []
+			this.courses = [] //stores courseIDs instead of actual Course objects
 		} else {
 			this.studentId = student.studentId
 			this.name = student.name
 			this.courses = student.courses
 		}
 	}
-	addCourse(course) {
-		this.courses.push(course)
-    }
+	addCourse(courseId) {
+		this.courses.push(courseId)
+	}
+	deleteCourse(courseId) {
+		for (let i = 0; i < this.courses.length; i++) {
+			if (this.courses[i] == courseId) {
+				this.courses.splice(i, 1);
+			}
+		}
+	}
     get name() {
 		return this._name
 	}

@@ -2,7 +2,7 @@ class Instructor {
 	constructor(instructor) {
 		if (!instructor) {
 			this.instructorId = 0
-            this.courses = []
+            this.courses = [] //stores courseIDs instead of actual Course objects
             this.name = ''
 		} else {
             this.instructorId = instructor.instructorId
@@ -22,8 +22,15 @@ class Instructor {
 	set instructorId(id) {
 		this._instructorId = id
 	}
-	addCourse(course) {
-		this.courses.push(course)
+	addCourse(courseId) {
+		this.courses.push(courseId)
+	}
+	deleteCourse(courseId) {
+		for (let i = 0; i < this.courses.length; i++) {
+			if (this.courses[i] == courseId) {
+				this.courses.splice(i, 1);
+			}
+		}
 	}
 	get courses() {
 		return this._courses
