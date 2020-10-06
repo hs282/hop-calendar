@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyparser = require('body-parser');
+//optional for complex object structures
 var s = require("serialijse");
 
 const app = express();
@@ -11,8 +12,8 @@ app.use(bodyparser.json());
 //import our Classes
 var Course = require('./course.js');
 var Task = require('./task.js');
-var Student = require('./student.js')
-var Instructor = require('./instructor.js')
+var Student = require('./student.js');
+var Instructor = require('./instructor.js');
 
 //dummy data
 let homework = new Task({ type: 'assignment', deadline: "11:59PM", taskId: 0, blurb: "Please submit before midnight"});
