@@ -43,6 +43,21 @@ public class Server {
 
         //addauthor route; add a new author
         post("/addauthor", (req, res) -> {
+//            String name = req.queryParams("name");
+//            int numOfBooks = Integer.parseInt(req.queryParams("numOfBooks"));
+//            String nationality = req.queryParams("nationality");
+//            try {
+//                Author a = new Author(name, numOfBooks, nationality);
+//                new Sql2oAuthorDao(getSql2o()).add(a);
+//                res.status(201);
+//                res.type("application/json");
+//                return new Gson().toJson(a.toString());
+//            } catch(Exception e) {
+//                System.out.println(e);
+//            }
+//            res.status(201);
+//            res.type("application/json");
+//            return "sad";
             String name = req.queryParams("name");
             int numOfBooks = Integer.parseInt(req.queryParams("numOfBooks"));
             String nationality = req.queryParams("nationality");
@@ -50,7 +65,7 @@ public class Server {
             new Sql2oAuthorDao(getSql2o()).add(a);
             res.status(201);
             res.type("application/json");
-            return new Gson().toJson(a.toString());
+            return "hi";
         });
 
         // books route; return list of books as JSON

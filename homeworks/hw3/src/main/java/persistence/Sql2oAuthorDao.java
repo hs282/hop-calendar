@@ -42,7 +42,7 @@ public class Sql2oAuthorDao implements AuthorDao {
     }
 
     // "delete" method from hw2
-    // @Override
+    //@Override
     public boolean delete(Author au) throws DaoException {
         try (Connection con = sql2o.open()) {
             String author_name = au.getName();
