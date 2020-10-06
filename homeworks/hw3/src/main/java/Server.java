@@ -1,7 +1,6 @@
 import com.google.gson.Gson;
 import model.Author;
 import model.Book;
-import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
@@ -95,9 +94,9 @@ public class Server {
         // deleteauthor route; delete specified author
         post("/delauthor", (req, res) -> {
             String name = req.queryParams("name");
-            Author a = new Author(name, 0, " ");
+            Author a = new Author(name, 0, "a");
             new Sql2oAuthorDao(getSql2o()).delete(a);
-            res.status(201);
+            res.status(200);
             res.type("application/json");
             return new Gson().toJson(a.toString());
         });
@@ -105,9 +104,9 @@ public class Server {
         //delbook route; delete specified book
         post("/delbook", (req, res) -> {
             String isbn = req.queryParams("isbn");
-            Book b = new Book(" ", isbn, " ", 0, 0);
+            Book b = new Book("a", isbn, "a", 0, 0);
             new Sql2oBookDao(getSql2o()).delete(b);
-            res.status(201);
+            res.status(200);
             res.type("application/json");
             return new Gson().toJson(b.toString());
         });

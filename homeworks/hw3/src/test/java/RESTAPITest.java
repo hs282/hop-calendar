@@ -1,4 +1,5 @@
 import okhttp3.*;
+import org.eclipse.jetty.util.IO;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,7 +59,7 @@ public class RESTAPITest {
                 .add("publisher", "Penguin")
                 .add("year", "2013")
                 // what TODO for authorId?
-                .add("authorId", "")
+                .add("authorId", "1")
                 .build();
         Request request = new Request.Builder()
                 .url("http://localhost:7000/addbook")
@@ -70,17 +71,6 @@ public class RESTAPITest {
 
     @Test
     public void testDelAuthor() throws IOException {
-        RequestBody postBody = new FormBody.Builder()
-                .add("name", "Sadegh Hedayat")
-                .add("numOfBooks", "26")
-                .add("nationality", "Iranian")
-                .build();
-        Request request = new Request.Builder()
-                .url("http://localhost:7000/addauthor")
-                .post(postBody)
-                .build();
-        Response response = client.newCall(request).execute();
-        assertEquals(201, response.code());
 
         RequestBody postBody_delauthor = new FormBody.Builder()
                 .add("name", "Sadegh Hedayat")
@@ -95,21 +85,6 @@ public class RESTAPITest {
 
     @Test
     public void testDelBook() throws IOException {
-        // add Moby Dick to Books
-        RequestBody postBody = new FormBody.Builder()
-                .add("title", "Moby Dick")
-                .add("isbn", "9780141199603")
-                .add("publisher", "Penguin")
-                .add("year", "2013")
-                // what TODO for authorId?
-                .add("authorId", "")
-                .build();
-        Request request = new Request.Builder()
-                .url("http://localhost:7000/addbook")
-                .post(postBody)
-                .build();
-        Response response = client.newCall(request).execute();
-        assertEquals(201, response.code());
 
         RequestBody delbook_postBody = new FormBody.Builder()
                 .add("isbn", "9780141199603")
