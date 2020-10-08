@@ -16,6 +16,8 @@ public class Server {
  * current issues
  * add and show for authors and book all work well
  * make sure your gradle is configured correctly -> if x work then close and recreate a gradle project
+ * right now we are saying if author's name is the same then they are the same author (prob good enough for this hw?)
+ * also what about incrementing num books when adding new books (not needed?)
  */
 
 
@@ -111,6 +113,8 @@ public class Server {
             return new ModelAndView(model, "public/templates/addbook.vm");
         }, new VelocityTemplateEngine());
 
+        //when we add book, do we also have to increment num books from author table?
+        //if yes uncomment my comments
         post("/addbook", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             String isbn = req.queryParams("isbn");
@@ -120,30 +124,28 @@ public class Server {
             // Not sure if we should ask user for authorId as well
 
             boolean authorIsNew = false; // set to true if author does not already exist in table
+            //boolean incPrevAuthorBook = false; //if author already exists and book added succesfully increment author's num of books
+            //Author prev;
             String name = req.queryParams("name");
             int numOfBooks = Integer.parseInt(req.queryParams("numOfBooks"));
             String nationality = req.queryParams("nationality");
             Author author = new Author(name, numOfBooks, nationality);
             int authorId = 0;
-
             try {
                 authorId = new Sql2oAuthorDao(sql2o).add(author);
                 if (authorId > 0) {
                     authorIsNew = true;
-                } else {
-                    List<Author> authorList = new Sql2oAuthorDao(sql2o).listAll();
-                    for (Author a : authorList) {
-                        if (a.getName().equals(name)) {
-                            authorId = a.getId();
-                        }
-                    }
                 }
+
             }
             catch (DaoException ex) {
                 List<Author> authorList = new Sql2oAuthorDao(sql2o).listAll();
                 for (Author a : authorList) {
+                    //also what if only the name is the same?
                     if (a.getName().equals(name)) {
                         authorId = a.getId();
+                        //incPrevAuthorBook = true;
+                        //prev = a;
                     }
                 }
             }
@@ -154,14 +156,11 @@ public class Server {
                 int bookId = new Sql2oBookDao(sql2o).add(book);
                 if (bookId > 0) {
                     model.put("added", "true");
-                }
-                else {
-                    if (authorIsNew) {
-                        // delete author from table if author was newly added and book insertion failed
-                        // this is bc we want either both the author and book being added or none of them being added
-                        new Sql2oAuthorDao(sql2o).delete(author);
+                    /*if inc needed
+                    if (incPrevAuthorBook) {
+                        prev.setNumOfBooks(++prev.getNumOfBooks());
                     }
-                    model.put("failedAdd", "true");
+                     */
                 }
             }
             catch (DaoException ex) {
