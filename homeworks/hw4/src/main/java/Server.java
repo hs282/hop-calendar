@@ -39,6 +39,8 @@ public class Server {
         post("/", (req, res) -> {
             String username = req.queryParams("username");
             res.cookie("username", username);
+            String color = req.queryParams("color");
+            res.cookie("color", color);
             res.redirect("/");
             return null;
         });
@@ -47,6 +49,8 @@ public class Server {
             Map<String, Object> model = new HashMap<>();
             if (req.cookie("username") != null)
                 model.put("username", req.cookie("username"));
+            if (req.cookie("color") != null)
+                model.put("color", req.cookie("color"));
             res.status(200);
             res.type("text/html");
             return new ModelAndView(model, "public/templates/index.vm");
