@@ -12,6 +12,15 @@ import static spark.Spark.*;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class Server {
+/*
+ * current issues
+ * currently welcome page, login page works (login works)
+ * showing add author and add book works
+ * however adding authors and books x work
+ * showing authors and books x work
+ */
+
+
 
     private static Sql2o getSql2o() {
         final String URI = "jdbc:sqlite:./MyBooksApp.db";
