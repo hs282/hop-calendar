@@ -14,10 +14,8 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class Server {
 /*
  * current issues
- * currently welcome page, login page works (login works)
- * showing add author and add book works
- * however adding authors and books x work
- * showing authors and books x work
+ * add and show for authors and book all work well
+ * make sure your gradle is configured correctly -> if x work then close and recreate a gradle project
  */
 
 
@@ -52,6 +50,7 @@ public class Server {
             return new ModelAndView(model, "public/templates/index.vm");
         }, new VelocityTemplateEngine());
 
+
         get("/authors", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("authors", new Sql2oAuthorDao(sql2o).listAll());
@@ -59,6 +58,8 @@ public class Server {
             res.type("text/html");
             return new ModelAndView(model, "public/templates/authors.vm");
         }, new VelocityTemplateEngine());
+
+
 
         get("/addauthor", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
@@ -92,6 +93,8 @@ public class Server {
         });
 
         /* TODO: add your new endpoints here! */
+
+
 
         get("/books", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
@@ -174,5 +177,9 @@ public class Server {
             return new VelocityTemplateEngine().render(mdl);
         });
 
+
+
     }
+
+
 }
