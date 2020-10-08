@@ -18,6 +18,7 @@ public class Server {
  * make sure your gradle is configured correctly -> if x work then close and recreate a gradle project
  * right now we are saying if author's name is the same then they are the same author (prob good enough for this hw?)
  * also what about incrementing num books when adding new books (not needed?)
+ * signed in users? (rn i am just doing this as whether username cookie exists)
  */
 
 
@@ -58,6 +59,13 @@ public class Server {
 
 
         get("/authors", (req, res) -> {
+
+            //if not signed then redirect
+            if (req.cookie("username") == null) {
+                res.redirect("/");
+                return null;
+            }
+
             Map<String, Object> model = new HashMap<>();
             model.put("authors", new Sql2oAuthorDao(sql2o).listAll());
             res.status(200);
@@ -68,6 +76,13 @@ public class Server {
 
 
         get("/addauthor", (req, res) -> {
+
+            //if not signed then redirect
+            if (req.cookie("username") == null) {
+                res.redirect("/");
+                return null;
+            }
+
             Map<String, Object> model = new HashMap<>();
             res.status(200);
             res.type("text/html");
@@ -75,6 +90,7 @@ public class Server {
         }, new VelocityTemplateEngine());
 
         post("/addauthor", (req, res) -> {
+
             Map<String, Object> model = new HashMap<>();
             String name = req.queryParams("name");
             int numOfBooks = Integer.parseInt(req.queryParams("numOfBooks"));
@@ -103,6 +119,13 @@ public class Server {
 
 
         get("/books", (req, res) -> {
+
+            //if not signed then redirect
+            if (req.cookie("username") == null) {
+                res.redirect("/");
+                return null;
+            }
+
             Map<String, Object> model = new HashMap<>();
             model.put("books", new Sql2oBookDao(sql2o).listAll());
             res.status(200);
@@ -111,6 +134,13 @@ public class Server {
         }, new VelocityTemplateEngine());
 
         get("/addbook", (req, res) -> {
+
+            //if not signed then redirect
+            if (req.cookie("username") == null) {
+                res.redirect("/");
+                return null;
+            }
+
             Map<String, Object> model = new HashMap<>();
             res.status(200);
             res.type("text/html");
