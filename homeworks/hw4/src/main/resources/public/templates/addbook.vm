@@ -29,10 +29,6 @@
         <label for="year">Year: </label>
         <input type="number" name="year" placeholder="2020" id="year" min="1800" max="2020"/>
     </div>
-    <!-- <div>
-        <label for="authorId">Author ID: </label>
-        <input type="number" name="authorId" placeholder="0" id="authorId" min="0" max="100000000"/>
-    </div> -->
     <div>
         <label for="name">Author's Name: </label>
         <input type="text" name="name" placeholder="name" id="name" required>
