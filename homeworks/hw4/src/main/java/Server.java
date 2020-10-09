@@ -16,8 +16,6 @@ public class Server {
  * current issues
  * add and show for authors and book all work well
  * make sure your gradle is configured correctly -> if x work then close and recreate a gradle project
- * right now we are saying if author's name is the same then they are the same author (prob good enough for this hw?)
- * also what about incrementing num books when adding new books (not needed?)
  * signed in users? (rn i am just doing this as whether username cookie exists)
  */
 
@@ -116,8 +114,6 @@ public class Server {
 
         /* TODO: add your new endpoints here! */
 
-
-
         get("/books", (req, res) -> {
 
             //if not signed then redirect
@@ -147,7 +143,6 @@ public class Server {
             return new ModelAndView(model, "public/templates/addbook.vm");
         }, new VelocityTemplateEngine());
 
-        //when we add book, do we also have to increment num books from author table?
         //if yes uncomment my comments
         post("/addbook", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
@@ -155,7 +150,6 @@ public class Server {
             String title = req.queryParams("title");
             String publisher = req.queryParams("publisher");
             int year = Integer.parseInt(req.queryParams("year"));
-            // Not sure if we should ask user for authorId as well
 
             boolean authorIsNew = false; // set to true if author does not already exist in table
             //boolean incPrevAuthorBook = false; //if author already exists and book added succesfully increment author's num of books
@@ -175,7 +169,6 @@ public class Server {
             catch (DaoException ex) {
                 List<Author> authorList = new Sql2oAuthorDao(sql2o).listAll();
                 for (Author a : authorList) {
-                    //also what if only the name is the same?
                     if (a.getName().equals(name)) {
                         authorId = a.getId();
                         //incPrevAuthorBook = true;
@@ -209,10 +202,5 @@ public class Server {
             ModelAndView mdl = new ModelAndView(model, "public/templates/addbook.vm");
             return new VelocityTemplateEngine().render(mdl);
         });
-
-
-
     }
-
-
 }
