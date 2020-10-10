@@ -14,3 +14,5 @@ made when adding a new book was that if the author's name is the same as that of
 but the nationality and/or number of books differs, the authors are still considered the same author.
 
 Jang Woo was responsible for debugging and saving the user's color of choice as cookie.
+
+Inpyo set the session cookie for user's colors of choice and made sure the welcome message is printed in the same color. He also updated all four views such that only users that have previously signed in can access them.
