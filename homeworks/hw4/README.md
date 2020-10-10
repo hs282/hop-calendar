@@ -14,3 +14,4 @@ made when adding a new book was that if the author's name is the same as that of
 but the nationality and/or number of books differs, the authors are still considered the same author.
 
 Tim went around and fixed miscellaneous bugs. 
+Jang Woo was responsible for debugging and saving the user's color of choice as cookie.
