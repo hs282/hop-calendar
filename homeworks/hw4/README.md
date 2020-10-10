@@ -12,3 +12,5 @@ Hyunsu added the Show all books and Add book links along with the /books and /ad
 that if a new author is inserted into the table, but the book insertion fails, the author must be deleted from the table. Another assumption
 made when adding a new book was that if the author's name is the same as that of an author already in the table, 
 but the nationality and/or number of books differs, the authors are still considered the same author.
+
+Tim went around and fixed miscellaneous bugs. 
