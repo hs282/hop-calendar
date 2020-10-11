@@ -5,11 +5,13 @@ class Course {
 		if (!course) {
             this.name = ""
             this.courseId = 0
-            this.tasks = []
+			this.tasks = []
+			this.admins = []
 		} else {
             this.name = course.name
             this.courseId = course.courseId
-            this.tasks = course.tasks
+			this.tasks = course.tasks
+			this.admins = course.admins
 		}
     }
     get name() {
@@ -41,6 +43,25 @@ class Course {
 		}
 		this.numTasks -= 1
 	}
+	
+	set admins(admin) {
+		this._admins = admin
+	}
+	get admins() {
+		return this._admins
+	}
+	addAdmin(admin) {
+		this.admins.push(admin)
+		this.numAdmins += 1
+	}
+	deleteAdmins(adminId) {
+		for (let i = 0; i < this.admins.length; i++) {
+			if ((this.admins[i].adminId = adminId)) {
+			}
+		}
+		this.numAdmins -= 1
+	}
+	
 	toString() {
 		console.log(this.tasks)
 	}
