@@ -17,7 +17,7 @@ class Student {
 	deleteCourse(courseId) {
 		for (let i = 0; i < this.courses.length; i++) {
 			if (this.courses[i] == courseId) {
-				this.courses.splice(i, 1);
+				this.courses.splice(i, 1)
 			}
 		}
 	}

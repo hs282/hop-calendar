@@ -38,7 +38,8 @@ class Course {
 	}
 	deleteTask(taskId) {
 		for (let i = 0; i < this.tasks.length; i++) {
-			if ((this.tasks[i].taskId = taskId)) {
+			if (this.tasks[i] == taskId) {
+				this.tasks.splice(i, 1)
 			}
 		}
 		this.numTasks -= 1
@@ -56,7 +57,8 @@ class Course {
 	}
 	deleteAdmins(adminId) {
 		for (let i = 0; i < this.admins.length; i++) {
-			if ((this.admins[i].adminId = adminId)) {
+			if (this.admins[i] == adminId) {
+				this.admins.splice(i, 1)
 			}
 		}
 		this.numAdmins -= 1
