@@ -2,7 +2,7 @@
 
 ## Problem Statement 
 
-After COVID, there has been a significant increase in the use of online materials (gradescope, zoom, blackboard, piazza, slack etc.). However, because the instructors use these online materials based on their personal preferences, students end up having to use and check multiple websites for their class materials. Talking to my friends, I realized that not only myself but a lot of other students also found this process very inconvenient and our group decided to come up with a platform that lets students to access and check the class materials and assignments that are separated among numerous different platforms.
+After COVID, there has been a significant increase in the use of online materials (Gradescope, Zoom, Blackboard, Piazza, Slack, etc.). However, because instructors use these online materials based on their personal preferences, students end up having to use and check multiple websites for their class materials. While talking to my friends, I realized that a lot of other students also found this process very inconvenient, so our group decided to come up with a platform that enables students to access and check the class materials and assignments that are separated among different platforms.
 
 ## Potential Clients
 Current students, teaching staff & faculty member @ Hopkins
@@ -16,19 +16,21 @@ Our app will be an assignment/deadline aggregator that helps students stay on to
 - Student can view all upcoming assignments in calendar view
 - Student can distinguish upcoming assignments by class
 - Student can expand an upcoming assignment object for more details
-- Student can enroll (subscribe) to a Instructor's class
-- Instructor can perform CRUD operations on their feed
-
+- Student can enroll in (subscribe to) an Instructor's class
+- Student can delete (drop) a course
+- Instructor can perform CRUD operations on their feed for both courses and tasks
 
 
 ### Nice to have
 - Q&A board for each upcoming assignment object
-- Switch between monthly and weekly calendar view
-- External links to Gradescope, Piazza platforms
-- Connection to SIS
+- Search bar with filters where students can search for courses to add 
+- Students can choose from monthly, weekly, and daily calendar views
+- Students can mark tasks as being complete
+- External links to Gradescope, Piazza, instructors' personal course websites
+- Connections to SIS, Blackboard
 
 ## Software Architecture
-This application will only be for Web (browswer) based users, although it will be responsive to mobile browser aspect ratios. 
+This application will only be for Web (browser) based users, although it will be responsive to mobile browser aspect ratios. 
   The application will conform to traditional Client-Server architecture with a database store.
 
 
@@ -51,7 +53,5 @@ This application will only be for Web (browswer) based users, although it will b
 ## Wireframes
 ![Log-in Screen](https://www.dropbox.com/s/tjy4pxrmygoygi4/Screen%20Shot%202020-10-01%20at%204.15.06%20PM.png?dl=0&raw=1)
 
-![Calendar View](https://www.dropbox.com/s/sdtxqg6qihyp6kp/Screen%20Shot%202020-10-01%20at%204.09.36%20PM.png?dl=0&raw=1)
-
-
+![Calendar View](https://www.dropbox.com/s/lcahuyiatj5nogh/Screen%20Shot%202020-10-13%20at%204.45.58%20PM.png?dl=0&raw=1)
 
