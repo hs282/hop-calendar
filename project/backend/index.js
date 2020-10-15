@@ -22,11 +22,11 @@ let algebra = new Course({ name: 'algebra', tasks: [0, 1], courseId: 3})
 let asString = JSON.stringify(algebra);
 
 //back to object to send to frontend/use class methods
-let backToObj = JSON.parse(asString);
+let backToObjJSON = JSON.parse(asString);
 
 //test endpoint
 app.get('/', (req, res) => {
-    res.send(backToObj)
+    res.send(backToObjJSON._name)
 })
 
 app.listen(3000);
