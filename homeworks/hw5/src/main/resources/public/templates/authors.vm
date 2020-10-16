@@ -14,5 +14,6 @@
 </div>
 #end
 <script src="js/delauthor.js"></script>
+<script src="js/validate.js"></script>
 
 #parse("public/templates/bottom.vm")
