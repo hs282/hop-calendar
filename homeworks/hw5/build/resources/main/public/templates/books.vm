@@ -15,5 +15,6 @@
 </div>
 #end
 <script src="js/delbook.js"></script>
+<script src="js/validate.js"></script>
 
 #parse("public/templates/bottom.vm")

@@ -12,7 +12,11 @@
         </p>
     </ol>
 </div>
+<form action="/addauthor" method="post" class="content" onsubmit="return validateAuthorName()">
+    <input type="text" name="name" placeholder="name" id="name" required> <input type="text" name="nationality" placeholder="nationality" id="nationality" /> <input type="number" name="numOfBooks" placeholder="1" id="numOfBooks" min="1" max="200"/> <button2 class="$author.name">&#10004</button2>
+</form>
 #end
 <script src="js/delauthor.js"></script>
+<script src="js/validate.js"></script>
 
 #parse("public/templates/bottom.vm")
