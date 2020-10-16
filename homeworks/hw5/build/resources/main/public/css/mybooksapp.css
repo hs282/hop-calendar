@@ -12,12 +12,11 @@ h1 {
 }
 
 form2{
-    background: #202010;
+    background: #566573;
     text-align: left;
     border-radius: 9px;
     padding: 10px 30px 10px 30px;
     margin-top: 300px;
-    align-content: flex-start;
     float: left;
 }
 

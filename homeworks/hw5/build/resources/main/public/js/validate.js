@@ -19,6 +19,19 @@ function validateAuthorName() {
         return false;
     }
 }
+function validateAuthor() {
+    if (validateAuthorName()) {
+        const authorBooks = document.getElementById("numOfBooks");
+        console.log('authorBooks: ', authorBooks.value);
+        if (authorBooks >= 1 && authorBooks <= 200) {
+            return true;
+        } else {
+            alert("Invalid number of books! Please enter a valid number.");
+            return false;
+        }
+    }
+    return false;
+}
 
 function validateISBN() {
     const isbn = document.getElementById("isbn");
