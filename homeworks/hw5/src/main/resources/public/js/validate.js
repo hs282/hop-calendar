@@ -12,12 +12,14 @@ function validateAuthorName() {
     const authorName = document.getElementById("name");
     console.log('authorName: ', authorName.value);
     const letters = /^[A-Za-z]+$/;
-    if (authorName.value.contains(" ") && authorName.value.match(letters)) {
-        return true;
-    } else {
-        alert("Invalid author name! Please enter an author name that has more than two parts without any special characters/digits.");
-        return false;
+    if (authorName.value.includes(" ")) {
+        let authNameArr = authorName.value.split(/\s+/);
+        if (authNameArr.length == 2 && authNameArr[0].match(letters) && authNameArr[1].match(letters)) {
+            return true;
+        }
     }
+    alert("Invalid author name! Please enter an author name that has at least two parts without any special characters/digits.");
+    return false;
 }
 function validateAuthor() {
     if (validateAuthorName()) {
