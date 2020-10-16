@@ -28,6 +28,8 @@ Our app will be an assignment/deadline aggregator that helps students stay on to
 - Students can mark tasks as being complete
 - External links to Gradescope, Piazza, instructors' personal course websites
 - Connections to SIS, Blackboard
+- Course info is scraped and loaded into database from SIS, Blackboard, etc so that instructors don't have to make an account for this app
+- Students can view list of tasks in order of priority
 
 ## Software Architecture
 This application will only be for Web (browser) based users, although it will be responsive to mobile browser aspect ratios. 
@@ -53,5 +55,7 @@ This application will only be for Web (browser) based users, although it will be
 ## Wireframes
 ![Log-in Screen](https://www.dropbox.com/s/tjy4pxrmygoygi4/Screen%20Shot%202020-10-01%20at%204.15.06%20PM.png?dl=0&raw=1)
 
-![Calendar View](https://www.dropbox.com/s/lcahuyiatj5nogh/Screen%20Shot%202020-10-13%20at%204.45.58%20PM.png?dl=0&raw=1)
+![Calendar View](https://www.dropbox.com/s/mvdi0n1d07jtsfs/Screen%20Shot%202020-10-15%20at%209.38.55%20PM.png?dl=0&raw=1)
+
+![Instructor_View](https://www.dropbox.com/s/tuvjh4bo3fe49bc/Screen%20Shot%202020-10-15%20at%2010.29.27%20PM.png?dl=0&raw=1)
 
