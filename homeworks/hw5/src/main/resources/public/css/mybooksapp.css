@@ -10,6 +10,16 @@ h1 {
     padding: 10px 30px 10px 30px;
     float: left;
 }
+
+form2{
+    background: #202010;
+    text-align: left;
+    border-radius: 9px;
+    padding: 10px 30px 10px 30px;
+    margin-top: 300px;
+    float: left;
+}
+
 .indexLinkWrapper {
     margin-left: 10px;
 }
@@ -46,7 +56,7 @@ form label {
     font-size: 20px;
 }
 
-form input[type=text], input[type=number] {
+form2 input[type=text], input[type=number] {
     padding: 10px;
     margin: 10px;
     font-family: "Book Antiqua", serif;
@@ -62,7 +72,7 @@ ol li button{
     border: 2px solid red;
 }
 
-form button2{
+form2 button2{
     color: green;
     border-radius: 50%;
     font-weight: bold;
