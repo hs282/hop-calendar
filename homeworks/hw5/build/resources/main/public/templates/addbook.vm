@@ -13,7 +13,7 @@
 
 <h2>Add a new book</h2>
 <form action="/addbook" method="post" class="content" id="formAddBook" onsubmit="return validateAuthorName()&&validateISBN();">
-    <div>
+    <div class="inputContainer">
         <label for="title">Title: </label>
         <input type="text" name="title" placeholder="title" id="title" required>
     </div>

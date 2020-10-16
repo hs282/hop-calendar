@@ -62,6 +62,7 @@ public class Server {
         }, new VelocityTemplateEngine());
 
         post("/addauthor", (req, res) -> {
+            System.out.println(req.queryParams("name"));
             Map<String, Object> model = new HashMap<>();
             String name = req.queryParams("name");
             int numOfBooks = Integer.parseInt(req.queryParams("numOfBooks"));

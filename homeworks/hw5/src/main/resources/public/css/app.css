@@ -18,3 +18,11 @@ h2 {
  #formAddBook {
      border: 3px solid #F1C40F;
  }
+a:link {
+    text-decoration: none;
+}
+.divContents {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
