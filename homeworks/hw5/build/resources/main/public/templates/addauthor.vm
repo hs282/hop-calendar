@@ -13,10 +13,8 @@
 
 <h2>Add a new author</h2>
 <form action="/addauthor" method="post" class="content" onsubmit="return validateAuthorName()">
-    <div class="inputContainer">
-        <label for="name">Name: </label>
-        <input type="text" name="name" placeholder="name" id="name" required>
-    </div>
+    <label for="name">Name: </label>
+    <input type="text" name="name" placeholder="name" id="name" required>
     <br />
     <div class="inputContainer">
         <label for="nationality">Nationality: </label>
