@@ -10,7 +10,7 @@
                 <el-form-item label="JHED ID">
                     <el-input v-model="email"></el-input>
                 </el-form-item>
-                <el-form-item label="Hop Calendar Password">
+                <el-form-item label="HopCal Password">
                     <el-input v-model="password"></el-input>
                 </el-form-item>
             </el-form>
