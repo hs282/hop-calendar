@@ -9,7 +9,7 @@ function validateUsername() {
 }
 
 function validateAuthorName() {
-    const authorName = document.getElementById("name");
+    const authorName = document.getElementById("input_name");
     console.log('authorName: ', authorName.value);
     const letters = /^[A-Za-z]+$/;
     if (authorName.value.includes(" ")) {
@@ -23,9 +23,8 @@ function validateAuthorName() {
 }
 function validateAuthor() {
     if (validateAuthorName()) {
-        const authorBooks = document.getElementById("numOfBooks");
-        console.log('authorBooks: ', authorBooks.value);
-        if (authorBooks >= 1 && authorBooks <= 200) {
+        const authorBooks = document.getElementById("input_numOfBooks");
+        if (authorBooks.value >= 1 && authorBooks.value <= 200) {
             return true;
         } else {
             alert("Invalid number of books! Please enter a valid number.");
@@ -47,6 +46,11 @@ function validateISBN() {
         && isbn.value.substring(0, 3).match(numbers) && isbn.value.substring(4,14)) {
         thirteenth_isbn = true;
     }
-    return ten_isbn || thirteenth_isbn;
+    if (ten_isbn || thirteenth_isbn) {
+        return true;
+    } else {
+        alert('Invalid ISBN');
+    }
+    return false;
 }
 
