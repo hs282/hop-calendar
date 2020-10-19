@@ -6,11 +6,13 @@ class Course {
             this.name = ""
             this.courseId = 0
 			this.tasks = []
+			this.taskobjs = []
 			this.admins = []
 		} else {
             this.name = course.name
             this.courseId = course.courseId
 			this.tasks = course.tasks
+			this.taskobjs = course.taskobjs
 			this.admins = course.admins
 		}
     }
@@ -32,8 +34,15 @@ class Course {
 	get tasks() {
 		return this._tasks
 	}
-	addTask(task) {
-		this.tasks.push(task)
+	set taskobjs(taskobj) {
+		this._taskobjs = taskobj
+	}
+	get taskobjs() {
+		return this._taskobjs
+	}
+	
+	addTask(taskId) {
+		this.tasks.push(taskId)
 		this.numTasks += 1
 	}
 	deleteTask(taskId) {
@@ -44,26 +53,67 @@ class Course {
 		}
 		this.numTasks -= 1
 	}
+
+	//we need to keep task as class not just ids
+	findTaskobj(taskId) {
+		for (let i = 0; i < this.taskobjs.length; i++) {
+			if (this.taskobjs[i].taskId == taskId) {
+				return taskobjs[i]
+			}
+		}
+		return null
+	}
+	addTaskobj(taskobj) {
+		this.taskobjs.push(taskobj)
+		this.numTaskobjs += 1
+	}
+	deleteTaskobj(taskobj) {
+		for (let i = 0; i < this.taskobjs.length; i++) {
+			if (this.taskobjs[i] == taskobj) {
+				this.taskobjs.splice(i, 1)
+			}
+		}
+		this.numTaskobjs -= 1
+	}
+	updateTaskobj(taskobj, type, deadline, taskId, blurb) {
+		taskobj.type = type
+		taskobj.deadline = deadline
+		taskobj.taskId = taskId
+		taskobj.blurb = blurb
+	}
 	
-	set admins(admin) {
-		this._admins = admin
+	set admins(adminId) {
+		this._admins = adminId
 	}
 	get admins() {
 		return this._admins
 	}
-	addAdmin(admin) {
-		this.admins.push(admin)
-		this.numAdmins += 1
+	addAdmin(adminId) {
+		if (!this.checkAdmin(adminId)) {
+			this.admins.push(adminId)
+			this.numAdmins += 1
+			return true
+		}
+		return false
 	}
 	deleteAdmins(adminId) {
 		for (let i = 0; i < this.admins.length; i++) {
 			if (this.admins[i] == adminId) {
 				this.admins.splice(i, 1)
+				this.numAdmins -= 1
+				return true
 			}
 		}
-		this.numAdmins -= 1
+		return false
 	}
-	
+	checkAdmin(adminId) {
+		for (let i = 0; i < this.admins.length; i++) {
+			if (this.admins[i] == adminId) {
+				return admins[i]
+			}
+		}
+		return null
+	}
 	toString() {
 		console.log(this.tasks)
 	}

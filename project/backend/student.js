@@ -12,14 +12,22 @@ class Student {
 		}
 	}
 	addCourse(courseId) {
+		for (let i = 0; i < this.courses.length; i++) {
+			if (this.courses[i] == courseId) {
+				return false
+			}
+		}
 		this.courses.push(courseId)
+		return true
 	}
 	deleteCourse(courseId) {
 		for (let i = 0; i < this.courses.length; i++) {
 			if (this.courses[i] == courseId) {
 				this.courses.splice(i, 1)
+				return true
 			}
 		}
+		return false
 	}
     get name() {
 		return this._name

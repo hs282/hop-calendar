@@ -1,71 +1,130 @@
 'use strict'
-class Course {
-	constructor(course) {
-        //optional constructor parameter
-		if (!course) {
-            this.name = ""
-            this.courseId = 0
-			this.tasks = []
-			this.admins = []
-		} else {
-            this.name = course.name
-            this.courseId = course.courseId
-			this.tasks = course.tasks
-			this.admins = course.admins
-		}
-    }
-    get name() {
-		return this._name
-	}
-	set name(name) {
-		this._name = name
-	}
-	set courseId(id) {
-		this._courseId = id
-	}
-	get courseId() {
-		return this._courseId
-	}
-	set tasks(task) {
-		this._tasks = task
-	}
-	get tasks() {
-		return this._tasks
-	}
-	addTask(task) {
-		this.tasks.push(task)
-		this.numTasks += 1
-	}
-	deleteTask(taskId) {
-		for (let i = 0; i < this.tasks.length; i++) {
-			if (this.tasks[i] == taskId) {
-				this.tasks.splice(i, 1)
-			}
-		}
-		this.numTasks -= 1
+
+const Course = require("./course")
+
+class Server {
+	constructor() {
+        //get everything as objects not string ids
+        this.students = []
+		this.courses = []
+		this.instructors = []
 	}
 	
-	set admins(admin) {
-		this._admins = admin
-	}
-	get admins() {
-		return this._admins
-	}
-	addAdmin(admin) {
-		this.admins.push(admin)
-		this.numAdmins += 1
-	}
-	deleteAdmins(adminId) {
-		for (let i = 0; i < this.admins.length; i++) {
-			if (this.admins[i] == adminId) {
-				this.admins.splice(i, 1)
+	//student end
+	findStudent(studentId) {
+		for (let i = 0; i < this.students.length; i++) {
+			if (this.students[i].studentId == studentId) {
+				return this.students[i]
 			}
 		}
-		this.numAdmins -= 1
+		return null
 	}
-	
-	toString() {
-		console.log(this.tasks)
+	getCourses(studentId) {
+		studentA = this.findStudent(studentId)
+		if (studentA) {
+			return studentA.courses
+			//this returns courseIDs
+		}
+		return null;
 	}
+	addCourse(studentId, courseId) {
+		studentA = this.findStudnet(studentId)
+		if (studentA) {
+			return studentA.addCourse(courseId)
+		}
+		return false
+	}
+	removeCourse(studentId, courseId) {
+		studentA = this.findStudent(studentId)
+		if (studentA) {
+			return studentA.deleteCourse(courseId)
+		}
+		return false
+	}
+
+	//instructor end from here
+	findInstructor(instructorId) {
+		for (let i = 0; i < this.instructors.length; i++) {
+			if (this.instructors[i].instructorId == instructorId) {
+				return this.instructors[i]
+			}
+		}
+		return null
+	}
+
+	findCourse(courseId) {
+		for (let i = 0; i < this.courses.length; i++) {
+			if (this.courses[i].courseId == courseId) {
+				return this.courses[i]
+			}
+		}
+		return null
+	}
+
+	createCourse(instructorId, courseId, courseName) {
+		courseA = this.findCourse(courseId)
+		instructorA = this.findInstructor(instructorId)
+		if (!courseA && !instructorA) {
+			courseA = new Course({ name: courseName, courseId: courseId })
+			courseA.addAdmin(instructorId)
+			instructorA.addCourse(courseId)
+			this.courses.push(courseA)
+			this.numCourses += 1
+			return true
+		}
+		return false
+	}
+	getCoursesInst(instructorId) {
+		instructorA = this.findInstructor(instructorId)
+		if (instructorA) {
+			return instructorA.courses
+			//this returns courseIDs
+		}
+		return null;
+	}
+
+	createTask(instructorId, courseId, type, deadline, taskId, blurb) {
+		courseA = this.findCourse(courseId)
+		instructorA = this.findInstructor(instructorId)
+		if (courseA.checkAdmin(instructorA.instructorId)) {
+			taskA = new Task({ type: type, deadline: deadline, taskId: taskId, blurb: blurb})
+			courseA.addTask(taskId)
+			courseA.addTaskobj(taskA)
+			return true
+		}
+		return false
+	}
+	updateTask(instructorId, courseId, type, deadline, taskId, blurb) {
+		courseA = this.findCourse(courseId)
+		instructorA = this.findInstructor(instructorId)
+		if (courseA.checkAdmin(instructorA.instructorId)) {
+			taskA = courseA.findTaskobj(taskId)
+			if (taskA) {
+				courseA.updateTaskobj(taskA, type, deadline, taskId, blurb)
+				return true
+			}
+		}
+		return false
+	}
+	deleteTask(instructorId, courseId, taskId) {
+		courseA = this.findCourse(courseId)
+		instructorA = this.findInstructor(instructorId)
+		if (courseA.checkAdmin(instructorA.instructorId)) {
+			taskA = courseA.findTaskobj(taskId)
+			if (taskA) {
+				courseA.deleteTaskobj(taskA)
+				courseA.deleteTask(taskId)
+				return true
+			}
+		}
+		return false
+	}
+
+	//server
+	get allCourses() {
+		return this._courses
+	}
+
+
 }
-module.exports = Course
+module.exports = Server
