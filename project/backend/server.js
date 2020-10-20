@@ -1,6 +1,8 @@
 'use strict'
 
 const Course = require("./course")
+const Student = require("./student")
+const Instructor = require("./instructor")
 
 class Server {
 	constructor() {
@@ -10,6 +12,29 @@ class Server {
 		this.instructors = []
 	}
 	
+	//create student & instructor
+	createStudent(studentId, name) {
+		studentA = this.findStudent(studentId)
+		if (!studentA) {
+			studentA = new Student({ name: name, studentId: studentId })
+			this.students.push(studentA)
+			this.numStudents += 1
+			return true
+		}
+		return false
+	}
+	
+	createInstructor(instructorId, name) {
+		instructorA = this.findInstructor(instructorId)
+		if (!instructorA) {
+			instructorA = new Instructor({ name: name, instructorId: instructorId })
+			this.instructors.push(instructorA)
+			this.numInstructors += 1
+			return true
+		}
+		return false
+	}
+
 	//student end
 	findStudent(studentId) {
 		for (let i = 0; i < this.students.length; i++) {
@@ -64,7 +89,7 @@ class Server {
 	createCourse(instructorId, courseId, courseName) {
 		courseA = this.findCourse(courseId)
 		instructorA = this.findInstructor(instructorId)
-		if (!courseA && !instructorA) {
+		if (!courseA && instructorA) {
 			courseA = new Course({ name: courseName, courseId: courseId })
 			courseA.addAdmin(instructorId)
 			instructorA.addCourse(courseId)
@@ -74,6 +99,7 @@ class Server {
 		}
 		return false
 	}
+	
 	getCoursesInst(instructorId) {
 		instructorA = this.findInstructor(instructorId)
 		if (instructorA) {
