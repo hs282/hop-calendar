@@ -55,7 +55,5 @@ This application will only be for Web (browser) based users, although it will be
 ## Wireframes
 ![Log-in Screen](https://www.dropbox.com/s/tjy4pxrmygoygi4/Screen%20Shot%202020-10-01%20at%204.15.06%20PM.png?dl=0&raw=1)
 
-![Calendar View](https://www.dropbox.com/s/mvdi0n1d07jtsfs/Screen%20Shot%202020-10-15%20at%209.38.55%20PM.png?dl=0&raw=1)
-
-![Instructor_View](https://www.dropbox.com/s/tuvjh4bo3fe49bc/Screen%20Shot%202020-10-15%20at%2010.29.27%20PM.png?dl=0&raw=1)
-
+![Student_and_Instructor_View](https://www.dropbox.com/s/bro4x9l0y77yxz7/Screen%20Shot%202020-10-19%20at%209.56.26%20PM.png?dl=0&raw=1
+)
