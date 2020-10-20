@@ -5,6 +5,7 @@ const bodyparser = require('body-parser');
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
+const { Sequelize } = require('sequelize');
 
 //import our Classes
 var Course = require('./course.js');
