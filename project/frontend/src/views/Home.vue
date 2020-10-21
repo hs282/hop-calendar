@@ -61,6 +61,10 @@
         @change="getEvents"
       ></v-calendar>
     </v-sheet>
+    <div class="buttons" style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 20px;">
+        <el-button type="primary" @click="pushAddCourse">Add Course</el-button>
+        <el-button type="primary" @click="pushDropCourse">Drop Course</el-button>
+    </div>
   </div>
 </template>
 
@@ -84,6 +88,12 @@
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
     }),
     methods: {
+        pushAddCourse() {
+            this.$router.push('DropCourses')
+        },
+        pushDropCourse() {
+            this.$router.push('DropCourses')
+        },
       getEvents ({ start, end }) {
         const events = []
 
