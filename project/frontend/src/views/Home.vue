@@ -61,15 +61,6 @@
         @change="getEvents"
       ></v-calendar>
     </v-sheet>
-    <br>
-    <p style="text-align:right">
-    <el-button style="background-color:#008CBA; color:white">
-        Add Course
-    </el-button>
-    <el-button style="background-color:#008CBA; color:white">
-        Drop Course
-    </el-button>
-    </p>
   </div>
 </template>
 
