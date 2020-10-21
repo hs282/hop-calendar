@@ -4,3 +4,22 @@ The indicators will also have distinguishing features so that the client will kn
 If instructors fully commit to using our app as their primary outlet to students, our app will be successful.
 FRONTEND: npm start (localhost:8080)
 BACKEND: npm start (localhost:3000)
+# frontend
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
