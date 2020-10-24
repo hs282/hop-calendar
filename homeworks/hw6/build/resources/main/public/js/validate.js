@@ -35,7 +35,6 @@ function validateAuthor() {
 }
 
 function validateISBN() {
-    alert('hi')
     const isbn = document.getElementById("isbn");
     var ten_isbn = false;
     var thirteenth_isbn = false;
