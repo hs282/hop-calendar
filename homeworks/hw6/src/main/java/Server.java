@@ -1,22 +1,21 @@
+import java.net.*;
+import java.sql.*;
+import static spark.Spark.*;
+import spark.*;
+
 import com.google.gson.Gson;
 import exception.DaoException;
 import model.Author;
 import model.Book;
-import org.sql2o.Connection;
+//import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import persistence.Sql2oAuthorDao;
 import persistence.Sql2oBookDao;
 import spark.ModelAndView;
-
 import java.beans.Statement;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import static spark.Spark.*;
 import spark.template.velocity.VelocityTemplateEngine;
 
 
@@ -25,9 +24,9 @@ public class Server {
     final static int PORT = 7000;
 
     private static Sql2o getSql2o() {
-        final String URI = "jdbc:sqlite:./MyBooksApp.db";
-        final String USERNAME = "";
-        final String PASSWORD = "";
+        final String URI = "jdbc:postgresql://localhost:7000/";
+        final String USERNAME = "postgres";
+        final String PASSWORD = "971106";
         return new Sql2o(URI, USERNAME, PASSWORD);
     }
 
@@ -43,7 +42,7 @@ public class Server {
         String databaseUrl = System.getenv("DATABASE_URL");
         if (databaseUrl == null) {
             // Not on Heroku, so use SQLite
-            return DriverManager.getConnection("jdbc:sqlite:./MyBooksApp.db");
+            return (Connection) DriverManager.getConnection("jdbc:postgresql://localhost:7000/", "postgres", "971106");
         }
 
         URI dbUri = new URI(databaseUrl);
@@ -53,12 +52,13 @@ public class Server {
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':'
                 + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
 
-        return DriverManager.getConnection(dbUrl, username, password);
+        return (Connection) DriverManager.getConnection(dbUrl, username, password);
     }
 
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
         get("/", (req, res) -> "Hi Heroku!");
+        Sql2o sql2o = getSql2o();
         //set up database table
         workWithDatabase();
 
@@ -83,7 +83,7 @@ public class Server {
             Map<String, Object> model = new HashMap<>();
             //update database
             //model.put("authors", new Sql2oAuthorDao(sql2o).listAll());
-            model.put("authors", new Sql2oAuthorDao(getConnection().getSql2o()).listAll());
+            model.put("authors", new Sql2oAuthorDao(sql2o).listAll());
             res.status(200);
             res.type("text/html");
             return new ModelAndView(model, "public/templates/authors.vm");
@@ -105,8 +105,8 @@ public class Server {
             Author author = new Author(name, numOfBooks, nationality);
             try {
                 //update database
-                //int id = new Sql2oAuthorDao(sql2o).add(author);
-                int id = new Sql2oAuthorDao(getConnection().getSql2o()).add(author);
+                int id = new Sql2oAuthorDao(sql2o).add(author);
+                //int id = new Sql2oAuthorDao(getConnection().getSql2o()).add(author);
                 if (id > 0) {
                     model.put("added", "true");
                 } else {
@@ -125,7 +125,8 @@ public class Server {
             String name = req.queryParams("name");
             Author a = new Author(name, 0, "");
             //update database
-            new Sql2oAuthorDao(getConnection().getSql2o()).delete(a);
+            new Sql2oAuthorDao(getSql2o()).delete(a);
+            //new Sql2oAuthorDao(getConnection().getSql2o()).delete(a);
             res.status(200);
             res.type("application/json");
             return new Gson().toJson(a.toString());
@@ -141,7 +142,8 @@ public class Server {
 
             Map<String, Object> model = new HashMap<>();
             //update database
-            model.put("books", new Sql2oBookDao(getConnection().getSql2o()).listAll());
+            model.put("books", new Sql2oBookDao(sql2o).listAll());
+            //model.put("books", new Sql2oBookDao(getConnection().getSql2o()).listAll());
             res.status(200);
             res.type("text/html");
             return new ModelAndView(model, "public/templates/books.vm");
@@ -178,14 +180,16 @@ public class Server {
             int authorId = 0;
             try {
                 //update database
-                authorId = new Sql2oAuthorDao(getConnection().getSql2o()).add(author);
+                authorId = new Sql2oAuthorDao(sql2o).add(author);
+                //authorId = new Sql2oAuthorDao(getConnection().getSql2o()).add(author);
                 if (authorId > 0) {
                     authorIsNew = true;
                 }
 
             } catch (DaoException ex) {
                 //update database
-                List<Author> authorList = new Sql2oAuthorDao(getConnection().getSql2o()).listAll();
+                List<Author> authorList = new Sql2oAuthorDao(sql2o).listAll();
+                //List<Author> authorList = new Sql2oAuthorDao(getConnection().getSql2o()).listAll();
                 for (Author a : authorList) {
                     if (a.getName().equals(name)) {
                         authorId = a.getId();
@@ -199,7 +203,8 @@ public class Server {
 
             try {
                 //update database
-                int bookId = new Sql2oBookDao(getConnection().getSql2o()).add(book);
+                int bookId = new Sql2oBookDao(sql2o).add(book);
+                //int bookId = new Sql2oBookDao(getConnection().getSql2o()).add(book);
                 if (bookId > 0) {
                     model.put("added", "true");
                     /*if inc needed
@@ -211,7 +216,8 @@ public class Server {
             } catch (DaoException ex) {
                 if (authorIsNew) {
                     //update database
-                    new Sql2oAuthorDao(getConnection().getSql2o()).delete(author);
+                    new Sql2oAuthorDao(sql2o).delete(author);
+                    //new Sql2oAuthorDao(getConnection().getSql2o()).delete(author);
                 }
                 model.put("failedAdd", "true");
             }
@@ -237,6 +243,7 @@ public class Server {
         try (Connection conn = getConnection()) {
             String sql = "";
             String sql2 = "";
+            /*
             if ("SQLite".equalsIgnoreCase(conn.getMetaData().getDatabaseProductName())) { // running locally
                 sql = "CREATE TABLE IF NOT EXISTS Authors (id INTEGER PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE," +
                         " numOfBooks INTEGER, nationality VARCHAR(30));";
@@ -244,19 +251,21 @@ public class Server {
                         "authorId INTEGER FOREIGN KEY REFERENCES Authors(id)," +
                         " title VARCHAR(30), publisher VARCHAR(30), year INTEGER);";
             } else {
+            
+            */
                 sql = "CREATE TABLE IF NOT EXISTS Authors (id serial PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE," +
                         " numOfBooks INTEGER, nationality VARCHAR(30));";
                 sql2 = "CREATE TABLE IF NOT EXISTS Books (id serial PRIMARY KEY, isbn VARCHAR(100) NOT NULL UNIQUE," +
                         "authorId INTEGER FOREIGN KEY REFERENCES Authors(id)," +
                         " title VARCHAR(30), publisher VARCHAR(30), year INTEGER);";
-            }
+            //}
+            Statement st = (Statement) conn.createStatement();
 
-            Statement st = conn.createStatement();
             st.execute(sql);
             st.execute(sql2);
 
-            //sql = "INSERT INTO Authors(name, numOfBooks, nationality) VALUES ('Leo Tolstoy', 12, 'Russian');";
-            //st.execute(sql);
+            sql = "INSERT INTO Authors(name, numOfBooks, nationality) VALUES ('Leo Tolstoy', 12, 'Russian');";
+            st.execute(sql);
 
         } catch (URISyntaxException | SQLException e) {
             e.printStackTrace();
