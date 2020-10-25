@@ -12,4 +12,4 @@ let authorName = document.getElementById('input_name');
 let authorNationality = document.getElementById('input_nationality');
 let authorNumOfBooks = document.getElementById('input_numOfBooks');
 check_button.addEventListener('click', () => addAuthor(authorName.value, authorNumOfBooks.value, authorNationality.value));
-
+//testing
