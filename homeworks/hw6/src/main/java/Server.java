@@ -12,7 +12,7 @@ import org.sql2o.Sql2o;
 import persistence.Sql2oAuthorDao;
 import persistence.Sql2oBookDao;
 import spark.ModelAndView;
-import java.beans.Statement;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -21,7 +21,7 @@ import spark.template.velocity.VelocityTemplateEngine;
 
 //codes under update database needs to new codes to satisfy postgresql
 public class Server {
-    final static int PORT = 7000;
+    final static int PORT = 5000;
 
     private static Sql2o getSql2o() {
         final String URI = "jdbc:postgresql://localhost:7000/";
@@ -57,7 +57,7 @@ public class Server {
 
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
-        get("/", (req, res) -> "Hi Heroku!");
+        //get("/", (req, res) -> "Hi Heroku!");
         Sql2o sql2o = getSql2o();
         //set up database table
         workWithDatabase();
@@ -252,14 +252,18 @@ public class Server {
                         " title VARCHAR(30), publisher VARCHAR(30), year INTEGER);";
             } else {
             
-            */
+
                 sql = "CREATE TABLE IF NOT EXISTS Authors (id serial PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE," +
-                        " numOfBooks INTEGER, nationality VARCHAR(30));";
+                        " numOfBooks INT, nationality VARCHAR(30));";
                 sql2 = "CREATE TABLE IF NOT EXISTS Books (id serial PRIMARY KEY, isbn VARCHAR(100) NOT NULL UNIQUE," +
-                        "authorId INTEGER FOREIGN KEY REFERENCES Authors(id)," +
+                        "authorId INT FOREIGN KEY REFERENCES Authors(id)," +
                         " title VARCHAR(30), publisher VARCHAR(30), year INTEGER);";
-            //}
-            Statement st = (Statement) conn.createStatement();
+            }*/
+            sql = "CREATE TABLE IF NOT EXISTS Authors(id SERIAL, name VARCHAR(100) NOT NULL UNIQUE, numOfBooks INT, nationality VARCHAR(30)" +
+                    "PRIMARY KEY(id));";
+            sql2 = "CREATE TABLE IF NOT EXISTS Books(id SERIAL, isbn VARCHAR(100) NOT NULL UNIQUE, authorId INT, title VARCHAR(30), publisher VARCHAR(30), year INT," +
+                    "CONSTRAINT fk_author FOREIGN KEY(authorId) REFERENCES Authors(id));";
+            Statement st = conn.createStatement();
 
             st.execute(sql);
             st.execute(sql2);
