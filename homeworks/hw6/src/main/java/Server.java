@@ -53,7 +53,7 @@ public class Server {
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':'
                 + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
 
-        return DriverManager.getConnection(dbUrl, username, password);
+        return (Connection) DriverManager.getConnection(dbUrl, username, password);
     }
 
     public static void main(String[] args) {
