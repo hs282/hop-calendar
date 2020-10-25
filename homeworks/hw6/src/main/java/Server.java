@@ -19,6 +19,8 @@ import java.util.List;
 import static spark.Spark.*;
 import spark.template.velocity.VelocityTemplateEngine;
 
+
+//codes under update database needs to new codes to satisfy postgresql
 public class Server {
     final static int PORT = 7000;
 
@@ -57,7 +59,10 @@ public class Server {
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
         get("/", (req, res) -> "Hi Heroku!");
+        //set up database table
         workWithDatabase();
+
+
         post("/", (req, res) -> {
             String username = req.queryParams("username");
             res.cookie("username", username);
@@ -76,7 +81,9 @@ public class Server {
 
         get("/authors", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-            model.put("authors", new Sql2oAuthorDao(sql2o).listAll());
+            //update database
+            //model.put("authors", new Sql2oAuthorDao(sql2o).listAll());
+            model.put("authors", new Sql2oAuthorDao(getConnection().getSql2o()).listAll());
             res.status(200);
             res.type("text/html");
             return new ModelAndView(model, "public/templates/authors.vm");
@@ -97,7 +104,9 @@ public class Server {
             String nationality = req.queryParams("nationality");
             Author author = new Author(name, numOfBooks, nationality);
             try {
-                int id = new Sql2oAuthorDao(sql2o).add(author);
+                //update database
+                //int id = new Sql2oAuthorDao(sql2o).add(author);
+                int id = new Sql2oAuthorDao(getConnection().getSql2o()).add(author);
                 if (id > 0) {
                     model.put("added", "true");
                 } else {
@@ -115,7 +124,8 @@ public class Server {
         post("/delauthor", (req, res) -> {
             String name = req.queryParams("name");
             Author a = new Author(name, 0, "");
-            new Sql2oAuthorDao(getSql2o()).delete(a);
+            //update database
+            new Sql2oAuthorDao(getConnection().getSql2o()).delete(a);
             res.status(200);
             res.type("application/json");
             return new Gson().toJson(a.toString());
@@ -130,7 +140,8 @@ public class Server {
             }
 
             Map<String, Object> model = new HashMap<>();
-            model.put("books", new Sql2oBookDao(sql2o).listAll());
+            //update database
+            model.put("books", new Sql2oBookDao(getConnection().getSql2o()).listAll());
             res.status(200);
             res.type("text/html");
             return new ModelAndView(model, "public/templates/books.vm");
@@ -166,13 +177,15 @@ public class Server {
             Author author = new Author(name, numOfBooks, nationality);
             int authorId = 0;
             try {
-                authorId = new Sql2oAuthorDao(sql2o).add(author);
+                //update database
+                authorId = new Sql2oAuthorDao(getConnection().getSql2o()).add(author);
                 if (authorId > 0) {
                     authorIsNew = true;
                 }
 
             } catch (DaoException ex) {
-                List<Author> authorList = new Sql2oAuthorDao(sql2o).listAll();
+                //update database
+                List<Author> authorList = new Sql2oAuthorDao(getConnection().getSql2o()).listAll();
                 for (Author a : authorList) {
                     if (a.getName().equals(name)) {
                         authorId = a.getId();
@@ -185,7 +198,8 @@ public class Server {
             Book book = new Book(title, isbn, publisher, year, authorId);
 
             try {
-                int bookId = new Sql2oBookDao(sql2o).add(book);
+                //update database
+                int bookId = new Sql2oBookDao(getConnection().getSql2o()).add(book);
                 if (bookId > 0) {
                     model.put("added", "true");
                     /*if inc needed
@@ -196,7 +210,8 @@ public class Server {
                 }
             } catch (DaoException ex) {
                 if (authorIsNew) {
-                    new Sql2oAuthorDao(sql2o).delete(author);
+                    //update database
+                    new Sql2oAuthorDao(getConnection().getSql2o()).delete(author);
                 }
                 model.put("failedAdd", "true");
             }
