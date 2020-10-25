@@ -11,7 +11,7 @@
                     <el-radio-button label="Weekly"></el-radio-button>
                     <el-radio-button label="Monthly"></el-radio-button>
                 </el-radio-group>
-				<el-menu-item index="4"><i class="el-icon-user"></i>
+				<el-menu-item index="4" @click="pushLogin"><i class="el-icon-user"></i>
                     <span>Log Out</span></el-menu-item>
 			</el-menu>
 			<router-view />
@@ -27,5 +27,10 @@ export default {
             view: "Monthly"
         }
     },
+    methods: {
+        pushLogin() {
+            this.$router.push('Login')
+        }
+    }
 }
 </script>
