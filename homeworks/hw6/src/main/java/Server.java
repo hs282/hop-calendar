@@ -259,9 +259,8 @@ public class Server {
                         "authorId INT FOREIGN KEY REFERENCES Authors(id)," +
                         " title VARCHAR(30), publisher VARCHAR(30), year INTEGER);";
             }*/
-            sql = "CREATE TABLE IF NOT EXISTS Authors(id SERIAL, name VARCHAR(100) NOT NULL UNIQUE, numOfBooks INT, nationality VARCHAR(30)" +
-                    "PRIMARY KEY(id));";
-            sql2 = "CREATE TABLE IF NOT EXISTS Books(id SERIAL, isbn VARCHAR(100) NOT NULL UNIQUE, authorId INT, title VARCHAR(30), publisher VARCHAR(30), year INT," +
+            sql = "CREATE TABLE IF NOT EXISTS Authors(id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE, numOfBooks INTEGER, nationality VARCHAR(30);";
+            sql2 = "CREATE TABLE IF NOT EXISTS Books(id SERIAL, isbn VARCHAR(100) NOT NULL UNIQUE, authorId INTEGER, title VARCHAR(30), publisher VARCHAR(30), year INTEGER," +
                     "CONSTRAINT fk_author FOREIGN KEY(authorId) REFERENCES Authors(id));";
             Statement st = conn.createStatement();
 
