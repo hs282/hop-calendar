@@ -89,7 +89,7 @@
     }),
     methods: {
         pushAddCourse() {
-            this.$router.push('DropCourses')
+            this.$router.push('AllCourses')
         },
         pushDropCourse() {
             this.$router.push('DropCourses')

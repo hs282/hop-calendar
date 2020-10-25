@@ -33,6 +33,8 @@
             <el-button style="background-color:#008CBA; color:white" @click="edittask">
                 Edit task
                 </el-button>
+            
+            <el-button type="primary" @click="pushAddCourse" style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 20px;">Add Course</el-button>
         </ul>
 
     </div>

@@ -40,9 +40,6 @@
             <el-button style="background-color:#008CBA; color:white" @click="add">
                 Add
             </el-button>
-            <el-button style="background-color:#008CBA; color:white" @click="backtohome">
-                Back to Home
-            </el-button>
         </p>
     </div>
 </template>
