@@ -2,10 +2,17 @@ import com.google.gson.Gson;
 import exception.DaoException;
 import model.Author;
 import model.Book;
+import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import persistence.Sql2oAuthorDao;
 import persistence.Sql2oBookDao;
 import spark.ModelAndView;
+
+import java.beans.Statement;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -13,6 +20,7 @@ import static spark.Spark.*;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class Server {
+    final static int PORT = 7000;
 
     private static Sql2o getSql2o() {
         final String URI = "jdbc:sqlite:./MyBooksApp.db";
@@ -21,15 +29,35 @@ public class Server {
         return new Sql2o(URI, USERNAME, PASSWORD);
     }
 
-    public static void main(String[] args)  {
-        // set port number
-        final int PORT_NUM = 7000;
-        port(PORT_NUM);
+    private static int getHerokuAssignedPort() {
+        String herokuPort = System.getenv("PORT");
+        if (herokuPort != null) {
+            return Integer.parseInt(herokuPort);
+        }
+        return PORT;
+    }
 
-        Sql2o sql2o = getSql2o();
+    private static Connection getConnection() throws URISyntaxException, SQLException {
+        String databaseUrl = System.getenv("DATABASE_URL");
+        if (databaseUrl == null) {
+            // Not on Heroku, so use SQLite
+            return DriverManager.getConnection("jdbc:sqlite:./MyBooksApp.db");
+        }
 
-        staticFiles.location("/public");
+        URI dbUri = new URI(databaseUrl);
 
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':'
+                + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
+
+        return DriverManager.getConnection(dbUrl, username, password);
+    }
+
+    public static void main(String[] args) {
+        port(getHerokuAssignedPort());
+        get("/", (req, res) -> "Hi Heroku!");
+        workWithDatabase();
         post("/", (req, res) -> {
             String username = req.queryParams("username");
             res.cookie("username", username);
@@ -72,12 +100,10 @@ public class Server {
                 int id = new Sql2oAuthorDao(sql2o).add(author);
                 if (id > 0) {
                     model.put("added", "true");
-                }
-                else {
+                } else {
                     model.put("failedAdd", "true");
                 }
-            }
-            catch (DaoException ex) {
+            } catch (DaoException ex) {
                 model.put("failedAdd", "true");
             }
             res.status(201);
@@ -145,8 +171,7 @@ public class Server {
                     authorIsNew = true;
                 }
 
-            }
-            catch (DaoException ex) {
+            } catch (DaoException ex) {
                 List<Author> authorList = new Sql2oAuthorDao(sql2o).listAll();
                 for (Author a : authorList) {
                     if (a.getName().equals(name)) {
@@ -169,8 +194,7 @@ public class Server {
                     }
                      */
                 }
-            }
-            catch (DaoException ex) {
+            } catch (DaoException ex) {
                 if (authorIsNew) {
                     new Sql2oAuthorDao(sql2o).delete(author);
                 }
@@ -192,5 +216,35 @@ public class Server {
             return new Gson().toJson(b.toString());
         });
 
+    }
+
+    private static void workWithDatabase() {
+        try (Connection conn = getConnection()) {
+            String sql = "";
+            String sql2 = "";
+            if ("SQLite".equalsIgnoreCase(conn.getMetaData().getDatabaseProductName())) { // running locally
+                sql = "CREATE TABLE IF NOT EXISTS Authors (id INTEGER PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE," +
+                        " numOfBooks INTEGER, nationality VARCHAR(30));";
+                sql2 = "CREATE TABLE IF NOT EXISTS Books (id INTEGER PRIMARY KEY, isbn VARCHAR(100) NOT NULL UNIQUE," +
+                        "authorId INTEGER FOREIGN KEY REFERENCES Authors(id)," +
+                        " title VARCHAR(30), publisher VARCHAR(30), year INTEGER);";
+            } else {
+                sql = "CREATE TABLE IF NOT EXISTS Authors (id serial PRIMARY KEY, name VARCHAR(100) NOT NULL UNIQUE," +
+                        " numOfBooks INTEGER, nationality VARCHAR(30));";
+                sql2 = "CREATE TABLE IF NOT EXISTS Books (id serial PRIMARY KEY, isbn VARCHAR(100) NOT NULL UNIQUE," +
+                        "authorId INTEGER FOREIGN KEY REFERENCES Authors(id)," +
+                        " title VARCHAR(30), publisher VARCHAR(30), year INTEGER);";
+            }
+
+            Statement st = conn.createStatement();
+            st.execute(sql);
+            st.execute(sql2);
+
+            //sql = "INSERT INTO Authors(name, numOfBooks, nationality) VALUES ('Leo Tolstoy', 12, 'Russian');";
+            //st.execute(sql);
+
+        } catch (URISyntaxException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
