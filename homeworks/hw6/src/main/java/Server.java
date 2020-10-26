@@ -22,7 +22,7 @@ import spark.template.velocity.VelocityTemplateEngine;
 
 //codes under update database needs to new codes to satisfy postgresql
 public class Server {
-    final static int PORT = 6000;
+    final static int PORT = 5000;
 
     private static Sql2o getSql2o() {
         final String URI = "jdbc:postgresql://localhost:7000/";
