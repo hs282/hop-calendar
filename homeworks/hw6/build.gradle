@@ -29,7 +29,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class' : 'Application'
+        attributes 'Main-Class' : 'Server'
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
