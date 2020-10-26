@@ -1,5 +1,5 @@
 function addAuthor(authorName, numOfBooks, nationality) {
-    fetch(`http://localhost:7000/addauthor?name=${authorName}&numOfBooks=${numOfBooks}&nationality=${nationality}`, {
+    fetch(`/addauthor?name=${authorName}&numOfBooks=${numOfBooks}&nationality=${nationality}`, {
            method: 'POST',
        }
     ).then(res => window.location.reload(true));
