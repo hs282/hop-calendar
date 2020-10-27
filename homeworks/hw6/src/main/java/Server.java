@@ -63,13 +63,14 @@ public class Server {
         //set up database table
         workWithDatabase();
 
-
+        staticFiles.location("/public");
         post("/", (req, res) -> {
             String username = req.queryParams("username");
             res.cookie("username", username);
             res.redirect("/");
             return null;
         });
+
 
         get("/", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
@@ -79,6 +80,7 @@ public class Server {
             res.type("text/html");
             return new ModelAndView(model, "public/templates/index.vm");
         }, new VelocityTemplateEngine());
+
 
         get("/authors", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
@@ -90,12 +92,15 @@ public class Server {
             return new ModelAndView(model, "public/templates/authors.vm");
         }, new VelocityTemplateEngine());
 
+
         get("/addauthor", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             res.status(200);
             res.type("text/html");
             return new ModelAndView(model, "public/templates/addauthor.vm");
+
         }, new VelocityTemplateEngine());
+
 
         post("/addauthor", (req, res) -> {
             System.out.println(req.queryParams("name"));
@@ -122,6 +127,7 @@ public class Server {
             return new VelocityTemplateEngine().render(mdl);
         });
 
+
         post("/delauthor", (req, res) -> {
             String name = req.queryParams("name");
             Author a = new Author(name, 0, "");
@@ -132,6 +138,7 @@ public class Server {
             res.type("application/json");
             return new Gson().toJson(a.toString());
         });
+
 
         get("/books", (req, res) -> {
 
@@ -150,6 +157,7 @@ public class Server {
             return new ModelAndView(model, "public/templates/books.vm");
         }, new VelocityTemplateEngine());
 
+
         get("/addbook", (req, res) -> {
 
             //if not signed then redirect
@@ -163,6 +171,7 @@ public class Server {
             res.type("text/html");
             return new ModelAndView(model, "public/templates/addbook.vm");
         }, new VelocityTemplateEngine());
+
 
         post("/addbook", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
@@ -229,6 +238,7 @@ public class Server {
             return new VelocityTemplateEngine().render(mdl);
         });
 
+
         post("/delbook", (req, res) -> {
             String isbn = req.queryParams("isbn");
             Book b = new Book("", isbn, "", 0, 0);
@@ -268,8 +278,8 @@ public class Server {
             st.execute(sql);
             st.execute(sql2);
 
-            sql = "INSERT INTO Authors(name, numOfBooks, nationality) VALUES ('Leo Tolstoy', 12, 'Russian');";
-            st.execute(sql);
+            //sql = "INSERT INTO Authors(name, numOfBooks, nationality) VALUES ('Leo Tolstoy', 12, 'Russian');";
+            //st.execute(sql);
 
         } catch (URISyntaxException | SQLException e) {
             e.printStackTrace();
