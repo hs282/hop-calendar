@@ -53,7 +53,6 @@ This application will only be for Web (browser) based users, although it will be
 
 
 ## Wireframes
-![Log-in Screen](https://www.dropbox.com/s/tjy4pxrmygoygi4/Screen%20Shot%202020-10-01%20at%204.15.06%20PM.png?dl=0&raw=1)
+![Log-in Screen](https://www.dropbox.com/s/7gxjoj9rd84fhgc/Screen%20Shot%202020-10-27%20at%202.00.12%20PM.png?dl=0&raw=1)
 
-![Student_and_Instructor_View](https://www.dropbox.com/s/bro4x9l0y77yxz7/Screen%20Shot%202020-10-19%20at%209.56.26%20PM.png?dl=0&raw=1
-)
+![Student_and_Instructor_View](https://www.dropbox.com/s/dkr4j4xyo20m6ne/Screen%20Shot%202020-10-27%20at%202.46.01%20PM.png?dl=0&raw=1)
