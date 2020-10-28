@@ -23,7 +23,7 @@ import sun.tools.jconsole.JConsole;
 
 //codes under update database needs to new codes to satisfy postgresql
 public class Server {
-    final static int PORT = 5000;
+    final static int PORT = 4000;
 
     private static Sql2o getSql2o() {
 
@@ -48,7 +48,7 @@ public class Server {
         }
         final String URI = "jdbc:postgresql://localhost:7000/";
         final String USERNAME = "postgres";
-        final String PASSWORD = "971106";
+        final String PASSWORD = "pc112400pjw3";
         return new Sql2o(URI, USERNAME, PASSWORD);
 
     }
@@ -65,7 +65,7 @@ public class Server {
         String databaseUrl = System.getenv("DATABASE_URL");
         if (databaseUrl == null) {
             // Not on Heroku, so use SQLite
-            return (Connection) DriverManager.getConnection("jdbc:postgresql://localhost:7000/", "postgres", "971106");
+            return (Connection) DriverManager.getConnection("jdbc:postgresql://localhost:7000/", "postgres", "pc112400pjw3");
         }
 
         URI dbUri = new URI(databaseUrl);
@@ -101,7 +101,7 @@ public class Server {
                 model.put("username", req.cookie("username"));
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "/templates/index.vm");
+            return new ModelAndView(model, "public/templates/index.vm");
         }, new VelocityTemplateEngine());
 
 
@@ -112,7 +112,7 @@ public class Server {
             model.put("authors", new Sql2oAuthorDao(sql2o).listAll());
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "/templates/authors.vm");
+            return new ModelAndView(model, "public/templates/authors.vm");
         }, new VelocityTemplateEngine());
 
 
@@ -120,7 +120,7 @@ public class Server {
             Map<String, Object> model = new HashMap<>();
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "/templates/addauthor.vm");
+            return new ModelAndView(model, "public/templates/addauthor.vm");
 
         }, new VelocityTemplateEngine());
 
@@ -146,7 +146,7 @@ public class Server {
             }
             res.status(201);
             res.type("text/html");
-            ModelAndView mdl = new ModelAndView(model, "/templates/addauthor.vm");
+            ModelAndView mdl = new ModelAndView(model, "public/templates/addauthor.vm");
             return new VelocityTemplateEngine().render(mdl);
         });
 
@@ -177,7 +177,7 @@ public class Server {
             //model.put("books", new Sql2oBookDao(getConnection().getSql2o()).listAll());
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "/templates/books.vm");
+            return new ModelAndView(model, "public/templates/books.vm");
         }, new VelocityTemplateEngine());
 
 
@@ -192,7 +192,7 @@ public class Server {
             Map<String, Object> model = new HashMap<>();
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "/templates/addbook.vm");
+            return new ModelAndView(model, "public/templates/addbook.vm");
         }, new VelocityTemplateEngine());
 
 
@@ -257,7 +257,7 @@ public class Server {
 
             res.status(201);
             res.type("text/html");
-            ModelAndView mdl = new ModelAndView(model, "/templates/addbook.vm");
+            ModelAndView mdl = new ModelAndView(model, "public/templates/addbook.vm");
             return new VelocityTemplateEngine().render(mdl);
         });
 
