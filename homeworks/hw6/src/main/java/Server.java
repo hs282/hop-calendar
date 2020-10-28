@@ -33,7 +33,8 @@ public class Server {
             URI dbUri = new URI(databaseUrl);
             String username = dbUri.getUserInfo().split(":")[0];
             String password = dbUri.getUserInfo().split(":")[1];
-            String dbUrl = dbUri.getPort();
+            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':'
+            + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
             final String URI = dbUrl;
             final String USERNAME = username;
             final String PASSWORD = password;
@@ -77,7 +78,8 @@ public class Server {
         //set up database table
         workWithDatabase();
 
-        staticFiles.location("/public");
+        //staticFiles.location("/public");
+
         post("/", (req, res) -> {
             String username = req.queryParams("username");
             res.cookie("username", username);
@@ -299,4 +301,5 @@ public class Server {
             e.printStackTrace();
         }
     }
+
 }
