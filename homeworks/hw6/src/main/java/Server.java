@@ -85,7 +85,7 @@ public class Server {
         //set up database table
         workWithDatabase();
 
-        //staticFiles.location("/public");
+        staticFiles.location("/public");
 
         post("/", (req, res) -> {
             String username = req.queryParams("username");
@@ -101,7 +101,7 @@ public class Server {
                 model.put("username", req.cookie("username"));
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "public/templates/index.vm");
+            return new ModelAndView(model, "/templates/index.vm");
         }, new VelocityTemplateEngine());
 
 
@@ -112,7 +112,7 @@ public class Server {
             model.put("authors", new Sql2oAuthorDao(sql2o).listAll());
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "public/templates/authors.vm");
+            return new ModelAndView(model, "/templates/authors.vm");
         }, new VelocityTemplateEngine());
 
 
@@ -120,7 +120,7 @@ public class Server {
             Map<String, Object> model = new HashMap<>();
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "public/templates/addauthor.vm");
+            return new ModelAndView(model, "/templates/addauthor.vm");
 
         }, new VelocityTemplateEngine());
 
@@ -146,7 +146,7 @@ public class Server {
             }
             res.status(201);
             res.type("text/html");
-            ModelAndView mdl = new ModelAndView(model, "public/templates/addauthor.vm");
+            ModelAndView mdl = new ModelAndView(model, "/templates/addauthor.vm");
             return new VelocityTemplateEngine().render(mdl);
         });
 
@@ -177,7 +177,7 @@ public class Server {
             //model.put("books", new Sql2oBookDao(getConnection().getSql2o()).listAll());
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "public/templates/books.vm");
+            return new ModelAndView(model, "/templates/books.vm");
         }, new VelocityTemplateEngine());
 
 
@@ -192,7 +192,7 @@ public class Server {
             Map<String, Object> model = new HashMap<>();
             res.status(200);
             res.type("text/html");
-            return new ModelAndView(model, "public/templates/addbook.vm");
+            return new ModelAndView(model, "/templates/addbook.vm");
         }, new VelocityTemplateEngine());
 
 
@@ -257,7 +257,7 @@ public class Server {
 
             res.status(201);
             res.type("text/html");
-            ModelAndView mdl = new ModelAndView(model, "public/templates/addbook.vm");
+            ModelAndView mdl = new ModelAndView(model, "/templates/addbook.vm");
             return new VelocityTemplateEngine().render(mdl);
         });
 
