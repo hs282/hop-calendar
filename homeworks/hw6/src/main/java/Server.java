@@ -73,8 +73,6 @@ public class Server {
 
          */
 
-    }
-
     private static int getHerokuAssignedPort() {
         String herokuPort = System.getenv("PORT");
         if (herokuPort != null) {
