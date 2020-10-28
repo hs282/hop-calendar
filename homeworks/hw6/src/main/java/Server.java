@@ -79,7 +79,6 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        staticFiles.location("/public");
         port(getHerokuAssignedPort());
         //get("/", (req, res) -> "Hi Heroku!");
         Sql2o sql2o = getSql2o();
