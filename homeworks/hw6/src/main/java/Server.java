@@ -25,6 +25,20 @@ public class Server {
     final static int PORT = 5000;
 
     private static Sql2o getSql2o() {
+
+        //need to create Sql2o for heroku
+        String herokuPort = System.getenv("PORT");
+        if (herokuPort != null) {
+            String databaseUrl = System.getenv("DATABASE_URL");
+            URI dbUri = new URI(databaseUrl);
+            String username = dbUri.getUserInfo().split(":")[0];
+            String password = dbUri.getUserInfo().split(":")[1];
+            String dbUrl = dbUri.getPort();
+            final String URI = dbUrl;
+            final String USERNAME = username;
+            final String PASSWORD = password;
+            return new Sql2o(URI, USERNAME, PASSWORD);
+        }
         final String URI = "jdbc:postgresql://localhost:7000/";
         final String USERNAME = "postgres";
         final String PASSWORD = "971106";
