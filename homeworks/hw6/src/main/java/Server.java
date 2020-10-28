@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import spark.template.velocity.VelocityTemplateEngine;
+import sun.tools.jconsole.JConsole;
 
 // comment for testing github auto
 
@@ -30,7 +31,12 @@ public class Server {
         String herokuPort = System.getenv("PORT");
         if (herokuPort != null) {
             String databaseUrl = System.getenv("DATABASE_URL");
-            URI dbUri = new URI(databaseUrl);
+            URI dbUri = null;
+            try {
+                dbUri = new URI(databaseUrl);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
             String username = dbUri.getUserInfo().split(":")[0];
             String password = dbUri.getUserInfo().split(":")[1];
             String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':'
@@ -44,6 +50,7 @@ public class Server {
         final String USERNAME = "postgres";
         final String PASSWORD = "971106";
         return new Sql2o(URI, USERNAME, PASSWORD);
+
     }
 
     private static int getHerokuAssignedPort() {
