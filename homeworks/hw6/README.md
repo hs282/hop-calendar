@@ -9,3 +9,5 @@ Jang Woo Park - jpark278
 
 Hyunsu Shin - hshin28
 
+We assumed that we had to use the same database (PostgreSQL) in production as in development.
+
