@@ -42,6 +42,13 @@ const sequelize = new Sequelize(database, user, password, {
         await Course.sync({ force: true });
         await Task.sync({ force: true });
         const jane = await Student.create({ name: "Jane", courses: "[]", username:"janedoe", password:"hellokitty" });
+        //const java = 
+        //sequelize - 
+        //create object - track (relationship) - query
+        //website (username/password) -> username + password -> studentid -> jack logged in -> query student id -> create jack object from the string from student db -> courseids -> query coure ids ->create courses
+        // -> tasks[] -> viewing
+        //darvish course -> query task objects taskids -> create task objects from the string-> update task based on object fuctions -> change fields for tasks except for task id
+        //->put object back into string -> task id will be the same query same database w task id -> update that on database 
         const darvish = await Instructor.create({ name: "Darvish", courses: "[]", username:"oose", password:"computer" });
         console.log('Connection has been established successfully.');
         const query = await Student.findAll({
