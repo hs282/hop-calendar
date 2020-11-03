@@ -39,4 +39,4 @@ class Instructor {
 		this._courses = courses
 	}
 }
-module.exports = Instructor
+export default Instructor

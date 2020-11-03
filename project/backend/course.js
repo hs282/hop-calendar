@@ -118,4 +118,4 @@ class Course {
 		console.log(this.tasks)
 	}
 }
-module.exports = Course
+export default Course

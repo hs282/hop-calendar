@@ -1,19 +1,26 @@
 //import models from './db.js';
 
 "use strict";
-const express = require('express');
-const cors = require('cors');
-const bodyparser = require('body-parser');
+// const express = require('express');
+// const cors = require('cors');
+// const bodyparser = require('body-parser');
+import express from 'express';
+import cors from 'cors';
+import bodyparser from 'body-parser'
+
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
-const { Sequelize } = require('sequelize');
 
 //import our Classes
-var Course = require('./course.js');
-var Task = require('./task.js');
-var Student = require('./student.js');
-var Instructor = require('./instructor.js');
+// var Course = require('./course.js');
+// var Task = require('./task.js');
+// var Student = require('./student.js');
+// var Instructor = require('./instructor.js');
+import Course from './course.js';
+import Task from './task.js';
+import Student from './student.js';
+import Instructor from './instructor.js';
 
 //dummy data
 let homework = new Task({ type: 'assignment', deadline: "11:59PM", taskId: 0, blurb: "Please submit before midnight"});

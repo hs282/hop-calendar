@@ -38,4 +38,4 @@ class Task {
 		this._blurb = blurb
 	}
 }
-module.exports = Task
+export default Task

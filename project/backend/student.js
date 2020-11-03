@@ -48,4 +48,4 @@ class Student {
 		this._studentId = id
 	}
 }
-module.exports = Student
+export default Student
