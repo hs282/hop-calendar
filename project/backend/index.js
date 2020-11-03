@@ -116,6 +116,31 @@ app.get('/create_account', (req, res) => {
     res.send(newId)
 })
 
+//endpoint delete account 
+app.get('/delete', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint add courses for a user 
+app.get('/add_course', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint delete courses for a user 
+app.get('/delete_course', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint add tasks for a user 
+app.get('/add_task', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint delete tasks for a user 
+app.get('/delete_task', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
 //endpoint get all relevant tasks for this student 
 app.get('/calendar', (req, res) => {
     res.send(backToObjJSON._name)
