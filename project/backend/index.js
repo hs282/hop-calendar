@@ -1,9 +1,6 @@
 //import models from './db.js';
 
 "use strict";
-// const express = require('express');
-// const cors = require('cors');
-// const bodyparser = require('body-parser');
 import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser'
@@ -13,10 +10,6 @@ app.use(cors());
 app.use(bodyparser.json());
 
 //import our Classes
-// var Course = require('./course.js');
-// var Task = require('./task.js');
-// var Student = require('./student.js');
-// var Instructor = require('./instructor.js');
 import Course from './course.js';
 import Task from './task.js';
 import Student from './student.js';
