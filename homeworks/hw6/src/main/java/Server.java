@@ -1,3 +1,4 @@
+import java.io.InputStream;
 import java.net.*;
 import java.sql.*;
 import static spark.Spark.*;
@@ -106,6 +107,8 @@ public class Server {
         workWithDatabase();
 
         staticFiles.location("/public");
+//        ClassLoader cl = Server.class.getClassLoader();
+//        InputStream inputStream = cl.getResourceAsStream("/public");
 
         post("/", (req, res) -> {
             String username = req.queryParams("username");
