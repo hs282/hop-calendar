@@ -1,6 +1,18 @@
 
 import Sequelize from 'sequelize'
-const sequelize = new Sequelize('mysql://root:fantasticsniffle@localhost:3306/sys');
+const user = ''
+const host = 'localhost'
+const password = ''
+const port = '5432'
+const database = 'oose'
+
+// Option 1: Passing a connection URI
+
+const sequelize = new Sequelize(database, user, password, {
+  host,
+  port,
+  dialect: 'postgres'
+});
 const DataTypes = Sequelize.DataTypes
 
 const Instructor = sequelize.define('Instructor', {
