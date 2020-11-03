@@ -7,19 +7,18 @@ import Task from './database-models/Task.js';
 
 //create database prior to runnign
 //change this according to your local database
-const user = 'postgres'
+const user = ''
 const host = 'localhost'
-const password = 'postgres'
-const port = '3306'
-const database = 'temp'
+const password = ''
+const port = '5432'
+const database = 'oose'
 
 // Option 1: Passing a connection URI
 
 const sequelize = new Sequelize(database, user, password, {
   host,
   port,
-  dialect: 'postgres',
-  logging: false
+  dialect: 'postgres'
 });
 
 // const models = {
@@ -42,9 +41,15 @@ const sequelize = new Sequelize(database, user, password, {
         await Instructor.sync({ force: true });
         await Course.sync({ force: true });
         await Task.sync({ force: true });
-        const jane = await Student.create({ name: "Jane", courses: "[]", username:"jandoe", password:"hellokitty" });
+        const jane = await Student.create({ name: "Jane", courses: "[]", username:"janedoe", password:"hellokitty" });
         const darvish = await Instructor.create({ name: "Darvish", courses: "[]", username:"oose", password:"computer" });
         console.log('Connection has been established successfully.');
+        const query = await Student.findAll({
+            where: {
+                name: "Jane"
+            }
+        });
+        console.log(query[0].dataValues.username)
       } catch (error) {
         console.error('Unable to connect to the database:', error);
       }
