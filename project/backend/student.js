@@ -5,10 +5,14 @@ class Student {
 			this.studentId = 0
 			this.name = name
 			this.courses = [] //stores courseIDs instead of actual Course objects
+			this.username = ''
+			this.password = ''
 		} else {
 			this.studentId = student.studentId
 			this.name = student.name
 			this.courses = student.courses
+			this.username = student.username
+			this.password = student.password
 		}
 	}
 	addCourse(courseId) {
@@ -46,6 +50,18 @@ class Student {
 	}
 	set studentId(id) {
 		this._studentId = id
+	}
+	get username() {
+		return this._username
+	}
+	set username(username) {
+		this._username = username
+	}
+	get password() {
+		return this._password
+	}
+	set password(password) {
+		this._password = password
 	}
 }
 export default Student

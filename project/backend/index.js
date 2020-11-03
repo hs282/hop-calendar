@@ -25,17 +25,34 @@ import Instructor from './instructor.js';
 //dummy data
 let homework = new Task({ type: 'assignment', deadline: "11:59PM", taskId: 0, blurb: "Please submit before midnight"});
 let test = new Task({ type: 'examination', deadline: "1:30PM", taskId: 1, blurb: "Please turn on your webcams"});
-
 let algebra = new Course({ name: 'algebra', tasks: [0, 1], courseId: 3})
 
 //stringify to store in database
 let asString = JSON.stringify(algebra);
-
 //back to object to send to frontend/use class methods
 let backToObjJSON = JSON.parse(asString);
 
 //test endpoint
 app.get('/', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint login => find which student it is 
+app.get('/login', (req, res) => {
+    //get username and password from req object role
+    //[0], postband
+    //query table -> check true -> send back failed or succeed
+    //if succeeds send studentid or instructor id back
+    res.send(backToObjJSON._name)
+})
+
+//endpoint create account 
+app.get('/create_account', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint get all relevant tasks for this student 
+app.get('/calendar', (req, res) => {
     res.send(backToObjJSON._name)
 })
 

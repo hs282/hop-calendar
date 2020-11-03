@@ -13,10 +13,10 @@ class Server {
 	}
 	
 	//create student & instructor
-	createStudent(studentId, name) {
+	createStudent(studentId, name, username, password) {
 		studentA = this.findStudent(studentId)
 		if (!studentA) {
-			studentA = new Student({ name: name, studentId: studentId })
+			studentA = new Student({ name: name, studentId: studentId, username: username, password: password })
 			this.students.push(studentA)
 			this.numStudents += 1
 			return true
@@ -24,10 +24,10 @@ class Server {
 		return false
 	}
 	
-	createInstructor(instructorId, name) {
+	createInstructor(instructorId, name, username, password) {
 		instructorA = this.findInstructor(instructorId)
 		if (!instructorA) {
-			instructorA = new Instructor({ name: name, instructorId: instructorId })
+			instructorA = new Instructor({ name: name, instructorId: instructorId, username: username, password: password })
 			this.instructors.push(instructorA)
 			this.numInstructors += 1
 			return true
