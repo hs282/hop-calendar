@@ -32,15 +32,98 @@ app.get('/', (req, res) => {
 
 //endpoint login => find which student it is 
 app.get('/login', (req, res) => {
-    //get username and password from req object role
-    //[0], postband
+    //get username, password and rolefrom req object role
+    var userInfo = req.body;
+    var name = userInfo.username;
+    var pw = userInfo.password;
+    var role = userInfo.role;
     //query table -> check true -> send back failed or succeed
-    //if succeeds send studentid or instructor id back
-    res.send(backToObjJSON._name)
+    const query;
+    if (role == "Student") {
+        query = await Student.findAll({
+            where: {
+                username: name,
+                password: pw
+            }
+        });
+    } else {
+        query = await Instructor.findAll({
+            where: {
+                username: name,
+                password: pw
+            }
+    });
+    }
+    if (query[0] == null) {
+        res.send("login failed")
+    }   else {
+        //if succeeds send studentid or instructor id back
+        res.send(query[0].dataValues.id)
+    }
 })
 
 //endpoint create account 
 app.get('/create_account', (req, res) => {
+    //first get username, password, role, name from front end
+    var reqUserInfo = req.body;
+    var reqName = userInfo.name;
+    var reqUsername = userInfo.username;
+    var reqPw = userInfo.password;
+    var role = userInfo.role;
+    //first check whether same username exists in the database
+    if (role == "Student") {
+        query = await Student.findAll({
+            where: {
+                username: reqName,
+            }
+        });
+    } else {
+        query = await Instructor.findAll({
+            where: {
+                username: reqName,
+            }
+    });
+    }
+    if (query[0] != null) {
+        res.send("choose a different username")
+    } else {
+        //if succeeds create a new user based on the role 
+        //need to create an id (Get an id that is + 1 from most recently created account's id)
+        const newUser;
+        const newId = MAX(await Student.max('id'), await Instructor.max('id')) + 1;
+        if (role == 'Student'){
+            const newUser = await Student.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId });
+        } else {
+            const newUser = await Instructor.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId});   
+        }
+        //added to database
+    }
+    //return newId
+    res.send(newId)
+})
+
+//endpoint delete account 
+app.get('/delete', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint add courses for a user 
+app.get('/add_course', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint delete courses for a user 
+app.get('/delete_course', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint add tasks for a user 
+app.get('/add_task', (req, res) => {
+    res.send(backToObjJSON._name)
+})
+
+//endpoint delete tasks for a user 
+app.get('/delete_task', (req, res) => {
     res.send(backToObjJSON._name)
 })
 
