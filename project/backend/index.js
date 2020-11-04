@@ -38,7 +38,7 @@ app.get('/login', (req, res) => {
     var pw = userInfo.password;
     var role = userInfo.role;
     //query table -> check true -> send back failed or succeed
-    const query;
+    const query = null;
     if (role == "Student") {
         query = await Student.findAll({
             where: {
@@ -89,7 +89,7 @@ app.get('/create_account', (req, res) => {
     } else {
         //if succeeds create a new user based on the role 
         //need to create an id (Get an id that is + 1 from most recently created account's id)
-        const newUser;
+        const newUser = null;
         const newId = MAX(await Student.max('id'), await Instructor.max('id')) + 1;
         if (role == 'Student'){
             const newUser = await Student.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId });
@@ -174,12 +174,14 @@ app.get('/add_task', (req, res) => {
             id: courseId
         }
     });
-    
+
+    course = course[0]
     //create task
     const taskId = MAX(await Task.max('id')) + 1;
     const newTask = await Task.create({id: taskId, type: type, deadline: deadline, info: blurb});
     course.addTask(taskId)
-    res.send(course.tasks)
+    course.addTaskobj(newTask)
+    res.send(course.taskobjs)
 })
 
 //endpoint delete tasks for instructor 
@@ -192,8 +194,11 @@ app.get('/delete_task', (req, res) => {
             id: courseId
         }
     });
+    course = course[0]
     course.deleteTask(taskId)
-    res.send(course.tasks)
+    taskObj = course.findTaskobj(taskId)
+    course.deleteTaskobj(taskObj)
+    res.send(course.taskobjs)
 })
 
 //endpoint edit tasks for instructor
@@ -210,21 +215,23 @@ app.get('/edit_task', (req, res) => {
 
     // else, give access
 
-    // const courseId = reqBody.courseId
+    const courseId = reqBody.courseId
     const taskId = reqBody.taskId
-
-    task = await Task.findAll({
-        where: {
-            id: taskId
-        }
-    });
-
     const newType = reqBody.type
     const newDeadline = reqBody.deadline
     const newInfo = reqBody.info
 
-    
+    course = await Course.findAll({
+        where: {
+            id: courseId
+        }
+    });
 
+    course = course[0]
+    taskObj = course.findTaskobj(taskId)
+    course.updateTaskobj(taskObj, newType, newDeadline, taskId, newInfo)
+
+    res.send(taskObj)
 })
 
 //endpoint get all courses and tasks associated with the student 
