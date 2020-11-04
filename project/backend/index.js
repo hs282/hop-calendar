@@ -198,6 +198,32 @@ app.get('/delete_task', (req, res) => {
 
 //endpoint edit tasks for instructor
 app.get('/edit_task', (req, res) => {
+    const reqBody = req.body
+    // assuming cookie stores instructor
+    
+    // check if there's cookie for instructor role
+
+    // if cookie doesn't exist, then authenticate as instructor
+
+    // if cookie does exist,
+    // but user is not an instructor, then deny access
+
+    // else, give access
+
+    // const courseId = reqBody.courseId
+    const taskId = reqBody.taskId
+
+    task = await Task.findAll({
+        where: {
+            id: taskId
+        }
+    });
+
+    const newType = reqBody.type
+    const newDeadline = reqBody.deadline
+    const newInfo = reqBody.info
+
+    
 
 })
 
