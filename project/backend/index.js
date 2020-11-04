@@ -102,14 +102,34 @@ app.get('/create_account', (req, res) => {
     res.send(newId)
 })
 
-//endpoint delete account 
+//endpoint delete account
 app.get('/delete', (req, res) => {
     res.send(backToObjJSON._name)
 })
 
 //endpoint add courses for a user 
 app.get('/add_course', (req, res) => {
-    res.send(backToObjJSON._name)
+    let reqBody = req.body
+    let role = reqBody.role
+    let username = reqBody.username
+    let courseId = reqBody.courseId
+    let user = null
+    if (role == "Student") {
+        user = await Student.findAll({
+            where: {
+                username: username
+            }
+        });
+    } else {
+        user = await Instructor.findAll({
+            where: {
+                username: username
+            }
+        });
+    }
+    user[0].addCourse(courseId)
+
+    //res.send(user[0].courses)
 })
 
 //endpoint delete courses for a user 
@@ -124,7 +144,13 @@ app.get('/add_task', (req, res) => {
 
 //endpoint delete tasks for a user 
 app.get('/delete_task', (req, res) => {
+
     res.send(backToObjJSON._name)
+})
+
+//endpoint edit tasks for a user
+app.get('/edit_task', (req, res) => {
+
 })
 
 //endpoint get all courses and tasks associated with the student 
