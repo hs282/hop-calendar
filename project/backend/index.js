@@ -109,11 +109,11 @@ app.get('/delete', (req, res) => {
 
 //endpoint add courses for a user 
 app.get('/add_course', (req, res) => {
-    let reqBody = req.body
-    let role = reqBody.role
-    let username = reqBody.username
-    let courseId = reqBody.courseId
-    let user = null
+    const reqBody = req.body
+    const role = reqBody.role
+    const username = reqBody.username
+    const courseId = reqBody.courseId
+    const user = null
     if (role == "Student") {
         user = await Student.findAll({
             where: {
@@ -127,28 +127,76 @@ app.get('/add_course', (req, res) => {
             }
         });
     }
-    user[0].addCourse(courseId)
+    user = user[0]
 
-    //res.send(user[0].courses)
+    if (user.addCourse(courseId)) {
+        res.send(user.courses)
+    } else {
+        res.send("Course has already been added")
+    }
 })
 
 //endpoint delete courses for a user 
 app.get('/delete_course', (req, res) => {
-    res.send(backToObjJSON._name)
+    const reqBody = req.body
+    const role = reqBody.role
+    const username = reqBody.username
+    const courseId = reqBody.courseId
+    const user = null
+    if (role == "Student") {
+        user = await Student.findAll({
+            where: {
+                username: username
+            }
+        });
+    } else {
+        user = await Instructor.findAll({
+            where: {
+                username: username
+            }
+        });
+    }
+    user = user[0]
+
+    user.deleteCourse(courseId)
+    res.send(user.courses)
 })
 
-//endpoint add tasks for a user 
+//endpoint add tasks for instructor
 app.get('/add_task', (req, res) => {
-    res.send(backToObjJSON._name)
+    const reqBody = req.body
+    const courseId = reqBody.courseId
+    const type = reqBody.type
+    const deadline = reqBody.deadline
+    const blurb = reqBody.blurb
+    course = await Course.findAll({
+        where: {
+            id: courseId
+        }
+    });
+    
+    //create task
+    const taskId = MAX(await Task.max('id')) + 1;
+    const newTask = await Task.create({id: taskId, type: type, deadline: deadline, info: blurb});
+    course.addTask(taskId)
+    res.send(course.tasks)
 })
 
-//endpoint delete tasks for a user 
+//endpoint delete tasks for instructor 
 app.get('/delete_task', (req, res) => {
-
-    res.send(backToObjJSON._name)
+    const reqBody = req.body
+    const courseId = reqBody.courseId
+    const taskId = reqBody.taskId
+    course = await Course.findAll({
+        where: {
+            id: courseId
+        }
+    });
+    course.deleteTask(taskId)
+    res.send(course.tasks)
 })
 
-//endpoint edit tasks for a user
+//endpoint edit tasks for instructor
 app.get('/edit_task', (req, res) => {
 
 })
