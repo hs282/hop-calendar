@@ -127,9 +127,30 @@ app.get('/delete_task', (req, res) => {
     res.send(backToObjJSON._name)
 })
 
-//endpoint get all relevant tasks for this student 
-app.get('/calendar', (req, res) => {
-    res.send(backToObjJSON._name)
+//endpoint get all courses and tasks associated with the student 
+app.get('/getcourses', (req, res) => {
+    const reqBody = req.body
+    const name = reqBody.name
+    const student = await Student.findAll({
+        where: {
+            name: name
+        }
+    })
+    const courseIds = student.courses
+    const courseArray = []
+    for (let courseId in courseIds) {
+        const course = await Course.findByPk(courseId)
+        courseArray.push(course)
+    }
+    const taskArray = []
+    for (let course in courseArray) {
+        const taskIds = course.tasks
+        for (let taskId in taskIds) {
+            const task = await Task.findByPk(taskId)
+            taskArray.push(task)
+        }
+    }
+    res.send({courseArray, taskArray})
 })
 
 app.listen(3000);
