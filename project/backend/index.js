@@ -77,7 +77,7 @@ app.get('/create_account', async (req, res) => {
     var reqPw = userInfo.password;
     var role = userInfo.role;
     //first check whether same username exists in the database
-    if (role == "Student") {
+    if (role == "student") {
         query = await Student.findAll({
             where: {
                 username: reqName,
@@ -120,7 +120,7 @@ app.get('/add_course', async (req, res) => {
     const username = reqBody.username
     const courseId = reqBody.courseId
     const user = null
-    if (role == "Student") {
+    if (role == "student") {
         user = await Student.findAll({
             where: {
                 username: username
@@ -149,7 +149,7 @@ app.get('/delete_course', async (req, res) => {
     const username = reqBody.username
     const courseId = reqBody.courseId
     const user = null
-    if (role == "Student") {
+    if (role == "student") {
         user = await Student.findAll({
             where: {
                 username: username
