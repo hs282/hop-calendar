@@ -5,8 +5,8 @@
             <h1>Hop Calendar</h1>
             <el-form>
                 <el-form-item action='/login'>
-                    <el-radio v-model="role" label="student" id="student">Student</el-radio>
-                    <el-radio v-model="role" label="instructor" id="instructor">Instructor</el-radio>
+                    <input type="radio" name="userType" v-model="role" label="student" id="student">Student<br>
+                    <input type="radio" name="userType" v-model="role" label="instructor" id="instructor">Instructor
                 </el-form-item>
                 <el-form-item label="JHED ID">
                     <el-input v-model="email" id="input_email"></el-input>
@@ -33,8 +33,8 @@
         },
         methods: {
             login() {
-                /*let user = document.getElementById("input_email");
-                let pw = document.getElementById("input_pw");
+                let username = document.getElementById("input_email").value;
+                let password = document.getElementById("input_pw").value;
                 let role = "student";
                 if (document.getElementById("instructor").checked) {
                     role = "instructor";
@@ -42,7 +42,7 @@
                 fetch(`http://localhost:8080/login?username=${username}&password=${password}&role=${role}`, {
                     method: 'GET'
                     }   
-                ).then(res => window.location.reload());*/
+                ).then(res => window.location.reload());
                 if (document.getElementById("instructor").checked) {
                     this.$router.push('/instructorcourses')
                 } else {
