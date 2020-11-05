@@ -2,7 +2,7 @@
 	<v-app>
 		<v-main>
 			<el-menu v-if="$route.name != 'Login'" class="el-menu-demo" mode="horizontal" style="display: flex; justify-content: space-between; align-items: center;">
-				<el-menu-item index="1">
+				<el-menu-item index="1" @click="pushHome">
                     <i class="el-icon-s-home"></i>
                     <span>Home</span>
                     </el-menu-item>
@@ -29,7 +29,10 @@ export default {
     },
     methods: {
         pushLogin() {
-            this.$router.push('Login')
+            this.$router.push('/')
+        },
+        pushHome() {
+            this.$router.push('Home')
         }
     }
 }

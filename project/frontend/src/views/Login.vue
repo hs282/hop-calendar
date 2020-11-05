@@ -4,7 +4,7 @@
         <el-card style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;">
             <h1>Hop Calendar</h1>
             <el-form>
-                <el-form-item action='/login'>
+                <el-form-item>
                     <el-radio v-model="role" label="student" id="student">Student</el-radio>
                     <el-radio v-model="role" label="instructor" id="instructor">Instructor</el-radio>
                 </el-form-item>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         data() {
             return {
@@ -32,7 +33,7 @@
             }
         },
         methods: {
-            login() {
+            async login() {
                 /*let user = document.getElementById("input_email");
                 let pw = document.getElementById("input_pw");
                 let role = "student";
@@ -43,11 +44,27 @@
                     method: 'GET'
                     }   
                 ).then(res => window.location.reload());*/
-                if (document.getElementById("instructor").checked) {
-                    this.$router.push('/instructorcourses')
-                } else {
-                    this.$router.push('/')
+                // if (document.getElementById("instructor").checked) {
+                //     this.$router.push('/instructorcourses')
+                // } else {
+                //     this.$router.push('/')
+                // }
+                //FOR INSTRUCTOR
+                //DEFAULT LOGIN IS 'janedoe', 'hellokitty', student role.
+                //that is the only registered user in the database.
+                const response = await axios.post('http://localhost:3000/login',
+                    {
+                        username: this.email,
+                        password: this.password,
+                        role: this.role
+                    }
+                );
+                if (response.status == 200) {
+                    this.$router.push('/home')
+                } else if (response.status == 500) {
+
                 }
+                console.log(response.status)
             }
         },
     }
