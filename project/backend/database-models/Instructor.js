@@ -1,6 +1,6 @@
 
 import Sequelize from 'sequelize'
-import { user, host, password, port, database } from './credentials.js'
+import { user, host, password, port, database } from '../credentials.js'
 
 // Option 1: Passing a connection URI
 
