@@ -1,0 +1,5 @@
+## retrospective for iteration 3
+
+In iteration 3, our team has worked on setting up PostgreSql databases that will not only contain the initialized data but also keep track of updates being made. We worked on implementing database updates based on distinct scenarios given from the frontend endpoints. We need to make sure that these changes being made are correctly updating our postgreSql and also that communications with the frontend side works well. On the front-end side, we have made some major progresses designing more user-convenient web pages.
+
+Our team initially planned to finish the basic implemenation of our program in iteration 3, but was not able to do so, as we changed the way data are stored and handeled after numerous discussions. Because we are working on Node.Js, which is a relatively a new tool for some of the members, there existed some confusions regarding our project's data structures. However, Iteration 3 served as a stage to go over these issues and set everyone on the same page. For the upcoming iterations, we expect to be able to finish the basic implemenation of our project.
