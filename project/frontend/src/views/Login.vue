@@ -24,47 +24,39 @@
 
 <script>
     import axios from 'axios'
+    import { mapActions } from 'vuex'
     export default {
         data() {
             return {
                 role: 'student',
-                email: '',
-                password: '',
+                email: 'janedoe',
+                password: 'hellokitty'
             }
         },
         methods: {
+            ...mapActions([
+                'setUser'
+            ]),
             async login() {
-                /*let user = document.getElementById("input_email");
-                let pw = document.getElementById("input_pw");
-                let role = "student";
-                if (document.getElementById("instructor").checked) {
-                    role = "instructor";
-                }
-                fetch(`http://localhost:8080/login?username=${username}&password=${password}&role=${role}`, {
-                    method: 'GET'
-                    }   
-                ).then(res => window.location.reload());*/
-                // if (document.getElementById("instructor").checked) {
-                //     this.$router.push('/instructorcourses')
-                // } else {
-                //     this.$router.push('/')
-                // }
                 //FOR INSTRUCTOR
                 //DEFAULT LOGIN IS 'janedoe', 'hellokitty', student role.
                 //that is the only registered user in the database.
-                const response = await axios.post('http://localhost:3000/login',
+                try {
+                    const response = await axios.post('http://localhost:3000/login',
                     {
                         username: this.email,
                         password: this.password,
                         role: this.role
-                    }
-                );
-                if (response.status == 200) {
+                    });
                     this.$router.push('/home')
-                } else if (response.status == 500) {
-
+                    const user = response.data
+                    this.setUser({ id: user.id, name: user.name, courses: user.courses, role: this.role});
+                } catch (err) {
+                    this.$message({
+                        message: 'Incorrect username or password.',
+                        type: 'warning'
+                    });
                 }
-                console.log(response.status)
             }
         },
     }

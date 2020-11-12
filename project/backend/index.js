@@ -36,7 +36,6 @@ app.get('/', (req, res) => {
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
     //get username, password and rolefrom req object role
-    console.log(req.body)
     var userInfo = req.body;
     var name = userInfo.username;
     var pw = userInfo.password;
@@ -62,9 +61,8 @@ app.post('/login', async (req, res) => {
     if (query.length == 0) {
         res.sendStatus(500)
     }   else {
-        //if succeeds send studentid or instructor id back
-        console.log(query[0].dataValues.id)
-        res.status(200).send({id: query[0].dataValues.id})
+        //if succeeds send entire student/instructor object back to store on the frontend.
+        res.status(200).send(query[0].dataValues)
     }
 })
 
@@ -241,25 +239,22 @@ app.get('/edit_task', async (req, res) => {
 })
 
 //endpoint get all courses and tasks associated with the student 
-app.get('/getcourses', async (req, res) => {
+//expects student/instructor ID.
+app.post('/getcourses', async (req, res) => {
     const reqBody = req.body
-    const name = reqBody.name
-    const student = await Student.findAll({
-        where: {
-            name: name
-        }
-    })
-    const courseIds = student.courses
+    const id = reqBody.id
+    const student = await Student.findByPk(id)
+    const courseIds = student.courses.split(',')
     const courseArray = []
-    for (let courseId in courseIds) {
-        const course = await Course.findByPk(courseId)
+    for (let courseId of courseIds) {
+        const course = await Course.findByPk(parseInt(courseId))
         courseArray.push(course)
     }
     const taskArray = []
-    for (let course in courseArray) {
-        const taskIds = course.tasks
-        for (let taskId in taskIds) {
-            const task = await Task.findByPk(taskId)
+    for (let course of courseArray) {
+        const taskIds = course.tasks.split(',')
+        for (let taskId of taskIds) {
+            const task = await Task.findByPk(parseInt(taskId))
             taskArray.push(task)
         }
     }
