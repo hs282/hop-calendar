@@ -1,10 +1,6 @@
 
 import Sequelize from 'sequelize'
-const user = ''
-const host = 'localhost'
-const password = ''
-const port = '5432'
-const database = 'oose'
+import { user, host, password, port, database } from './credentials.js'
 
 // Option 1: Passing a connection URI
 

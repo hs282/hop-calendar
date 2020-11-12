@@ -3,12 +3,7 @@ import Student from './database-models/Student.js'
 import Instructor from './database-models/Instructor.js'
 import Course from './database-models/Course.js'
 import Task from './database-models/Task.js'
-
-const user = ''
-const host = 'localhost'
-const password = ''
-const port = '5432'
-const database = 'oose'
+import { user, host, password, port, database } from './credentials.js'
 
 const sequelize = new Sequelize(database, user, password, {
     host,
