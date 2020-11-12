@@ -46,7 +46,14 @@
 
 <script>
     export default {
-        
+        async mounted() {
+            const user = this.getUser
+            const res = await axios.post('http://localhost:3000/add_course', {
+                id: user.id,
+            })
+            this.courses = res.data.courseArray
+            console.log(this.courses)
+    }
     }
 </script>
 
