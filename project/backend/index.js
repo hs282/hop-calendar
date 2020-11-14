@@ -29,9 +29,9 @@ import Task from './database-models/Task.js';
 // let backToObjJSON = JSON.parse(asString);
 
 //test endpoint
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     res.send(backToObjJSON._name)
-})
+})*/
 
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
@@ -167,7 +167,7 @@ app.get('/delete_course', async (req, res) => {
 })
 
 //endpoint add tasks for instructor
-app.get('/add_task', async (req, res) => {
+app.post('/add_task', async (req, res) => {
     const reqBody = req.body
     const courseId = reqBody.courseId
     const type = reqBody.type
@@ -242,9 +242,17 @@ app.get('/edit_task', async (req, res) => {
 //expects student/instructor ID.
 app.post('/getcourses', async (req, res) => {
     const reqBody = req.body
+    const role = reqBody.role
     const id = reqBody.id
-    const student = await Student.findByPk(id)
-    const courseIds = student.courses.split(',')
+    /*const student = await Student.findByPk(id)
+    const courseIds = student.courses.split(',')*/
+    const user = null
+    if (role == "instructor") {
+        user = await Instructor.findByPk(id)
+    } else {
+        user = await Student.findByPk(id)
+    }
+    const courseIds = user.courses.split(',')
     const courseArray = []
     for (let courseId of courseIds) {
         const course = await Course.findByPk(parseInt(courseId))
