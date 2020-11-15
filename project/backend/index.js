@@ -254,7 +254,7 @@ app.post('/add_task', async (req, res) => {
 
     let taskArray = course.dataValues.tasks.split(',')
     taskArray.push(taskId)
-    let taskObjArray = course.dataValues.taskObjs.split(',')
+    let taskObjArray = course.dataValues.taskObjs
     const newTask = await Task.create({id: taskId, type: type, deadline: deadline, info: info});
     taskObjArray.push(newTask)
     await Course.update({tasks: taskArray.toString()}, {
@@ -277,7 +277,7 @@ app.post('/delete_task', async (req, res) => {
     const taskId = reqBody.taskId
     let course = await Course.findByPk(courseId)
     let taskArray = course.dataValues.tasks.split(',')
-    let taskObjArray = course.dataValues.taskObjs.split(',')
+    let taskObjArray = course.dataValues.taskObjs
     for (let i = 0; i < taskArray.length; i++) {
         if (taskArray[i] == taskId) {
             taskArray.splice(i, 1)
