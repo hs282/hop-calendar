@@ -87,7 +87,7 @@ export default {
                     courseId: courseId,
                 }
             )
-            if (response.success == "0") {
+            if (response.data.success == "0") {
                 console.log("wrong course id or already exists in your courses")
             }
         },

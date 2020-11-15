@@ -151,14 +151,14 @@ app.post('/add_course', async (req, res) => {
     const newCourse = await Course.findByPk(courseId)
     let success = "0";
     if (newCourse == null) {
-        return
+        return res.send({success, user})
     }
     let courseArray = user.dataValues.courses.split(',');
     for (let i = 0; i < courseArray.length; i++) {
         newCourseArray.push(courseArray[i])
         if (courseArray[i] == courseId) {
             console.log(1)
-            return
+            return res.send({success, user})
         }
     }
     //add new course
@@ -180,6 +180,7 @@ app.post('/add_course', async (req, res) => {
         )
     }
     success = "1";
+    console.log(success)
     res.send({success, user})
 })
 
