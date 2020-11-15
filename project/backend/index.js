@@ -67,13 +67,15 @@ app.post('/login', async (req, res) => {
 })
 
 //endpoint create account 
-app.get('/create_account', async (req, res) => {
+app.post('/create_account', async (req, res) => {
     //first get username, password, role, name from front end
-    var reqUserInfo = req.body;
+    console.log(1)
+    var userInfo = req.body;
     var reqName = userInfo.name;
     var reqUsername = userInfo.username;
     var reqPw = userInfo.password;
     var role = userInfo.role;
+    let query = null;
     //first check whether same username exists in the database
     if (role == "student") {
         query = await Student.findAll({
@@ -88,22 +90,27 @@ app.get('/create_account', async (req, res) => {
             }
     });
     }
-    if (query[0] != null) {
-        res.send("choose a different username")
+    let newId = 100;
+    if (query.length != 0) {
+        console.log("wrong id")
+        return res.send("choose a different userid")
     } else {
         //if succeeds create a new user based on the role 
         //need to create an id (Get an id that is + 1 from most recently created account's id)
-        const newUser = null;
-        const newId = MAX(await Student.max('id'), await Instructor.max('id')) + 1;
-        if (role == 'Student'){
-            const newUser = await Student.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId });
+        console.log("new")
+        let newUser = null;
+        newId = Math.max(await Student.max('id'), await Instructor.max('id')) + 1;
+        if (role == 'Student' || role == 'student'){
+            newUser = await Student.create({ name: reqName, courses: "", username: reqUsername, password:reqPw, id: newId });
         } else {
-            const newUser = await Instructor.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId});   
+            newUser = await Instructor.create({ name: reqName, courses: "", username: reqUsername, password:reqPw, id: newId});   
         }
+        //console.log(newUser)
         //added to database
     }
     //return newId
-    res.send(newId)
+    console.log(5)
+    res.status(200).send(null)
 })
 
 //endpoint delete account
@@ -122,14 +129,14 @@ app.post('/AllCourses', async (req, res) => {
         user = await Student.findByPk(id)
     }
     let courseArray = user.dataValues.courses.split(',');;
-    console.log(courseArray)
+    //console.log(courseArray)
     const courseArray2 = []
     for (let courseId of courseArray) {
         const course = await Course.findByPk(parseInt(courseId))
         courseArray2.push(course)
     }
-    console.log(user.courses)
-    console.log(courseArray2)
+    //console.log(user.courses)
+    //console.log(courseArray2)
     res.send(courseArray2)
 })
 
@@ -153,8 +160,12 @@ app.post('/add_course', async (req, res) => {
     if (newCourse == null) {
         return res.send({success, user})
     }
+    console.log(user)
     let courseArray = user.dataValues.courses.split(',');
     for (let i = 0; i < courseArray.length; i++) {
+        if (courseArray[i] == "") {
+            continue;
+        }
         newCourseArray.push(courseArray[i])
         if (courseArray[i] == courseId) {
             console.log(1)
@@ -198,20 +209,29 @@ app.post('/delete_course', async (req, res) => {
         user = await Instructor.findByPk(id)
     }
     let courseArray = user.dataValues.courses.split(',');
-    for (let i = 0; i < courseArray.length; i++) {
-        if (courseArray[i] == courseId) {
-            courseArray.splice(i, 1)
+    let newCourseArray = [];
+    //to get rid of null string in the beginning
+    if (courseArray[0] == "") {
+        for (let i = 1; i < courseArray.length; i++) {
+            newCourseArray.push(courseArray[i])
+        }
+    } else {
+        newCourseArray = courseArray;
+    }
+    for (let i = 0; i < newCourseArray.length; i++) {
+        if (newCourseArray[i] == courseId) {
+            newCourseArray.splice(i, 1)
         }
     }
     if (role == 'student' || role == 'Student') {
-        await Student.update({ courses: courseArray.toString() }, {
+        await Student.update({ courses: newCourseArray.toString() }, {
             where: {
                 id: id
             }
         })
     } else {
         await Instructor.update(
-            { courses: courseArray.toString() },
+            { courses: newCourseArray.toString() },
             {
                 where: {
                     id: id,
@@ -298,9 +318,18 @@ app.get('/edit_task', async (req, res) => {
 //expects student/instructor ID.
 app.post('/getcourses', async (req, res) => {
     const reqBody = req.body
+    const role = reqBody.role
+    //const id = reqBody.id
     const id = parseInt(reqBody.id)
-    const student = await Student.findByPk(id)
-    const courses = student.dataValues.courses
+    let user = null
+    if (role == "student" || role == "Student") {
+        user = await Student.findByPk(id)
+    } else {
+        user = await Instructor.findByPk(id)
+    }
+    // const student = await Student.findByPk(id)
+    // const courses = student.dataValues.courses
+    const courses = user.dataValues.courses;
     if (courses == "") {
         res.send({ courseArray: [], taskArray: [] })
         return
