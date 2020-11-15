@@ -111,33 +111,76 @@ app.get('/delete', async (req, res) => {
     res.send(backToObjJSON._name)
 })
 
+//endpoint all courses
+app.post('/AllCourses', async (req, res) => {
+    const all = "all"
+    const role = "student"
+    const id = 1
+    console.log(role, id, all)
+    let user = null
+    if (role == "student" || role == "Student") {
+        user = await Student.findByPk(id)
+    }
+    let courseArray = user.dataValues.courses.split(',');;
+    console.log(courseArray)
+    const courseArray2 = []
+    for (let courseId of courseArray) {
+        const course = await Course.findByPk(parseInt(courseId))
+        courseArray2.push(course)
+    }
+    console.log(user.courses)
+    console.log(courseArray2)
+    res.send(courseArray2)
+})
+
 //endpoint add courses for a user 
-app.get('/add_course', async (req, res) => {
+app.post('/add_course', async (req, res) => {
     const reqBody = req.body
     const role = reqBody.role
-    const username = reqBody.username
+    const id = reqBody.id
     const courseId = reqBody.courseId
-    const user = null
-    if (role == "student") {
-        user = await Student.findAll({
-            where: {
-                username: username
-            }
-        });
+    let user = null
+    if (role == "student" || role == "Student") {
+        user = await Student.findByPk(id)
     } else {
-        user = await Instructor.findAll({
-            where: {
-                username: username
-            }
-        });
+        user = await Instructor.findByPk(id)
     }
-    user = user[0]
 
-    if (user.addCourse(courseId)) {
-        res.send(user.courses)
-    } else {
-        res.send("Course has already been added")
+    const newCourseArray = []
+    //find newCourse
+    const newCourse = await Course.findByPk(courseId)
+    let success = "0";
+    if (newCourse == null) {
+        return
     }
+    let courseArray = user.dataValues.courses.split(',');
+    for (let i = 0; i < courseArray.length; i++) {
+        newCourseArray.push(courseArray[i])
+        if (courseArray[i] == courseId) {
+            console.log(1)
+            return
+        }
+    }
+    //add new course
+    newCourseArray.push(newCourse.id)
+    if (role == 'student' || role == 'Student') {
+        await Student.update({ courses: newCourseArray.toString() }, {
+            where: {
+                id: id
+            }
+        })
+    } else {
+        await Instructor.update(
+            { courses: newCourseArray.toString() },
+            {
+                where: {
+                    id: id,
+                },
+            }
+        )
+    }
+    success = "1";
+    res.send({success, user})
 })
 
 //endpoint delete courses for a user 

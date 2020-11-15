@@ -1,6 +1,6 @@
-const user = ''
+const user = 'postgres'
 const host = 'localhost'
-const password = ''
+const password = 'postgres'
 const port = '5432'
 const database = 'oose'
 export  {

@@ -18,7 +18,14 @@ const sequelize = new Sequelize(database, user, password, {
         await Instructor.sync({ force: true })
         await Course.sync({ force: true })
         await Task.sync({ force: true })
+        const allCourses = [1,2,3,4,5,6]
         const courses = [1, 2]
+        const All = await Student.create({
+            name: 'All',
+            courses: allCourses.toString(),
+            username: 'All',
+            password: 'All',
+        })
         const jane = await Student.create({
             name: 'Jane',
             courses: courses.toString(),
@@ -42,6 +49,26 @@ const sequelize = new Sequelize(database, user, password, {
             admins: admins.toString(),
             tasks: tasks.toString(),
             name: 'algo',
+        })
+        const csf = await Course.create({
+            admins: admins.toString(),
+            tasks: tasks.toString(),
+            name: 'csf',
+        })
+        const automata = await Course.create({
+            admins: admins.toString(),
+            tasks: tasks.toString(),
+            name: 'automata',
+        })
+        const statistics = await Course.create({
+            admins: admins.toString(),
+            tasks: tasks.toString(),
+            name: 'statistics',
+        })
+        const uima = await Course.create({
+            admins: admins.toString(),
+            tasks: tasks.toString(),
+            name: 'uima',
         })
         const hw1 = await Task.create({
             type: "Homework",
