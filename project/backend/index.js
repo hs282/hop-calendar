@@ -29,9 +29,9 @@ import Task from './database-models/Task.js';
 // let backToObjJSON = JSON.parse(asString);
 
 //test endpoint
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     res.send(backToObjJSON._name)
-})
+})*/
 
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
@@ -179,7 +179,7 @@ app.post('/delete_course', async (req, res) => {
 })
 
 //endpoint add tasks for instructor
-app.get('/add_task', async (req, res) => {
+app.post('/add_task', async (req, res) => {
     const reqBody = req.body
     const courseId = reqBody.courseId
     const type = reqBody.type
