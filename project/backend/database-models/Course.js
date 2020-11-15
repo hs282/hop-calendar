@@ -1,6 +1,7 @@
 
 import Sequelize from 'sequelize'
 import { user, host, password, port, database } from '../credentials.js'
+import Task from './Task.js';
 
 // Option 1: Passing a connection URI
 
