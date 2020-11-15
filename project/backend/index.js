@@ -67,13 +67,15 @@ app.post('/login', async (req, res) => {
 })
 
 //endpoint create account 
-app.get('/create_account', async (req, res) => {
+app.post('/create_account', async (req, res) => {
     //first get username, password, role, name from front end
-    var reqUserInfo = req.body;
+    console.log(1)
+    var userInfo = req.body;
     var reqName = userInfo.name;
     var reqUsername = userInfo.username;
     var reqPw = userInfo.password;
     var role = userInfo.role;
+    let query = null;
     //first check whether same username exists in the database
     if (role == "student") {
         query = await Student.findAll({
@@ -88,22 +90,27 @@ app.get('/create_account', async (req, res) => {
             }
     });
     }
-    if (query[0] != null) {
-        res.send("choose a different username")
+    let newId = 100;
+    if (query.length != 0) {
+        console.log("wrong id")
+        return res.send("choose a different userid")
     } else {
         //if succeeds create a new user based on the role 
         //need to create an id (Get an id that is + 1 from most recently created account's id)
-        const newUser = null;
-        const newId = MAX(await Student.max('id'), await Instructor.max('id')) + 1;
-        if (role == 'Student'){
-            const newUser = await Student.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId });
+        console.log("new")
+        let newUser = null;
+        newId = Math.max(await Student.max('id'), await Instructor.max('id')) + 1;
+        if (role == 'Student' || role == 'student'){
+            newUser = await Student.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId });
         } else {
-            const newUser = await Instructor.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId});   
+            newUser = await Instructor.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId});   
         }
+        //console.log(newUser)
         //added to database
     }
     //return newId
-    res.send(newId)
+    console.log(5)
+    res.status(200).send(null)
 })
 
 //endpoint delete account

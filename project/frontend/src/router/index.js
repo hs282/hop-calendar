@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import DropCourses from '../views/DropCourses.vue'
 import AllCourses from '../views/AllCourses.vue'
+import CreateAccount from '../views/CreateAccount.vue'
 import InstructorCourses from '../views/InstructorCourses.vue'
 Vue.use(VueRouter)
 
@@ -32,6 +33,11 @@ const routes = [
         path: '/instructorcourses',
         name: 'InstructorCourses',
         component: InstructorCourses,
+    },
+    {
+        path: '/createaccount',
+        name: 'CreateAccount',
+        component: CreateAccount,
     },
 ]
 
