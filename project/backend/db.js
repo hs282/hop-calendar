@@ -18,7 +18,7 @@ const sequelize = new Sequelize(database, user, password, {
         await Instructor.sync({ force: true })
         await Course.sync({ force: true })
         await Task.sync({ force: true })
-        const courses = [1]
+        const courses = [1, 2]
         const jane = await Student.create({
             name: 'Jane',
             courses: courses.toString(),
@@ -37,6 +37,11 @@ const sequelize = new Sequelize(database, user, password, {
             admins: admins.toString(),
             tasks: tasks.toString(),
             name: 'oose',
+        })
+        const algo = await Course.create({
+            admins: admins.toString(),
+            tasks: tasks.toString(),
+            name: 'algo',
         })
         const hw1 = await Task.create({
             type: "Homework",

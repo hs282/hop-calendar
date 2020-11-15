@@ -141,28 +141,40 @@ app.get('/add_course', async (req, res) => {
 })
 
 //endpoint delete courses for a user 
-app.get('/delete_course', async (req, res) => {
+app.post('/delete_course', async (req, res) => {
     const reqBody = req.body
     const role = reqBody.role
-    const username = reqBody.username
+    const id = reqBody.id
     const courseId = reqBody.courseId
-    const user = null
-    if (role == "student") {
-        user = await Student.findAll({
-            where: {
-                username: username
-            }
-        });
+    console.log(role, id, courseId)
+    let user = null
+    if (role == "student" || role == "Student") {
+        user = await Student.findByPk(id)
     } else {
-        user = await Instructor.findAll({
-            where: {
-                username: username
-            }
-        });
+        user = await Instructor.findByPk(id)
     }
-    user = user[0]
-
-    user.deleteCourse(courseId)
+    let courseArray = user.dataValues.courses.split(',');
+    for (let i = 0; i < courseArray.length; i++) {
+        if (courseArray[i] == courseId) {
+            courseArray.splice(i, 1)
+        }
+    }
+    if (role == 'student' || role == 'Student') {
+        await Student.update({ courses: courseArray.toString() }, {
+            where: {
+                id: id
+            }
+        })
+    } else {
+        await Instructor.update(
+            { courses: courseArray.toString() },
+            {
+                where: {
+                    id: id,
+                },
+            }
+        )
+    }
     res.send(user.courses)
 })
 
@@ -242,14 +254,20 @@ app.get('/edit_task', async (req, res) => {
 //expects student/instructor ID.
 app.post('/getcourses', async (req, res) => {
     const reqBody = req.body
-    const id = reqBody.id
+    const id = parseInt(reqBody.id)
     const student = await Student.findByPk(id)
-    const courseIds = student.courses.split(',')
+    const courses = student.dataValues.courses
+    if (courses == "") {
+        res.send({ courseArray: [], taskArray: [] })
+        return
+    }
+    const courseIds = courses.split(',')
     const courseArray = []
     for (let courseId of courseIds) {
         const course = await Course.findByPk(parseInt(courseId))
         courseArray.push(course)
     }
+    console.log(courseArray)
     const taskArray = []
     for (let course of courseArray) {
         const taskIds = course.tasks.split(',')

@@ -30,15 +30,24 @@
                 Drop
             </el-button>
         </p> -->
-        <div class="div"  v-for="course in courses" v-bind:key="course.id">
-            <el-card style="height: 200px; width: 900px;">
-                <el-checkbox name="drop">{{ course.name }}</el-checkbox>
+        <div class="div" v-for="course in courses" v-bind:key="course.id">
+            <el-card class="card">
+                <div
+                    class="body"
+                    style="height: 100%; display: flex; justify-content: space-between; align-items: center;"
+                >
+                    <span class="name">
+                        {{ course.name }}
+                    </span>
+                    <el-button
+                        style="background-color:#008CBA; color:white"
+                        @click="drop(course.id)"
+                    >
+                        Drop
+                    </el-button>
+                </div>
             </el-card>
         </div>
-        <el-button style="background-color:#008CBA; color:white" @click="drop">
-                Drop
-        </el-button>
-        
     </div>
 </template>
 
@@ -49,31 +58,45 @@ export default {
     data() {
         return {
             courses: [],
+            selected: 0,
         }
     },
     computed: {
         ...mapGetters(['getUser']),
     },
-    async mounted() {
-        const user = this.getUser
-        const res = await axios.post('http://localhost:3000/getcourses', {
-            id: user.id,
-        })
-        this.courses = res.data.courseArray
-        console.log(this.courses)
+    methods: {
+        async drop(courseId) {
+            const user = JSON.parse(this.getUser)
+            const response = await axios.post(
+                'http://localhost:3000/delete_course',
+                {
+                    id: user.id,
+                    role: 'student',
+                    courseId: courseId,
+                }
+            )
+            this.getCourses();
+        },
+        async getCourses() {
+            const user = JSON.parse(this.getUser)
+            const res = await axios.post('http://localhost:3000/getcourses', {
+                id: parseInt(user.id),
+            })
+            this.courses = res.data.courseArray
+        },
     },
-    drop() {
-        const user = this.getUser
-        //get all checked courses and delete each one
-        /*const response = await axios.post('http://localhost:3000/delete_course',
-        {
-            username: user.username,
-            
-            role: 'student'
-        });*/
-        window.location.reload();
-    }
+    async mounted() {
+        console.log('hello')
+        console.log(JSON.parse(this.getUser).id)
+        this.getCourses();
+    },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+    height: 100px;
+    width: 1000px;
+    margin: 20px;
+}
+</style>

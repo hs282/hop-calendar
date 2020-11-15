@@ -150,13 +150,12 @@ export default {
         },
     },
     async mounted() {
-        const user = this.getUser
+        const user = JSON.parse(this.getUser)
         const res = await axios.post('http://localhost:3000/getcourses', {
-            id: user.id,
+            id: parseInt(user.id),
         })
         this.courses = res.data.courseArray
         this.tasks = res.data.taskArray
-        console.log(this.tasks)
     },
 }
 </script>

@@ -50,7 +50,8 @@
                     });
                     this.$router.push('/home')
                     const user = response.data
-                    this.setUser({ id: user.id, name: user.name, courses: user.courses, role: this.role});
+                    const object = { id: user.id, name: user.name, courses: user.courses, role: this.role}
+                    this.setUser(JSON.stringify(object));
                 } catch (err) {
                     this.$message({
                         message: 'Incorrect username or password.',

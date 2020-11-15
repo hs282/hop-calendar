@@ -8,8 +8,9 @@ const vuexPersist = new VuexPersist({
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+    plugins: [vuexPersist.plugin],
     state: {
-        user: {},
+        user: "",
         mode: "month"
     },
     getters: {
