@@ -101,9 +101,9 @@ app.post('/create_account', async (req, res) => {
         let newUser = null;
         newId = Math.max(await Student.max('id'), await Instructor.max('id')) + 1;
         if (role == 'Student' || role == 'student'){
-            newUser = await Student.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId });
+            newUser = await Student.create({ name: reqName, courses: "", username: reqUsername, password:reqPw, id: newId });
         } else {
-            newUser = await Instructor.create({ name: reqName, courses: "[]", username: reqUsername, password:reqPw, id: newId});   
+            newUser = await Instructor.create({ name: reqName, courses: "", username: reqUsername, password:reqPw, id: newId});   
         }
         //console.log(newUser)
         //added to database
@@ -129,14 +129,14 @@ app.post('/AllCourses', async (req, res) => {
         user = await Student.findByPk(id)
     }
     let courseArray = user.dataValues.courses.split(',');;
-    console.log(courseArray)
+    //console.log(courseArray)
     const courseArray2 = []
     for (let courseId of courseArray) {
         const course = await Course.findByPk(parseInt(courseId))
         courseArray2.push(course)
     }
-    console.log(user.courses)
-    console.log(courseArray2)
+    //console.log(user.courses)
+    //console.log(courseArray2)
     res.send(courseArray2)
 })
 
@@ -160,8 +160,12 @@ app.post('/add_course', async (req, res) => {
     if (newCourse == null) {
         return res.send({success, user})
     }
+    console.log(user)
     let courseArray = user.dataValues.courses.split(',');
     for (let i = 0; i < courseArray.length; i++) {
+        if (courseArray[i] == "") {
+            continue;
+        }
         newCourseArray.push(courseArray[i])
         if (courseArray[i] == courseId) {
             console.log(1)
@@ -205,20 +209,29 @@ app.post('/delete_course', async (req, res) => {
         user = await Instructor.findByPk(id)
     }
     let courseArray = user.dataValues.courses.split(',');
-    for (let i = 0; i < courseArray.length; i++) {
-        if (courseArray[i] == courseId) {
-            courseArray.splice(i, 1)
+    let newCourseArray = [];
+    //to get rid of null string in the beginning
+    if (courseArray[0] == "") {
+        for (let i = 1; i < courseArray.length; i++) {
+            newCourseArray.push(courseArray[i])
+        }
+    } else {
+        newCourseArray = courseArray;
+    }
+    for (let i = 0; i < newCourseArray.length; i++) {
+        if (newCourseArray[i] == courseId) {
+            newCourseArray.splice(i, 1)
         }
     }
     if (role == 'student' || role == 'Student') {
-        await Student.update({ courses: courseArray.toString() }, {
+        await Student.update({ courses: newCourseArray.toString() }, {
             where: {
                 id: id
             }
         })
     } else {
         await Instructor.update(
-            { courses: courseArray.toString() },
+            { courses: newCourseArray.toString() },
             {
                 where: {
                     id: id,
@@ -305,9 +318,18 @@ app.get('/edit_task', async (req, res) => {
 //expects student/instructor ID.
 app.post('/getcourses', async (req, res) => {
     const reqBody = req.body
+    const role = reqBody.role
+    //const id = reqBody.id
     const id = parseInt(reqBody.id)
-    const student = await Student.findByPk(id)
-    const courses = student.dataValues.courses
+    let user = null
+    if (role == "student" || role == "Student") {
+        user = await Student.findByPk(id)
+    } else {
+        user = await Instructor.findByPk(id)
+    }
+    // const student = await Student.findByPk(id)
+    // const courses = student.dataValues.courses
+    const courses = user.dataValues.courses;
     if (courses == "") {
         res.send({ courseArray: [], taskArray: [] })
         return

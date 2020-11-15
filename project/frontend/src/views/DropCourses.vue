@@ -71,7 +71,7 @@ export default {
                 'http://localhost:3000/delete_course',
                 {
                     id: user.id,
-                    role: 'student',
+                    role: user.role,
                     courseId: courseId,
                 }
             )
@@ -81,6 +81,7 @@ export default {
             const user = JSON.parse(this.getUser)
             const res = await axios.post('http://localhost:3000/getcourses', {
                 id: parseInt(user.id),
+                role: user.role,
             })
             this.courses = res.data.courseArray
         },
@@ -88,6 +89,7 @@ export default {
     async mounted() {
         console.log('hello')
         console.log(JSON.parse(this.getUser).id)
+        console.log(JSON.parse(this.getUser).role)
         this.getCourses();
     },
 }

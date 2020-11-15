@@ -82,7 +82,7 @@ export default {
                 'http://localhost:3000/add_course',
                 {
                     id: user.id,
-                    role: 'student',
+                    role: user.role,
                     username: user.username,
                     courseId: courseId,
                 }
