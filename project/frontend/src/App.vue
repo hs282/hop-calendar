@@ -41,6 +41,9 @@ export default {
             this.setMode(val)
         },
     },
+    computed: {
+        ...mapGetters(['getUser']),
+    },
     methods: {
         ...mapActions([
             'setMode'
@@ -49,7 +52,13 @@ export default {
             this.$router.push('/')
         },
         pushHome() {
-            this.$router.push('Home')
+            const user = JSON.parse(this.getUser)
+            if (user.role == "student" || user.role == "Student") {
+                    this.$router.push('/home')
+            } else {
+                this.$router.push('/InstructorCourses')
+            }
+            //this.$router.push('Home')
         },
     },
 }
