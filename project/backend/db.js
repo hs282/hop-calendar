@@ -5,23 +5,25 @@ import Course from './database-models/Course.js'
 import Task from './database-models/Task.js'
 import { user, host, password, port, database, path } from './credentials.js'
 
-
+var sequelize;
+console.log(path+'\n');
 if (path != '') {
-    var Sequelize = require("sequelize"),
-      sequelize = null;
-  if (process.env.postgresql-sinuous-90620) {
-      // the application is executed on Heroku ... use the postgres         database
-    sequelize =new Sequelize(process.env.postgresql-sinuous-90620,
-    {
-        dialect: "postgres",
-        protocol: "postgres",
-        port: port,
-        host: host, //"<heroku host>",
-        logging: true //false
-    });
-    }
+    console.log("heroku\n")
+    // var Sequelize = require("sequelize"),
+    //   sequelize = null;
+    sequelize = new Sequelize({
+        database: process.env.DATABASE,
+        port: process.env.PORT,
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD,
+        dialect: 'postgres',
+        dialectOptions: {
+          connectTimeout: Number(process.env.CONNECT_TIMEOUT)
+        }
+      })
 } else {
-    const sequelize = new Sequelize(database, user, password, {
+    console.log("local\n")
+    sequelize = new Sequelize(database, user, password, {
         host,
         port,
         dialect: 'postgres',
