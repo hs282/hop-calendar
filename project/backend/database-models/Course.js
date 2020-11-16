@@ -29,10 +29,10 @@ const Course = sequelize.define('Course', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  taskObjs: {
+  /*taskObjs: {
     type: DataTypes.ARRAY(Task),
     allowNull: false
-  },
+  },*/
   name: {
     type: DataTypes.STRING,
     allowNull: false
