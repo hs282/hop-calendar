@@ -3,13 +3,37 @@ import Student from './database-models/Student.js'
 import Instructor from './database-models/Instructor.js'
 import Course from './database-models/Course.js'
 import Task from './database-models/Task.js'
-import { user, host, password, port, database } from './credentials.js'
+import { user, host, password, port, database, path } from './credentials.js'
 
-const sequelize = new Sequelize(database, user, password, {
-    host,
-    port,
-    dialect: 'postgres',
-})
+
+if (path != '') {
+    var Sequelize = require("sequelize"),
+      sequelize = null;
+  if (process.env.postgresql-sinuous-90620) {
+      // the application is executed on Heroku ... use the postgres         database
+    sequelize =new Sequelize(process.env.postgresql-sinuous-90620,
+    {
+        dialect: "postgres",
+        protocol: "postgres",
+        port: port,
+        host: host, //"<heroku host>",
+        logging: true //false
+    });
+    }
+} else {
+    const sequelize = new Sequelize(database, user, password, {
+        host,
+        port,
+        dialect: 'postgres',
+    })
+}
+
+//original
+// const sequelize = new Sequelize(database, user, password, {
+//     host,
+//     port,
+//     dialect: 'postgres',
+// })
 
 ;(async function main() {
     try {
