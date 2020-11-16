@@ -1,10 +1,10 @@
 {
-  "name": "testbackend",
+  "name": "test",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon ./backend/index.js",
     "test": "npm test",
     "heroku-postbuild": "cd ./frontend && npm install && npm run build"
   },
