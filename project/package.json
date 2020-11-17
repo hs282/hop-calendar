@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./backend/index.js",
+    "start": "nodemon ./backend/index.js && nodemon ./backend/db.js",
     "test": "npm test",
     "heroku-postbuild": "cd ./frontend && npm install && npm run build"
   },
