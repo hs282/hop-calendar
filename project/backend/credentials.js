@@ -27,12 +27,21 @@ var path
 // } catch (e) {
 //     }
 
-user = 'postgres';
+user = '';
 host = 'localhost';
-password = 'postgres';
+password = '';
 port = '5432';
 database = 'oose';
 path = '';
+
+if (System.getenv("DATABASE_URL") != null) {
+    database: 'd3nnndm0co39db';
+    user: 'muecqrlopmrbnc';
+    password: 'ebfa980fe7cd0ab97da33ec827ec8f50ee0295919ebd9847b78f48e42081f062';
+    host: 'ec2-52-202-22-140.compute-1.amazonaws.com';
+    port: '5432';
+    dialect: 'postgres';
+}
 
 export  {
     user as user,
