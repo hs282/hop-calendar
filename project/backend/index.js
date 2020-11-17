@@ -37,13 +37,7 @@ import Task from './database-models/Task.js';
 //   })
 
 app.get('/', async (req, res) => {
-    const url = req.url;
-    if (url === '/') {
-        res.write('<html>');
-        res.write(' <body> <form action="/login" method="POST"> <button type="button">Start!</button> </body>');
-        res.write('</html>');
-        return res.end();
-    }
+    
 })
 
 //endpoint login => find which student it is 
