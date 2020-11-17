@@ -5,6 +5,8 @@ import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser'
 
+var PORT = process.env.PORT || 8080;
+var express = require('express');
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
@@ -13,6 +15,27 @@ import Student from './database-models/Student.js';
 import Instructor from './database-models/Instructor.js';
 import Course from './database-models/Course.js';
 import Task from './database-models/Task.js';
+
+// const { Pool } = require('pg');
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+
+// app.get('/db', async (req, res) => {
+//     try {
+//       const client = await pool.connect();
+//       const result = await client.query('SELECT * FROM test_table');
+//       const results = { 'results': (result) ? result.rows : null};
+//       res.render('pages/db', results );
+//       client.release();
+//     } catch (err) {
+//       console.error(err);
+//       res.send("Error " + err);
+//     }
+//   })
 
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
