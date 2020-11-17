@@ -4,7 +4,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser'
-
+import Sequelize from 'sequelize'
 var PORT = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
