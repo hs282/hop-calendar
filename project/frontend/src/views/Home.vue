@@ -43,6 +43,7 @@ home.vue
                     :event-overlap-mode="mode"
                     :event-overlap-threshold="30"
                     :event-color="getEventColor"
+
                     @change="getEvents"
                 ></v-calendar>
             </v-sheet>
@@ -104,7 +105,7 @@ export default {
         ...mapGetters(['getUser', 'getMode']),
     },
     methods: {
-        pushAddCourse() {
+        async pushAddCourse() {
             this.$router.push('AllCourses')
         },
         pushDropCourse() {
@@ -114,8 +115,7 @@ export default {
             this.$router.push('MyCourses')
         },
         getEvents({ start, end }) {
-            this.update();
-            const events = []
+            /*const events = []
             for (let task of this.tasks) {
                 console.log(task)
                 console.log(new Date(Date.parse(task.deadline)))
@@ -126,7 +126,60 @@ export default {
                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                     timed: false,
                 })
+            }*/
+
+            this.courses.forEach(course => {
+                course.taskObjs = []
+                let taskIds = course.tasks.split(',') //ids stored in the course obj
+                taskIds.forEach(id => {
+                    //1, 2
+                    this.tasks.forEach(task => {
+                        //looping through all tasks objs from backend
+                        //if we find id we are looking for, add it to the taskObjs array.
+                        if (parseInt(id) === task.id) {
+                            course.taskObjs.push(task)
+                        }
+                    })
+                })
+            })
+
+
+            const events = []
+            for (let course of this.courses) {
+                for (let task of course.taskObjs) {
+                    console.log(task)
+                    console.log(new Date(Date.parse(task.deadline)))
+                    events.push({
+                    name: course.name + ': ' + task.type,
+                    start: new Date(Date.parse(task.deadline)),
+                    end: new Date(Date.parse(task.deadline)),
+                    color: this.colors[this.rnd(0, this.colors.length - 1)],
+                    timed: false,
+                })
+                }
             }
+            // const min = new Date(`${start.date}T00:00:00`)
+            // const max = new Date(`${end.date}T23:59:59`)
+            // const days = (max.getTime() - min.getTime()) / 86400000
+            // const eventCount = this.rnd(days, days + 20)
+
+            // for (let i = 0; i < eventCount; i++) {
+            //     const allDay = this.rnd(0, 3) === 0
+            //     const firstTimestamp = this.rnd(min.getTime(), max.getTime())
+            //     const first = new Date(
+            //         firstTimestamp - (firstTimestamp % 900000)
+            //     )
+            //     const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
+            //     const second = new Date(first.getTime() + secondTimestamp)
+
+            //     events.push({
+            //         name: this.names[this.rnd(0, this.names.length - 1)],
+            //         start: first,
+            //         end: second,
+            //         color: this.colors[this.rnd(0, this.colors.length - 1)],
+            //         timed: false,
+            //     })
+            // }
             this.events = events
         },
         getEventColor(event) {
@@ -135,17 +188,58 @@ export default {
         rnd(a, b) {
             return Math.floor((b - a + 1) * Math.random()) + a
         },
-        async update() {
-            const user = JSON.parse(this.getUser)
-            const res = await axios.post('http://localhost:3000/getcourses', {
-                id: parseInt(user.id),
-            })
-            this.courses = res.data.courseArray
-            this.tasks = res.data.taskArray
-        },
     },
     async mounted() {
-        this.update();
+        const user = JSON.parse(this.getUser)
+        const res = await axios.post('http://localhost:3000/getcourses', {
+            id: parseInt(user.id),
+            role: 'student'
+        })
+        this.courses = res.data.courseArray
+        this.tasks = res.data.taskArray
+        /*const events = []
+            for (let task of this.tasks) {
+                console.log(task)
+                console.log(new Date(Date.parse(task.deadline)))
+                events.push({
+                    name: task.type,
+                    start: new Date(Date.parse(task.deadline)),
+                    end: new Date(Date.parse(task.deadline)),
+                    color: this.colors[this.rnd(0, this.colors.length - 1)],
+                    timed: false,
+                })
+            }*/
+        this.courses.forEach(course => {
+                course.taskObjs = []
+                let taskIds = course.tasks.split(',') //ids stored in the course obj
+                taskIds.forEach(id => {
+                    //1, 2
+                    this.tasks.forEach(task => {
+                        //looping through all tasks objs from backend
+                        //if we find id we are looking for, add it to the taskObjs array.
+                        if (parseInt(id) === task.id) {
+                            course.taskObjs.push(task)
+                        }
+                    })
+                })
+            })
+
+
+            const events = []
+            for (let course of this.courses) {
+                for (let task of course.taskObjs) {
+                    console.log(task)
+                    console.log(new Date(Date.parse(task.deadline)))
+                    events.push({
+                    name: course.name + ': ' + task.type,
+                    start: new Date(Date.parse(task.deadline)),
+                    end: new Date(Date.parse(task.deadline)),
+                    color: this.colors[this.rnd(0, this.colors.length - 1)],
+                    timed: false,
+                })
+                }
+            }
+        this.events = events
     },
 }
 </script>
