@@ -37,6 +37,18 @@
                 password: 'hellokitty'
             }
         },
+        watch: {
+            role(newValue, oldValue) {
+                if (newValue == 'instructor') {
+                    this.email = 'oose'
+                    this.password = 'computer'
+                }
+                if (newValue == 'student') {
+                    this.email = 'janedoe'
+                    this.password = 'hellokitty'
+                }
+            }
+        },
         methods: {
             ...mapActions([
                 'setUser'

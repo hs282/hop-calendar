@@ -58,41 +58,43 @@ if (path != '') {
             password: 'computer',
         })
         const admins = [1]
-        const tasks = [1, 2]
+        const tasks1 = [1, 2]
+        const tasks2 = [3, 4]
+        const tasks3 = [5, 6]
         const oose = await Course.create({
             //numTasks: 2,
             admins: admins.toString(),
-            tasks: tasks.toString(),
+            tasks: tasks1.toString(),
             name: 'oose',
         })
         const algo = await Course.create({
             //numTasks: 2,
             admins: admins.toString(),
-            tasks: tasks.toString(),
+            tasks: tasks2.toString(),
             name: 'algo',
         })
         const csf = await Course.create({
             //numTasks: 2,
             admins: admins.toString(),
-            tasks: tasks.toString(),
+            tasks: tasks3.toString(),
             name: 'csf',
         })
         const automata = await Course.create({
             //numTasks: 2,
             admins: admins.toString(),
-            tasks: tasks.toString(),
+            tasks: tasks1.toString(),
             name: 'automata',
         })
         const statistics = await Course.create({
             //numTasks: 2,
             admins: admins.toString(),
-            tasks: tasks.toString(),
+            tasks: tasks2.toString(),
             name: 'statistics',
         })
         const uima = await Course.create({
             //numTasks: 2,
             admins: admins.toString(),
-            tasks: tasks.toString(),
+            tasks: tasks2.toString(),
             name: 'uima',
         })
         const hw1 = await Task.create({
@@ -102,7 +104,27 @@ if (path != '') {
         })
         const hw2 = await Task.create({
             type: 'Homework',
-            deadline: '11/11/2020',
+            deadline: '11/12/2020',
+            info: 'Submit on blackboard.',
+        })
+        const hw3 = await Task.create({
+            type: 'Homework',
+            deadline: '11/21/2020',
+            info: 'Submit on blackboard.',
+        })
+        const hw4 = await Task.create({
+            type: 'Homework',
+            deadline: '11/19/2020',
+            info: 'Submit on blackboard.',
+        })
+        const hw5 = await Task.create({
+            type: 'Homework',
+            deadline: '11/29/2020',
+            info: 'Submit on blackboard.',
+        })
+        const hw6 = await Task.create({
+            type: 'Homework',
+            deadline: '11/21/2020',
             info: 'Submit on blackboard.',
         })
     } catch (error) {

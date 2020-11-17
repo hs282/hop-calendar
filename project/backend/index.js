@@ -220,13 +220,14 @@ app.post('/add_task', async (req, res) => {
     const info = reqBody.info
     let course = await Course.findByPk(courseId)
 
-    const taskId = Math.max(await Task.max('id')) + 1;
+    //const taskId = Math.max(await Task.max('id')) + 1;
 
+   
+    const newTask = await Task.create({type: type, deadline: deadline, info: info});
+    let taskId = newTask.dataValues.id
     let taskArray = course.dataValues.tasks.split(',')
-    taskArray.push(taskId)
-    //let taskObjArray = course.dataValues.taskObjs
-    const newTask = await Task.create({id: taskId, type: type, deadline: deadline, info: info});
-    //taskObjArray.push(newTask)
+    taskArray.push(`${taskId}`)
+    //let newTaskID = newTask.id;
     await Course.update({tasks: taskArray.toString()}, {
         where: {
             id: courseId
@@ -274,18 +275,6 @@ app.post('/delete_task', async (req, res) => {
 //endpoint edit tasks for instructor
 app.post('/edit_task', async (req, res) => {
     const reqBody = req.body
-    // assuming cookie stores instructor
-    
-    // check if there's cookie for instructor role
-
-    // if cookie doesn't exist, then authenticate as instructor
-
-    // if cookie does exist,
-    // but user is not an instructor, then deny access
-
-    // else, give access
-    
-    const courseId = reqBody.courseId
     const taskId = reqBody.taskId
 
     const newType = reqBody.type
