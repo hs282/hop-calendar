@@ -11,20 +11,20 @@ Current students, teaching staff & faculty member @ Hopkins
 Our app will be an assignment/deadline aggregator that helps students stay on top of their deadlines during online learning. Also, it will help teachers maintain student engagement through remote learning. Our deadline aggregator will be in the form of a monthly view calendar that has indicators for any upcoming deadlines and assignments. The indicators will also have distinguishing features so that the client will know which class it is for. This way, the client won't need to remember to manually input their assignments and deadlines from the syllabus and from various sources of annoucements. If instructors fully commit to using our app as their primary outlet to students, our app will be successful.
 ## Functional Requirements
 ### Must have
-- Student can log in to the app
-- Instructor can log in to the app
-- Student can view all upcoming assignments in calendar view
-- Student can distinguish upcoming assignments by class
-- Student can expand an upcoming assignment object for more details
-- Student can enroll in (subscribe to) an Instructor's class
-- Student can delete (drop) a course
-- Instructor can perform CRUD operations on their feed for both courses and tasks
+- Student can log in to the app (done)
+- Instructor can log in to the app (done)
+- Student can view all upcoming assignments in calendar view (done)
+- Student can distinguish upcoming assignments by class (done)
+- Student can expand an upcoming assignment object for more details (done)
+- Student can enroll in (subscribe to) an Instructor's class (done)
+- Student can delete (drop) a course (done)
+- Instructor can perform CRUD operations on their feed for both courses and tasks (done)
 
 
 ### Nice to have
 - Q&A board for each upcoming assignment object
 - Search bar with filters where students can search for courses to add 
-- Students can choose from monthly, weekly, and daily calendar views
+- Students can choose from monthly, weekly, and daily calendar views (done)
 - Students can mark tasks as being complete
 - External links to Gradescope, Piazza, instructors' personal course websites
 - Connections to SIS, Blackboard
