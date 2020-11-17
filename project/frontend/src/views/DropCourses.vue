@@ -30,6 +30,7 @@
                 Drop
             </el-button>
         </p> -->
+        <h1 style="padding-left: 50px">Drop Courses</h1>
         <div class="div" v-for="course in courses" v-bind:key="course.id">
             <el-card class="card">
                 <div
@@ -76,6 +77,11 @@ export default {
                 }
             )
             this.getCourses();
+            if (user.role == "student" || user.role == "Student") {
+                    this.$router.push('/home')
+            } else {
+                this.$router.push('/InstructorCourses')
+            }
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)

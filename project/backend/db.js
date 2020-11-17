@@ -3,13 +3,39 @@ import Student from './database-models/Student.js'
 import Instructor from './database-models/Instructor.js'
 import Course from './database-models/Course.js'
 import Task from './database-models/Task.js'
-import { user, host, password, port, database } from './credentials.js'
+import { user, host, password, port, database, path } from './credentials.js'
 
-const sequelize = new Sequelize(database, user, password, {
-    host,
-    port,
-    dialect: 'postgres',
-})
+var sequelize;
+console.log(path+'\n');
+if (path != '') {
+    console.log("heroku\n")
+    // var Sequelize = require("sequelize"),
+    //   sequelize = null;
+    sequelize = new Sequelize({
+        database: process.env.DATABASE,
+        port: process.env.PORT,
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD,
+        dialect: 'postgres',
+        dialectOptions: {
+          connectTimeout: Number(process.env.CONNECT_TIMEOUT)
+        }
+      })
+} else {
+    console.log("local\n")
+    sequelize = new Sequelize(database, user, password, {
+        host,
+        port,
+        dialect: 'postgres',
+    })
+}
+
+//original
+// const sequelize = new Sequelize(database, user, password, {
+//     host,
+//     port,
+//     dialect: 'postgres',
+// })
 
 ;(async function main() {
     try {
