@@ -55,6 +55,9 @@ home.vue
             class="buttons"
             style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 20px;"
         >
+            <el-button type="primary" @click="pushMyCourse"
+                >My Course</el-button
+            >
             <el-button type="primary" @click="pushAddCourse"
                 >Add Course</el-button
             >
@@ -106,6 +109,9 @@ export default {
         },
         pushDropCourse() {
             this.$router.push('DropCourses')
+        },
+        pushMyCourse() {
+            this.$router.push('MyCourses')
         },
         getEvents({ start, end }) {
             const events = []

@@ -371,4 +371,24 @@ app.post('/getcourses', async (req, res) => {
     res.send({courseArray, taskArray})
 })
 
+//get tasks for an individual class (both student and instructor)
+app.post('/get_tasks', async (req, res) => {
+    const reqBody = req.body
+    const courseId = reqBody.courseId
+    let course = await Course.findByPk(courseId)
+    const tasks = course.dataValues.tasks;
+    //const taskArray = course.dataValues.tasks.split(',')
+    if (tasks == "") {
+        res.send({taskArray: [] })
+        return
+    }
+    const taskIds = tasks.split(',')
+    const taskArray = []
+    for (let taskId of taskIds) {
+        const task = await Task.findByPk(parseInt(taskId))
+        taskArray.push(task)
+    }
+    console.log(taskArray)
+    res.send({taskArray})
+})
 app.listen(process.env.PORT || 3000);
