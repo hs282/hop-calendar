@@ -5,24 +5,36 @@ import Course from './database-models/Course.js'
 import Task from './database-models/Task.js'
 import { user, host, password, port, database, path } from './credentials.js'
 
-var sequelize;
-console.log(path+'\n');
-if (path != '') {
-    console.log("heroku\n")
-    // var Sequelize = require("sequelize"),
-    //   sequelize = null;
-    sequelize = new Sequelize({
-        database: process.env.DATABASE,
-        port: process.env.PORT,
-        username: process.env.USERNAME,
-        password: process.env.PASSWORD,
-        dialect: 'postgres',
-        dialectOptions: {
-          connectTimeout: Number(process.env.CONNECT_TIMEOUT)
-        }
-      })
+// var sequelize;
+// console.log(path+'\n');
+// if (path != '') {
+//     console.log("heroku\n")
+//     // var Sequelize = require("sequelize"),
+//     //   sequelize = null;
+//     sequelize = new Sequelize({
+//         database: process.env.DATABASE,
+//         port: process.env.PORT,
+//         username: process.env.USERNAME,
+//         password: process.env.PASSWORD,
+//         dialect: 'postgres',
+//         dialectOptions: {
+//           connectTimeout: Number(process.env.CONNECT_TIMEOUT)
+//         }
+//       })
+// } else {
+//     console.log("local\n")
+//     sequelize = new Sequelize(database, user, password, {
+//         host,
+//         port,
+//         dialect: 'postgres',
+//     })
+// }
+let sequelize = null;
+if (process.env.DATABASE_URL) {
+    sequelize = new Sequelize(
+        'postgres://ujnnamqnliqscn:edc2dd3fe40cca2b58aae0be177189bd5a9bee5e3d1b6024f17c5d8ff98abc74@ec2-54-84-98-18.compute-1.amazonaws.com:5432/dfh5kacbr40b52'
+    )
 } else {
-    console.log("local\n")
     sequelize = new Sequelize(database, user, password, {
         host,
         port,
@@ -30,12 +42,7 @@ if (path != '') {
     })
 }
 
-//original
-// const sequelize = new Sequelize(database, user, password, {
-//     host,
-//     port,
-//     dialect: 'postgres',
-// })
+
 
 ;(async function main() {
     try {
