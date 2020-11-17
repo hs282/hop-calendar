@@ -37,7 +37,7 @@ import Task from './database-models/Task.js';
 //   })
 
 app.get('/', async (req, res) => {
-    
+    res.send("Welcome to HopCalendar!");
 })
 
 //endpoint login => find which student it is 
