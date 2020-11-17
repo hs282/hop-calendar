@@ -149,6 +149,7 @@ export default {
                 role: 'instructor'
             })
             this.courses = res.data.courseArray
+
             this.tasks = res.data.taskArray
         },
     },
