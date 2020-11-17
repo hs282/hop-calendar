@@ -39,6 +39,7 @@ import Task from './database-models/Task.js';
 app.get('/', async (req, res) => {
     const url = req.url;
     if (url === '/') {
+        req.method = 'POST';
         res.statusCode = 302;
         res.setHeader('Location','/login');
         return res.end();
