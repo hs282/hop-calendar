@@ -36,6 +36,10 @@ import Task from './database-models/Task.js';
 //     }
 //   })
 
+app.get('/', async (req, res) => {
+    console.log("get / endpoint")
+})
+
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
     //get username, password and rolefrom req object role
