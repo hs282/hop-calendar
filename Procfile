@@ -1,1 +1,1 @@
-web: java -jar build/libs/MyBooksApp-1.0-SNAPSHOT.jar
+web: cd ./project/backend && node db.js && npm start
