@@ -9,29 +9,10 @@ const app = express();
 app.use(cors());
 app.use(bodyparser.json());
 
-//import our Classes
-// import Course from './course.js';
-// import Task from './task.js';
-// import Student from './student.js';
-// import Instructor from './instructor.js';
 import Student from './database-models/Student.js';
 import Instructor from './database-models/Instructor.js';
 import Course from './database-models/Course.js';
 import Task from './database-models/Task.js';
-//dummy data
-// let homework = new Task({ type: 'assignment', deadline: "11:59PM", taskId: 0, blurb: "Please submit before midnight"});
-// let test = new Task({ type: 'examination', deadline: "1:30PM", taskId: 1, blurb: "Please turn on your webcams"});
-// let algebra = new Course({ name: 'algebra', tasks: [0, 1], courseId: 3})
-
-//stringify to store in database
-// let asString = JSON.stringify(algebra);
-//back to object to send to frontend/use class methods
-// let backToObjJSON = JSON.parse(asString);
-
-//test endpoint
-/*app.get('/', (req, res) => {
-    res.send(backToObjJSON._name)
-})*/
 
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
@@ -120,24 +101,12 @@ app.get('/delete', async (req, res) => {
 
 //endpoint all courses
 app.post('/AllCourses', async (req, res) => {
-    const all = "all"
-    const role = "student"
-    const id = 1
-    console.log(role, id, all)
-    let user = null
-    if (role == "student" || role == "Student") {
-        user = await Student.findByPk(id)
-    }
-    let courseArray = user.dataValues.courses.split(',');;
-    //console.log(courseArray)
-    const courseArray2 = []
-    for (let courseId of courseArray) {
-        const course = await Course.findByPk(parseInt(courseId))
-        courseArray2.push(course)
-    }
-    //console.log(user.courses)
-    //console.log(courseArray2)
-    res.send(courseArray2)
+    const courses = await Course.findAll();
+    const courseArray = []
+    courses.forEach(course => {
+        courseArray.push(course.dataValues)
+    })
+    res.send(courseArray)
 })
 
 //endpoint add courses for a user 
@@ -201,7 +170,6 @@ app.post('/delete_course', async (req, res) => {
     const role = reqBody.role
     const id = reqBody.id
     const courseId = reqBody.courseId
-    console.log(role, id, courseId)
     let user = null
     if (role == "student" || role == "Student") {
         user = await Student.findByPk(id)
