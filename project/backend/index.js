@@ -6,7 +6,6 @@ import cors from 'cors';
 import bodyparser from 'body-parser'
 
 var PORT = process.env.PORT || 8080;
-var express = require('express');
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
