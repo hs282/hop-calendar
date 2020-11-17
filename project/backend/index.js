@@ -37,16 +37,14 @@ import Task from './database-models/Task.js';
 //   })
 
 app.get('/', async (req, res) => {
-    const url = req.url;
-    if (url === '/') {
+    // const url = req.url;
+    // if (url === '/') {
         res.write('<html>');
         res.write('<head> <title> Welcome to HopCalendar! </title> </head>');
         // res.write(' <body> <form action="/login" method="POST"> <button type="button">Start!</button> </body>');
-        // res.write('</html>');
-        res.statusCode=302;
-        res.setHeader('Location','/login');
-        return res.end();
-    }
+        res.write('</html>');
+        // return res.end();
+    // }
     // console.log(url);
     // if(url === '/login' && req.method === 'POST'){
     //     //redirect
