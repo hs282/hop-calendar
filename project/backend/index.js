@@ -44,7 +44,6 @@ import Task from './database-models/Task.js';
 //   })
 
 app.get('/', async (req, res) => {
-    
     try {
         await sequelize.authenticate()
         await Student.sync({ force: true })
@@ -136,7 +135,7 @@ app.get('/', async (req, res) => {
         })
         res.send('Welcome to HopCalendar!')
     } catch (error) {
-        res.send(error)
+        res.send('failed')
     }
 })
 
