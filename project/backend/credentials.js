@@ -57,6 +57,6 @@ export  {
     password as password,
     port as port,
     database as database,
-    // path as path,
+    path as path,
 }
 
