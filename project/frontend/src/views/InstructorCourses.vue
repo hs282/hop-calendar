@@ -149,7 +149,6 @@ export default {
                 role: 'instructor'
             })
             this.courses = res.data.courseArray
-            console.log(this.courses)
             this.tasks = res.data.taskArray
         },
     },
