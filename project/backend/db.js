@@ -67,31 +67,37 @@ if (path != '') {
         const admins = [1]
         const tasks = [1, 2]
         const oose = await Course.create({
+            //numTasks: 2,
             admins: admins.toString(),
             tasks: tasks.toString(),
             name: 'oose',
         })
         const algo = await Course.create({
+            //numTasks: 2,
             admins: admins.toString(),
             tasks: tasks.toString(),
             name: 'algo',
         })
         const csf = await Course.create({
+            //numTasks: 2,
             admins: admins.toString(),
             tasks: tasks.toString(),
             name: 'csf',
         })
         const automata = await Course.create({
+            //numTasks: 2,
             admins: admins.toString(),
             tasks: tasks.toString(),
             name: 'automata',
         })
         const statistics = await Course.create({
+            //numTasks: 2,
             admins: admins.toString(),
             tasks: tasks.toString(),
             name: 'statistics',
         })
         const uima = await Course.create({
+            //numTasks: 2,
             admins: admins.toString(),
             tasks: tasks.toString(),
             name: 'uima',

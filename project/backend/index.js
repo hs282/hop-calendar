@@ -243,6 +243,7 @@ app.post('/delete_course', async (req, res) => {
 })
 
 //endpoint add tasks for instructor
+//endpoint add tasks for instructor
 app.post('/add_task', async (req, res) => {
     const reqBody = req.body
     const courseId = reqBody.courseId
@@ -250,24 +251,28 @@ app.post('/add_task', async (req, res) => {
     const deadline = reqBody.deadline
     const info = reqBody.info
     let course = await Course.findByPk(courseId)
-    const taskId = MAX(await Task.max('id')) + 1;
+
+    const taskId = Math.max(await Task.max('id')) + 1;
 
     let taskArray = course.dataValues.tasks.split(',')
     taskArray.push(taskId)
-    let taskObjArray = course.dataValues.taskObjs
+    //let taskObjArray = course.dataValues.taskObjs
     const newTask = await Task.create({id: taskId, type: type, deadline: deadline, info: info});
-    taskObjArray.push(newTask)
+    //taskObjArray.push(newTask)
     await Course.update({tasks: taskArray.toString()}, {
         where: {
             id: courseId
         }
     })
-    await Course.update({taskObjs: taskObjArray}, {
+
+    /*let updatedNumTasks = course.numTasks + 1
+
+    await Course.update({numTasks: updatedNumTasks}, {
         where: {
             id: courseId
         }
-    })
-    res.send(course.tasks, course.taskObjs)
+    })*/
+    res.send(course.tasks)
 })
 
 //endpoint delete tasks for instructor 
@@ -277,15 +282,9 @@ app.post('/delete_task', async (req, res) => {
     const taskId = reqBody.taskId
     let course = await Course.findByPk(courseId)
     let taskArray = course.dataValues.tasks.split(',')
-    let taskObjArray = course.dataValues.taskObjs
     for (let i = 0; i < taskArray.length; i++) {
         if (taskArray[i] == taskId) {
             taskArray.splice(i, 1)
-        }
-    }
-    for (let i = 0; i < taskObjArray.length; i++) {
-        if (taskObjArray[i].id == taskId) {
-            taskObjArray.splice(i, 1)
         }
     }
     await Course.update({tasks: taskArray.toString()}, {
@@ -294,12 +293,14 @@ app.post('/delete_task', async (req, res) => {
         }
     })
 
-    await Course.update({taskObjs: taskObjArray}, {
+    /*let updatedNumTasks = course.numTasks - 1
+
+    await Course.update({numTasks: updatedNumTasks}, {
         where: {
             id: courseId
         }
-    })
-    res.send(course.tasks, course.taskObjs)
+    })*/
+    res.send(course.tasks)
 })
 
 //endpoint edit tasks for instructor
@@ -315,6 +316,7 @@ app.post('/edit_task', async (req, res) => {
     // but user is not an instructor, then deny access
 
     // else, give access
+    
     const courseId = reqBody.courseId
     const taskId = reqBody.taskId
 
@@ -341,21 +343,8 @@ app.post('/edit_task', async (req, res) => {
     })
 
     let task = await Task.findByPk(taskId)
-    let course = await Course.findByPk(courseId)
     
-    /*let taskObjArray = course.dataValues.taskObjs.split(',')
-    for (let i = 0; i < taskObjArray.length; i++) {
-        if (taskObjArray[i].id == taskId) {
-            taskObjArray[i] = task
-        }
-    }
-    await Course.update({taskObjs: taskObjArray}, {
-        where: {
-            id: courseId
-        }
-    })*/
-    
-    res.send(task, course.taskObjs)
+    res.send(task)
 })
 
 //endpoint get all courses and tasks associated with the student 

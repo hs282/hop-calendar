@@ -21,6 +21,10 @@ const Course = sequelize.define('Course', {
     primaryKey: true,
     autoIncrement: true
   },
+  /*numTasks: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },*/
   admins: {
     type: DataTypes.STRING,
     allowNull: false
