@@ -36,10 +36,15 @@ import Task from './database-models/Task.js';
 //     }
 //   })
 
-// app.get('/', async (req, res) => {
-//     console.log("get / endpoint")
+app.get('/', async (req, res) => {
+    const url = req.url;
+    if (url === '/') {
+        res.statusCode = 302;
+        res.setHeader('Location','/login');
+        return res.end();
+    }
     
-// })
+})
 
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
