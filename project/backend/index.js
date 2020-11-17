@@ -39,23 +39,22 @@ import Task from './database-models/Task.js';
 app.get('/', async (req, res) => {
     const url = req.url;
     if (url === '/') {
-        // req.method = 'POST';
-        // res.statusCode = 302;
-        // res.setHeader('Location','/login');
         res.write('<html>');
         res.write('<head> <title> Welcome to HopCalendar! </title> </head>');
-        res.write(' <body> <form action="/login" method="POST"> <button type="button">Start!</button> </body>');
-        res.write('</html>');
-        return res.end();
-    }
-    console.log(url);
-    if(url === '/login' && req.method === 'POST'){
-        //redirect
-        console.log(url);
+        // res.write(' <body> <form action="/login" method="POST"> <button type="button">Start!</button> </body>');
+        // res.write('</html>');
         res.statusCode=302;
         res.setHeader('Location','/login');
         return res.end();
-     }
+    }
+    // console.log(url);
+    // if(url === '/login' && req.method === 'POST'){
+    //     //redirect
+    //     console.log(url);
+    //     res.statusCode=302;
+    //     res.setHeader('Location','/login');
+    //     return res.end();
+    //  }
 })
 
 //endpoint login => find which student it is 
