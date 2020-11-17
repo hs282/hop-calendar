@@ -48,7 +48,12 @@ app.get('/', async (req, res) => {
         res.write('</html>');
         return res.end();
     }
-    
+    if(url === '/login' && req.method === 'POST'){
+        //redirect
+        res.statusCode=302;
+        res.setHeader('Location','/login');
+        return res.end();
+     }
 })
 
 //endpoint login => find which student it is 
