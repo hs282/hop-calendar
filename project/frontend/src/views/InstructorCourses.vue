@@ -1,87 +1,61 @@
 <template>
     <div>
-        <!--<h1 style="padding-left: 50px">My Courses</h1><br>
-        <ul style="padding-left:100px">
-            <h2>Object Oriented Software Engineering</h2><br>
-            <input type="checkbox"> 10/25: Midterm 1
-            <p style="padding-left: 17px">
-                Review chapters 1-10 of textbook!
-            </p>
-            <input type="checkbox"> 10/30: HW3 due
-            <p style="padding-left: 17px">
-                <a href="https://darvishdarab.github.io/cs421_f20/docs/hw/hw3/">Link to HW3</a>
-            </p>
-            <el-button style="background-color:#008CBA; color:white" @click="addtask">
-                Add task
-                </el-button>
-            <el-button style="background-color:#008CBA; color:white" @click="deletetask">
-                Delete task
-                </el-button>
-            <el-button style="background-color:#008CBA; color:white" @click="edittask">
-                Edit task
-                </el-button>
-            <br><br><br>
-
-            <h2>General Biology</h2><br>
-            <input type="checkbox"> 11/4: Genetics Quiz<br><br>
-            <el-button style="background-color:#008CBA; color:white" @click="addtask">
-                Add task
-                </el-button>
-            <el-button style="background-color:#008CBA; color:white" @click="deletetask">
-                Delete task
-                </el-button>
-            <el-button style="background-color:#008CBA; color:white" @click="edittask">
-                Edit task
-                </el-button>
-            
-            <el-button type="primary" @click="pushAddCourse" style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 20px;">Add Course</el-button>
-        </ul>-->
-        
         <h1 style="padding-left: 50px">My Courses</h1>
         <div class="div" v-for="course in courses" v-bind:key="course.id">
             <el-card style="height: 500px; width: 900px;">
                 {{ course.name }}
-                <div class="div" v-for="task in course.taskObjs" v-bind:key="task.id">
-                    <span> {{ task.deadline + ":" + task.type }}<br>{{ task.info }}</span>
-                    <el-button style="background-color:#008CBA; color:white" @click="document.getElementById('edit').style.display = ''">
+                <div class="div" v-for="task in tasks" v-bind:key="task.id">   
+                    <!-- if this task.id is in course.tasks, then display the following --> 
+                    {{ task.deadline + ":" + task.type }}<br>{{ task.info }}
+                    <el-button style="background-color:#008CBA; color:white" @click="displayEditForm(task.id)">
                         Edit task</el-button>
                     <el-button style="background-color:#008CBA; color:white" @click="deleteTask(course.id, task.id)">
                         Delete task
                     </el-button>
-                    <el-form id="edit" style="display:none" v-on:submit.prevent="editTask(course.id, task.id)"> 
-                        <el-form-item>
+                    <form :id="task.id" style="display:none"> 
+                        <div >
                             <label>Name: </label>
-                            <el-input :value="task.type" size="small" type="text" name="name" id="updatedName" required></el-input>
-                        </el-form-item>
-                        <el-form-item>
+                            <input size="small" id="updatedName" :value="task.type" required/>
+                        </div>
+                        <div>
                             <label>Deadline: </label>
-                            <el-input :value="task.deadline" size="small" type="text" name="name" id="updatedDeadline" required></el-input>
-                        </el-form-item>
-                        <el-form-item>
+                            <input size="small" id="updatedDeadline" :value="task.deadline" required/>
+                        </div>
+                        <div>
                             <label>Description: </label>
-                            <el-input :value="task.info" size="small" type="text" name="name" id="updatedDescription" required></el-input>
-                        </el-form-item>
-                        <el-input type="submit" value="Submit"></el-input>
-                    </el-form>
+                            <input size="small" id="updatedDescription" :value="task.info" required/>
+                        </div>
+                        <!--<input type="submit" value="Submit"/>-->
+                        <el-button id="submitEdit" @click="editTask(course.id , task.id)">
+                            Submit
+                        </el-button>
+                    </form>
+
+
+                    
                 </div>
-                <el-button style="background-color:#008CBA; color:white" @click="document.getElementById('add').style.display = ''">
+                
+                <el-button style="background-color:#008CBA; color:white" @click="displayAddForm(course.id)">
                     Add task
                 </el-button>
-                <el-form id="add" style="display:none" v-on:submit.prevent="addTask(course.id)">
-                    <el-form-item>
-                       <label>Name: </label>
-                       <el-input type="text" name="name" id="name" required></el-input>
-                    </el-form-item> 
-                    <el-form-item>
-                       <label>Deadline: </label>
-                       <el-input type="text" name="deadline" id="deadline" required></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                       <label>Description: </label>
-                       <el-input type="text" name="description" id="description" required></el-input>
-                    </el-form-item>
-                    <el-input type="submit" value="Submit"></el-input>
-                </el-form>
+
+                <form :id="course.id" style="display:none">
+                    <div>
+                        <label>Name: </label>
+                       <input id="name" required/>
+                    </div> 
+                    <div>
+                        <label>Deadline: </label>
+                       <input id="deadline" required/>
+                    </div>
+                    <div>
+                        <label>Description: </label>
+                       <input id="description" required/>
+                    </div>
+                    <el-button id="submitAdd" @click="addTask(course.id)">
+                        Submit
+                    </el-button>
+                </form>
             </el-card>
         </div>
 
@@ -100,6 +74,7 @@ export default {
     data() {
         return {
             courses: [],
+            tasks: []
         }
     },
     computed: {
@@ -123,16 +98,23 @@ export default {
         addCourse() {
             this.$router.push('AllCourses')
         },
+        async displayEditForm(taskID) {
+            document.getElementById(taskID).style.display = ""
+        },
+        async displayAddForm(courseID) {
+            document.getElementById(courseID).style.display = ""
+        },
         async addTask(courseID) {
             const res = await axios.post(
                 'http://localhost:3000/add_task', 
                 {
                     courseId: courseID,
-                    type: document.getElementById("name").value,
-                    deadline: document.getElementById("deadline").value,
-                    info: document.getElementById("description").value,
+                    type: document.getElementById("name"),
+                    deadline: document.getElementById("deadline"),
+                    info: document.getElementById("description")
                 }
             )
+            document.getElementById("add").style.display = "none"
             this.getCourses();
         },
         async deleteTask(courseID, taskID) {
@@ -152,20 +134,22 @@ export default {
                 {
                     courseId: courseID,
                     taskId: taskID,
-                    type: document.getElementById("updatedName").value,
-                    deadline: document.getElementById("updatedDeadline").value,
-                    info: document.getElementById("updatedDescription").value,
+                    type: document.getElementById("updatedName"),
+                    deadline: document.getElementById("updatedDeadline"),
+                    info: document.getElementById("updatedDescription")
                 }
             )
+            document.getElementById("edit").style.display = "none"
             this.getCourses();
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post('http://localhost:3000/getcourses', {
                 id: parseInt(user.id),
-                role: "instructor"
+                role: 'instructor'
             })
             this.courses = res.data.courseArray
+            this.tasks = res.data.taskArray
         },
     },
 }
