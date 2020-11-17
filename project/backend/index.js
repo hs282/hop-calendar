@@ -487,4 +487,6 @@ app.post('/get_tasks', async (req, res) => {
     console.log(taskArray)
     res.send({taskArray})
 })
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`app is running on port ${process.env.PORT}`)
+});
