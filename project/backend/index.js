@@ -39,9 +39,13 @@ import Task from './database-models/Task.js';
 app.get('/', async (req, res) => {
     const url = req.url;
     if (url === '/') {
-        req.method = 'POST';
-        res.statusCode = 302;
-        res.setHeader('Location','/login');
+        // req.method = 'POST';
+        // res.statusCode = 302;
+        // res.setHeader('Location','/login');
+        res.write('<html>');
+        res.write('<head> <title> Welcome to HopCalendar! </title> </head>');
+        res.write(' <body> <form action="/login" method="POST"> <button type="button">Start!</button> </body>');
+        res.write('</html>');
         return res.end();
     }
     
