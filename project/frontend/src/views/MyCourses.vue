@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 style="padding-left: 50px">Drop Courses</h1>
+        <h1 style="padding-left: 50px">My Courses</h1>
         <div class="div" v-for="course in courses" v-bind:key="course.id">
             <el-card class="card">
                 <div
