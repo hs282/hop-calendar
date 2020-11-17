@@ -28,14 +28,14 @@
                             >
                             <el-button
                                 type="primary"
-                                @click="dialogVisible = false; editTask(task.id)"
+                                @click="dialogVisible = false; editTask(prevTask.id)"
                                 >Confirm</el-button
                             >
                         </span>
                     </el-dialog>
                     <el-button
                         style="background-color:#008CBA; color:white"
-                        @click="dialogVisible = true"
+                        @click="dialogVisible = true; prevTask = task"
                     >
                         Edit task</el-button
                     >
@@ -62,14 +62,14 @@
                             >
                             <el-button
                                 type="primary"
-                                @click="dialogAddVisible = false; addTask(course.id)"
+                                @click="dialogAddVisible = false; addTask(prevCourse.id)"
                                 >Confirm</el-button
                             >
                         </span>
                     </el-dialog>
                 <el-button
                     style="background-color:#008CBA; color:white"
-                    @click="dialogAddVisible = true"
+                    @click="dialogAddVisible = true; prevCourse = course;"
                 >
                     Add task
                 </el-button>
