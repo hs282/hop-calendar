@@ -48,8 +48,10 @@ app.get('/', async (req, res) => {
         res.write('</html>');
         return res.end();
     }
+    console.log(url);
     if(url === '/login' && req.method === 'POST'){
         //redirect
+        console.log(url);
         res.statusCode=302;
         res.setHeader('Location','/login');
         return res.end();
