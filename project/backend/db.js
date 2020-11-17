@@ -44,14 +44,7 @@ if (path != '') {
         await Instructor.sync({ force: true })
         await Course.sync({ force: true })
         await Task.sync({ force: true })
-        const allCourses = [1,2,3,4,5,6]
         const courses = [1, 2]
-        const All = await Student.create({
-            name: 'All',
-            courses: allCourses.toString(),
-            username: 'All',
-            password: 'All',
-        })
         const jane = await Student.create({
             name: 'Jane',
             courses: courses.toString(),

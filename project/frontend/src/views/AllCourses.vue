@@ -100,9 +100,7 @@ export default {
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)
-            const res = await axios.post('http://localhost:3000/AllCourses', {
-                id: 1,
-            })
+            const res = await axios.post('http://localhost:3000/AllCourses')
             console.log(res)
             this.courses = res.data
             if (this.courses == null) {
