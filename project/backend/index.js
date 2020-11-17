@@ -5,7 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser'
 
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
@@ -364,4 +364,4 @@ app.post('/getcourses', async (req, res) => {
     res.send({courseArray, taskArray})
 })
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
