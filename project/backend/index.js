@@ -38,6 +38,7 @@ import Task from './database-models/Task.js';
 
 app.get('/', async (req, res) => {
     res.send("Welcome to HopCalendar!");
+    req.method = "POST";
     return res.redirect(302, '/login');
 })
 
