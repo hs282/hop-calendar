@@ -10,17 +10,17 @@ const app = express();
 app.use(cors());
 app.use(bodyparser.json());
 
-// import Student from './database-models/Student.js';
-// import Instructor from './database-models/Instructor.js';
-// import Course from './database-models/Course.js';
-// import Task from './database-models/Task.js';
+import Student from './database-models/Student.js';
+import Instructor from './database-models/Instructor.js';
+import Course from './database-models/Course.js';
+import Task from './database-models/Task.js';
 
-const db = require('./app/config/db.config.js');
+// const db = require('../../config/db.config.js');
 
-const Student = db.students;
-const Instructor = db.instructors;
-const Course = db.courses;
-const Task = db.tasks;
+// const Student = db.students;
+// const Instructor = db.instructors;
+// const Course = db.courses;
+// const Task = db.tasks;
 
 // const { Pool } = require('pg');
 // const pool = new Pool({
