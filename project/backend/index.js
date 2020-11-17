@@ -15,6 +15,13 @@ import Instructor from './database-models/Instructor.js';
 import Course from './database-models/Course.js';
 import Task from './database-models/Task.js';
 
+// const db = require('./app/config/db.config.js');
+
+// const Student = db.students;
+// const Instructor = db.instructors;
+// const Course = db.courses;
+// const Task = db.tasks;
+
 // const { Pool } = require('pg');
 // const pool = new Pool({
 //   connectionString: process.env.DATABASE_URL,
@@ -130,9 +137,6 @@ app.get('/', async (req, res) => {
     } catch (error) {
         console.error('Unable to connect to the database:', error)
     }
-    // req.method = "POST";
-    // res.method = "POST";
-    // return res.redirect(302, '/login');
 })
 
 //endpoint login => find which student it is 
