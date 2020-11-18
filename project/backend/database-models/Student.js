@@ -35,6 +35,10 @@ const Student = sequelize.define('Student', {
   courses: {
     type: DataTypes.STRING,
     allowNull: false
+  }, 
+  completedTasks: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }, {
     freezeTableName: true
