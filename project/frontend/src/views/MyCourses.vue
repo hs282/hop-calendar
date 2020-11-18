@@ -108,18 +108,29 @@ export default {
             }
             course.tasks = this.task_of_courseId;
 
-            let completedTaskArr = user.completedTasks.split(',')
-
             course.tasks.forEach(task => {
-                if (completedTaskArr[0] == "") {
+                /*if (user.completedTasks == "") {
                     task.completed = "Incomplete"
-                } else {
-                    for (let completedT in completedTaskArr) {
-                        if (task.id == parseInt(completedT)) {
-                            task.completed = "Complete"
+                }*/
+                task.completed = "Incomplete"
+                if (user.completedTasks != null) {
+                    let completedTaskArr = user.completedTasks.split(',')
+                    completedTaskArr.forEach(completedT => {
+                        if (parseInt(completedT) == task.id) {
+                            task.completed = "Completed"
                         }
-                    }
+                    })
                 }
+                /*for (let completedT in completedTaskArr) {
+                    if (task.id == parseInt(completedT)) {
+                        task.completed = "Complete"
+                    }
+                }*/
+                //task.completed = "Complete"
+                /*completedTaskArr.forEach(completedT => {
+
+                })*/
+                
             })
         },
         async getCourses() {
