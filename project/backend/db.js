@@ -50,6 +50,7 @@ if (path != '') {
             courses: courses.toString(),
             username: 'janedoe',
             password: 'hellokitty',
+            completedTasks: ''
         })
         const darvish = await Instructor.create({
             name: 'Darvish',
