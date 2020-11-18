@@ -57,6 +57,7 @@ app.get('/', async (req, res) => {
             courses: courses.toString(),
             username: 'janedoe',
             password: 'hellokitty',
+            completedTasks: ''
         })
         const darvish = await Instructor.create({
             name: 'Darvish',
@@ -207,7 +208,7 @@ app.post('/create_account', async (req, res) => {
         let newUser = null;
         newId = Math.max(await Student.max('id'), await Instructor.max('id')) + 1;
         if (role == 'Student' || role == 'student'){
-            newUser = await Student.create({ name: reqName, courses: "", username: reqUsername, password:reqPw, id: newId });
+            newUser = await Student.create({ name: reqName, courses: "", username: reqUsername, password:reqPw, completedTasks: "", id: newId });
         } else {
             newUser = await Instructor.create({ name: reqName, courses: "", username: reqUsername, password:reqPw, id: newId});   
         }
@@ -427,6 +428,56 @@ app.post('/edit_task', async (req, res) => {
     let task = await Task.findByPk(taskId)
     
     res.send(task)
+})
+
+app.post('/mark_complete', async (req, res) => {
+    const reqBody = req.body
+    const taskId = reqBody.taskId
+    const studentId = reqBody.studentId
+    const student = await Student.findByPk(studentId)
+    let complTasks = student.dataValues.completedTasks.split(',')
+    let newCompletedTasks = complTasks.push(`${taskId}`)
+
+    await Student.update({completedTasks: newCompletedTasks.toString()}, {
+        where: {
+            id: studentId
+        }
+    })
+
+    /*const completedTaskArray = []
+    for (let taskId of Student.dataValues.completedTasks) {
+        const completedTask = await Task.findByPk(parseInt(taskId))
+        completedTaskArray.push(completedTask)
+    }
+    res.send(completedTaskArray)*/
+})
+
+app.post('/mark_incomplete', async (req, res) => {
+    const reqBody = req.body
+    const taskId = reqBody.taskId
+    const studentId = reqBody.studentId
+
+    const student = await Student.findByPk(studentId)
+    let complTasks = student.dataValues.completedTasks.split(',')
+
+    for (let i = 0; i < complTasks.length; i++) {
+        if (complTasks[i] == taskId) {
+            complTasks.splice(i, 1)
+        }
+    }
+
+    await Student.update({completedTasks: complTasks.toString()}, {
+        where: {
+            id: studentId
+        }
+    })
+
+    /*const completedTaskArray = []
+    for (let taskId of Student.dataValues.completedTasks) {
+        const completedTask = await Task.findByPk(parseInt(taskId))
+        completedTaskArray.push(completedTask)
+    }
+    res.send(completedTaskArray)*/
 })
 
 //endpoint get all courses and tasks associated with the student 
