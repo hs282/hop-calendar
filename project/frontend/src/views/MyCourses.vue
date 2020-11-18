@@ -33,6 +33,22 @@
                         <span class="info">
                             {{ task.info }}
                         </span>
+                        <span class="completed">
+                            {{ task.completed }}
+                        </span>
+                        
+                        <el-button
+                            style="background-color:#008CBA; color:white"
+                            @click="markComplete(task.id, course.id, course)">
+                            Mark as Complete
+                        </el-button>
+
+                        <el-button
+                            style="background-color:#008CBA; color:white"
+                            @click="markIncomplete(task.id, course.id, course)">
+                            Mark as Incomplete
+                        </el-button>
+
                     </div>
                 </el-card>
             </div>
@@ -54,13 +70,35 @@ export default {
         ...mapGetters(['getUser']),
     },
     methods: {
+        async markComplete(taskID, courseID, course) {
+            const user = JSON.parse(this.getUser)
+            const res = await axios.post(
+                'http://localhost:3000/mark_complete',
+                {
+                    taskId: taskID,
+                    studentId: user.id
+                }
+            )
+            this.view(courseID, course)
+        },
+        async markIncomplete(taskID, courseID, course) {
+            const user = JSON.parse(this.getUser)
+            const res = await axios.post(
+                'http://localhost:3000/mark_incomplete',
+                {
+                    taskId: taskID,
+                    studentId: user.id
+                }
+            )
+            this.view(courseID, course)
+        },
         async view(courseId, course) {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
                 'http://localhost:3000/get_tasks',
                 {
                     id: user.id,
-                    role: user.role,
+                    role: 'student',
                     courseId: courseId,
                 }
             )
@@ -69,6 +107,20 @@ export default {
                 console.log("its null")
             }
             course.tasks = this.task_of_courseId;
+
+            let completedTaskArr = user.completedTasks.split(',')
+
+            course.tasks.forEach(task => {
+                if (completedTaskArr[0] == "") {
+                    task.completed = "Incomplete"
+                } else {
+                    for (let completedT in completedTaskArr) {
+                        if (task.id == parseInt(completedT)) {
+                            task.completed = "Complete"
+                        }
+                    }
+                }
+            })
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)
@@ -77,7 +129,7 @@ export default {
                 role: user.role,
             })
             this.courses = res.data.courseArray
-
+            
         },
        
     },
