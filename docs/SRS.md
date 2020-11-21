@@ -58,17 +58,17 @@ This application will only be for Web (browser) based users, although it will be
 ## Wireframes
 ![Log-in Screen](https://www.dropbox.com/s/x50i39zafliot4v/Screen%20Shot%202020-11-20%20at%209.24.01%20PM.png?dl=0&raw=1)
 
-![CreateAccount] (https://www.dropbox.com/s/06pycua01h63jxn/Screen%20Shot%202020-11-20%20at%209.25.54%20PM.png?dl=0&raw=1)
+![CreateAccount](https://www.dropbox.com/s/06pycua01h63jxn/Screen%20Shot%202020-11-20%20at%209.25.54%20PM.png?dl=0&raw=1)
 
-![CalendarView] (https://www.dropbox.com/s/x4o58jr1jeywwhw/Screen%20Shot%202020-11-20%20at%209.30.39%20PM.png?dl=0&raw=1)
+![CalendarView](https://www.dropbox.com/s/x4o58jr1jeywwhw/Screen%20Shot%202020-11-20%20at%209.30.39%20PM.png?dl=0&raw=1)
 
-![AddCourse] (https://www.dropbox.com/s/hc171kx5xxk2eo8/Screen%20Shot%202020-11-20%20at%2010.06.20%20PM.png?dl=0&raw=1)
+![AddCourse](https://www.dropbox.com/s/hc171kx5xxk2eo8/Screen%20Shot%202020-11-20%20at%2010.06.20%20PM.png?dl=0&raw=1)
 
-![DropCourse] (https://www.dropbox.com/s/hqx1f8767dgg5sq/Screen%20Shot%202020-11-20%20at%209.59.32%20PM.png?dl=0&raw=1)
+![DropCourse](https://www.dropbox.com/s/hqx1f8767dgg5sq/Screen%20Shot%202020-11-20%20at%209.59.32%20PM.png?dl=0&raw=1)
 
-![MyCoursesPage] (https://www.dropbox.com/s/rk8jplfk304qhkg/Screen%20Shot%202020-11-20%20at%209.15.47%20PM.png?dl=0&raw=1)
+![MyCoursesPage](https://www.dropbox.com/s/rk8jplfk304qhkg/Screen%20Shot%202020-11-20%20at%209.15.47%20PM.png?dl=0&raw=1)
 
-![InstructorPage] (https://www.dropbox.com/s/fqx2ackck1ldwej/Screen%20Shot%202020-11-20%20at%209.52.44%20PM.png?dl=0&raw=1)
+![InstructorPage](https://www.dropbox.com/s/fqx2ackck1ldwej/Screen%20Shot%202020-11-20%20at%209.52.44%20PM.png?dl=0&raw=1)
 
 
 
