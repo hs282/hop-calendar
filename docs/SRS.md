@@ -61,6 +61,7 @@ This application will only be for Web (browser) based users, although it will be
 ![CreateAccount](https://www.dropbox.com/s/06pycua01h63jxn/Screen%20Shot%202020-11-20%20at%209.25.54%20PM.png?dl=0&raw=1)
 
 ![CalendarView](https://www.dropbox.com/s/x4o58jr1jeywwhw/Screen%20Shot%202020-11-20%20at%209.30.39%20PM.png?dl=0&raw=1)
+(Calendar feature only exists for students)
 
 ![AddCourse](https://www.dropbox.com/s/hc171kx5xxk2eo8/Screen%20Shot%202020-11-20%20at%2010.06.20%20PM.png?dl=0&raw=1)
 
