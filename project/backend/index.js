@@ -375,53 +375,64 @@ app.post('/edit_task', async (req, res) => {
 })
 
 app.post('/mark_complete', async (req, res) => {
-    const reqBody = req.body
-    const taskId = reqBody.taskId
-    const studentId = reqBody.studentId
-    const student = await Student.findByPk(studentId)
-    let complTasks = student.dataValues.completedTasks.split(',')
-    let newCompletedTasks = complTasks.push(`${taskId}`)
+    try {
+        const reqBody = req.body
+        const taskId = reqBody.taskId
+        const studentId = reqBody.studentId
+        const student = await Student.findByPk(studentId)
+        let complTasks = student.dataValues.completedTasks.split(',')
+        let newCompletedTasks = complTasks.push(`${taskId}`)
 
-    await Student.update({completedTasks: newCompletedTasks.toString()}, {
-        where: {
-            id: studentId
+        await Student.update({completedTasks: newCompletedTasks.toString()}, {
+            where: {
+                id: studentId
+            }
+        })
+
+        /*const completedTaskArray = []
+        for (let taskId of Student.dataValues.completedTasks) {
+            const completedTask = await Task.findByPk(parseInt(taskId))
+            completedTaskArray.push(completedTask)
         }
-    })
-
-    /*const completedTaskArray = []
-    for (let taskId of Student.dataValues.completedTasks) {
-        const completedTask = await Task.findByPk(parseInt(taskId))
-        completedTaskArray.push(completedTask)
+        res.send(completedTaskArray)*/
     }
-    res.send(completedTaskArray)*/
+    catch (error) {
+        res.sendStatus(500)
+    }
+
 })
 
 app.post('/mark_incomplete', async (req, res) => {
-    const reqBody = req.body
-    const taskId = reqBody.taskId
-    const studentId = reqBody.studentId
+    try {
+        const reqBody = req.body
+        const taskId = reqBody.taskId
+        const studentId = reqBody.studentId
 
-    const student = await Student.findByPk(studentId)
-    let complTasks = student.dataValues.completedTasks.split(',')
+        const student = await Student.findByPk(studentId)
+        let complTasks = student.dataValues.completedTasks.split(',')
 
-    for (let i = 0; i < complTasks.length; i++) {
-        if (complTasks[i] == taskId) {
-            complTasks.splice(i, 1)
+        for (let i = 0; i < complTasks.length; i++) {
+            if (complTasks[i] == taskId) {
+                complTasks.splice(i, 1)
+            }
         }
-    }
 
-    await Student.update({completedTasks: complTasks.toString()}, {
-        where: {
-            id: studentId
+        await Student.update({completedTasks: complTasks.toString()}, {
+            where: {
+                id: studentId
+            }
+        })
+
+        /*const completedTaskArray = []
+        for (let taskId of Student.dataValues.completedTasks) {
+            const completedTask = await Task.findByPk(parseInt(taskId))
+            completedTaskArray.push(completedTask)
         }
-    })
-
-    /*const completedTaskArray = []
-    for (let taskId of Student.dataValues.completedTasks) {
-        const completedTask = await Task.findByPk(parseInt(taskId))
-        completedTaskArray.push(completedTask)
+        res.send(completedTaskArray)*/
     }
-    res.send(completedTaskArray)*/
+    catch (error) {
+        res.sendStatus(500)
+    }
 })
 
 //endpoint get all courses and tasks associated with the student 
