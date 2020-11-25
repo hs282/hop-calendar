@@ -11,20 +11,23 @@ Current students, teaching staff & faculty member @ Hopkins
 Our app will be an assignment/deadline aggregator that helps students stay on top of their deadlines during online learning. Also, it will help teachers maintain student engagement through remote learning. Our deadline aggregator will be in the form of a monthly view calendar that has indicators for any upcoming deadlines and assignments. The indicators will also have distinguishing features so that the client will know which class it is for. This way, the client won't need to remember to manually input their assignments and deadlines from the syllabus and from various sources of annoucements. If instructors fully commit to using our app as their primary outlet to students, our app will be successful.
 ## Functional Requirements
 ### Must have
-- Student can log in to the app
-- Instructor can log in to the app
-- Student can view all upcoming assignments in calendar view
-- Student can distinguish upcoming assignments by class
-- Student can expand an upcoming assignment object for more details
-- Student can enroll in (subscribe to) an Instructor's class
-- Student can delete (drop) a course
-- Instructor can perform CRUD operations on their feed for both courses and tasks
+- Student can create an account (COMPLETED)
+- Instructor can create an account (COMPLETED)
+- Student can log in to the app (COMPLETED)
+- Instructor can log in to the app (COMPLETED)
+- Student can view all upcoming assignments in calendar view (COMPLETED)
+- Student can distinguish upcoming assignments by class (COMPLETED)
+- Student can expand an upcoming assignment object for more details (COMPLETED)
+- Student can enroll in (subscribe to) an Instructor's class (COMPLETED)
+- Student can delete (drop) a course (COMPLETED)
+- Instructor can perform CRUD operations on their feed for both courses and task (COMPLETED)
 
 
 ### Nice to have
 - Q&A board for each upcoming assignment object
 - Search bar with filters where students can search for courses to add 
-- Students can choose from monthly, weekly, and daily calendar views
+- Students can choose from monthly, weekly, and daily calendar views (COMPLETED)
+- Student can view tasks by class in list view on the My Courses page (COMPLETED)
 - Students can mark tasks as being complete
 - External links to Gradescope, Piazza, instructors' personal course websites
 - Connections to SIS, Blackboard
@@ -48,11 +51,27 @@ This application will only be for Web (browser) based users, although it will be
 - AS A: first-year Hopkins student using the app
     - I WANT: a calendar that tells me which assignments/quizzes/exams are coming up
     - SO THAT: I can adjust better to the college academic setting and online learning
-
+    (COMPLETED)
 
 
 
 ## Wireframes
-![Log-in Screen](https://www.dropbox.com/s/7gxjoj9rd84fhgc/Screen%20Shot%202020-10-27%20at%202.00.12%20PM.png?dl=0&raw=1)
+![Log-in Screen](https://www.dropbox.com/s/x50i39zafliot4v/Screen%20Shot%202020-11-20%20at%209.24.01%20PM.png?dl=0&raw=1)
 
-![Student_and_Instructor_View](https://www.dropbox.com/s/dkr4j4xyo20m6ne/Screen%20Shot%202020-10-27%20at%202.46.01%20PM.png?dl=0&raw=1)
+![CreateAccount](https://www.dropbox.com/s/06pycua01h63jxn/Screen%20Shot%202020-11-20%20at%209.25.54%20PM.png?dl=0&raw=1)
+
+![CalendarView](https://www.dropbox.com/s/x4o58jr1jeywwhw/Screen%20Shot%202020-11-20%20at%209.30.39%20PM.png?dl=0&raw=1)
+(Calendar feature only exists for students)
+
+![AddCourse](https://www.dropbox.com/s/hc171kx5xxk2eo8/Screen%20Shot%202020-11-20%20at%2010.06.20%20PM.png?dl=0&raw=1)
+
+![DropCourse](https://www.dropbox.com/s/hqx1f8767dgg5sq/Screen%20Shot%202020-11-20%20at%209.59.32%20PM.png?dl=0&raw=1)
+
+![MyCoursesPage](https://www.dropbox.com/s/rk8jplfk304qhkg/Screen%20Shot%202020-11-20%20at%209.15.47%20PM.png?dl=0&raw=1)
+
+![InstructorPage](https://www.dropbox.com/s/fqx2ackck1ldwej/Screen%20Shot%202020-11-20%20at%209.52.44%20PM.png?dl=0&raw=1)
+
+
+
+
+

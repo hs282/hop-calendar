@@ -33,6 +33,22 @@
                         <span class="info">
                             {{ task.info }}
                         </span>
+                        <span class="completed">
+                            {{ task.completed }}
+                        </span>
+                        
+                        <el-button
+                            style="background-color:#008CBA; color:white"
+                            @click="markComplete(task.id, course.id, course)">
+                            Mark as Complete
+                        </el-button>
+
+                        <el-button
+                            style="background-color:#008CBA; color:white"
+                            @click="markIncomplete(task.id, course.id, course)">
+                            Mark as Incomplete
+                        </el-button>
+
                     </div>
                 </el-card>
             </div>
@@ -54,13 +70,35 @@ export default {
         ...mapGetters(['getUser']),
     },
     methods: {
+        async markComplete(taskID, courseID, course) {
+            const user = JSON.parse(this.getUser)
+            const res = await axios.post(
+                'http://localhost:3000/mark_complete',
+                {
+                    taskId: taskID,
+                    studentId: user.id
+                }
+            )
+            this.view(courseID, course)
+        },
+        async markIncomplete(taskID, courseID, course) {
+            const user = JSON.parse(this.getUser)
+            const res = await axios.post(
+                'http://localhost:3000/mark_incomplete',
+                {
+                    taskId: taskID,
+                    studentId: user.id
+                }
+            )
+            this.view(courseID, course)
+        },
         async view(courseId, course) {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
                 'https://immense-garden-94246.herokuapp.com/get_tasks',
                 {
                     id: user.id,
-                    role: user.role,
+                    role: 'student',
                     courseId: courseId,
                 }
             )
