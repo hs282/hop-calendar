@@ -32,7 +32,7 @@ home.vue
             style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 20px;"
         >
             <el-button type="primary" @click="pushMyCourse"
-                >My Course</el-button
+                >My Courses</el-button
             >
             <el-button type="primary" @click="pushAddCourse"
                 >Add Course</el-button
