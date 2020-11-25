@@ -1,12 +1,19 @@
-
 <template>
-    <div style="height : 100vh; display:flex; justify-content:center; align-items:center;">
-        <el-card style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;">
+    <div
+        style="height : 100vh; display:flex; justify-content:center; align-items:center;"
+    >
+        <el-card
+            style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;"
+        >
             <h1>Create Account for Hop Calendar</h1>
             <el-form>
                 <el-form-item>
-                    <el-radio v-model="role" label="student" id="student">Student</el-radio>
-                    <el-radio v-model="role" label="instructor" id="instructor">Instructor</el-radio>
+                    <el-radio v-model="role" label="student" id="student"
+                        >Student</el-radio
+                    >
+                    <el-radio v-model="role" label="instructor" id="instructor"
+                        >Instructor</el-radio
+                    >
                 </el-form-item>
                 <el-form-item label="JHED ID">
                     <el-input v-model="email" id="input_email"></el-input>
@@ -26,45 +33,43 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import { mapActions } from 'vuex'
-    export default {
-        data() {
-            return {
-                role: '',
-                email: '',
-                password: '',
-                name: ''
-            }
-        },
-        methods: {
-            ...mapActions([
-                'setUser'
-            ]),
-            async create_account() {
-                try {
-                    const response = await axios.post('http://localhost:3000/create_account',
+import axios from 'axios'
+import { mapActions } from 'vuex'
+export default {
+    data() {
+        return {
+            role: '',
+            email: '',
+            password: '',
+            name: '',
+        }
+    },
+    methods: {
+        ...mapActions(['setUser']),
+        async create_account() {
+            try {
+                const response = await axios.post(
+                    'https://immense-garden-94246.herokuapp.com/create_account',
                     {
                         username: this.email,
                         password: this.password,
                         role: this.role,
-                        name: this.name
-                    })
-                    this.$router.push('/');
-                } catch (err) {
-                    this.$message({
-                        message: 'Existing username',
-                        type: 'warning'
-                    });
-                }
-            },
-            pushLogin() {
+                        name: this.name,
+                    }
+                )
                 this.$router.push('/')
-            },
+            } catch (err) {
+                this.$message({
+                    message: 'Existing username',
+                    type: 'warning',
+                })
+            }
         },
-    }
+        pushLogin() {
+            this.$router.push('/')
+        },
+    },
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

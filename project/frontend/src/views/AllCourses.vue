@@ -80,7 +80,7 @@ export default {
         async add(courseId) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
-                'http://localhost:3000/add_course',
+                'https://immense-garden-94246.herokuapp.com/add_course',
                 {
                     id: user.id,
                     role: user.role,
@@ -88,10 +88,10 @@ export default {
                     courseId: courseId,
                 }
             )
-            if (response.data.success == "0") {
-                console.log("wrong course id or already exists in your courses")
+            if (response.data.success == '0') {
+                console.log('wrong course id or already exists in your courses')
             } else {
-                if (user.role == "student" || user.role == "Student") {
+                if (user.role == 'student' || user.role == 'Student') {
                     this.$router.push('/home')
                 } else {
                     this.$router.push('/InstructorCourses')
@@ -100,11 +100,13 @@ export default {
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)
-            const res = await axios.post('http://localhost:3000/AllCourses')
+            const res = await axios.post(
+                'https://immense-garden-94246.herokuapp.com/AllCourses'
+            )
             console.log(res)
             this.courses = res.data
             if (this.courses == null) {
-                console.log("hello")
+                console.log('hello')
             }
             console.log(this.courses)
         },
@@ -113,22 +115,22 @@ export default {
         const user = this.getUser
         console.log('hello')
         //this.courses = res.data.courseArray
-        this.getCourses();
+        this.getCourses()
         //console.log(this.courses)
     },
 }
 
 //original
-    // async mounted() {
-    //         const user = this.getUser
-    //         // const res = await axios.post('http://localhost:3000/add_course', {
-    //         //     username: user.username,
-    //         //     role:
-    //         //     courseId: 
-    //         // })
-    //         this.courses = res.data.courseArray
-    //         console.log(this.courses)
-    // }
+// async mounted() {
+//         const user = this.getUser
+//         // const res = await axios.post('https://immense-garden-94246.herokuapp.com/add_course', {
+//         //     username: user.username,
+//         //     role:
+//         //     courseId:
+//         // })
+//         this.courses = res.data.courseArray
+//         console.log(this.courses)
+// }
 </script>
 
 <style scoped>

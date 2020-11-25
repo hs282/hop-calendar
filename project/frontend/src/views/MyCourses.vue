@@ -57,7 +57,7 @@ export default {
         async view(courseId, course) {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
-                'http://localhost:3000/get_tasks',
+                'https://immense-garden-94246.herokuapp.com/get_tasks',
                 {
                     id: user.id,
                     role: user.role,
@@ -66,26 +66,27 @@ export default {
             )
             this.task_of_courseId = res.data.taskArray
             if (this.task_of_courseId == null) {
-                console.log("its null")
+                console.log('its null')
             }
-            course.tasks = this.task_of_courseId;
+            course.tasks = this.task_of_courseId
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)
-            const res = await axios.post('http://localhost:3000/getcourses', {
-                id: parseInt(user.id),
-                role: user.role,
-            })
+            const res = await axios.post(
+                'https://immense-garden-94246.herokuapp.com/getcourses',
+                {
+                    id: parseInt(user.id),
+                    role: user.role,
+                }
+            )
             this.courses = res.data.courseArray
-
         },
-       
     },
     async mounted() {
         console.log('hello')
         console.log(JSON.parse(this.getUser).id)
         console.log(JSON.parse(this.getUser).role)
-        this.getCourses();
+        this.getCourses()
     },
 }
 </script>
@@ -100,6 +101,6 @@ export default {
     height: 100px;
     width: 1000px;
     margin: 20px;
-    color:crimson;
-} 
+    color: crimson;
+}
 </style>

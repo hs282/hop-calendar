@@ -69,26 +69,29 @@ export default {
         async drop(courseId) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
-                'http://localhost:3000/delete_course',
+                'https://immense-garden-94246.herokuapp.com/delete_course',
                 {
                     id: user.id,
                     role: user.role,
                     courseId: courseId,
                 }
             )
-            this.getCourses();
-            if (user.role == "student" || user.role == "Student") {
-                    this.$router.push('/home')
+            this.getCourses()
+            if (user.role == 'student' || user.role == 'Student') {
+                this.$router.push('/home')
             } else {
                 this.$router.push('/InstructorCourses')
             }
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)
-            const res = await axios.post('http://localhost:3000/getcourses', {
-                id: parseInt(user.id),
-                role: user.role,
-            })
+            const res = await axios.post(
+                'https://immense-garden-94246.herokuapp.com/getcourses',
+                {
+                    id: parseInt(user.id),
+                    role: user.role,
+                }
+            )
             this.courses = res.data.courseArray
         },
     },
@@ -96,7 +99,7 @@ export default {
         console.log('hello')
         console.log(JSON.parse(this.getUser).id)
         console.log(JSON.parse(this.getUser).role)
-        this.getCourses();
+        this.getCourses()
     },
 }
 </script>

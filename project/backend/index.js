@@ -1,11 +1,9 @@
-//import models from './db.js';
-
 "use strict";
 import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser'
 import Sequelize from 'sequelize'
-var PORT = process.env.PORT || 3000;
+import { user, host, password, port, database } from './credentials.js'
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
@@ -15,39 +13,14 @@ import Instructor from './database-models/Instructor.js';
 import Course from './database-models/Course.js';
 import Task from './database-models/Task.js';
 
-// const db = require('../../config/db.config.js');
-
-// const Student = db.students;
-// const Instructor = db.instructors;
-// const Course = db.courses;
-// const Task = db.tasks;
-
-// const { Pool } = require('pg');
-// const pool = new Pool({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
-// });
-
-// app.get('/db', async (req, res) => {
-//     try {
-//       const client = await pool.connect();
-//       const result = await client.query('SELECT * FROM test_table');
-//       const results = { 'results': (result) ? result.rows : null};
-//       res.render('pages/db', results );
-//       client.release();
-//     } catch (err) {
-//       console.error(err);
-//       res.send("Error " + err);
-//     }
-//   })
 let sequelize = null
 if (process.env.DATABASE_URL) {
+    console.log("running on cloud")
     sequelize = new Sequelize(
         'postgres://ujnnamqnliqscn:edc2dd3fe40cca2b58aae0be177189bd5a9bee5e3d1b6024f17c5d8ff98abc74@ec2-54-84-98-18.compute-1.amazonaws.com:5432/dfh5kacbr40b52'
     )
 } else {
+    console.log('running on local')
     sequelize = new Sequelize(database, user, password, {
         host,
         port,
@@ -56,94 +29,6 @@ if (process.env.DATABASE_URL) {
 }
 app.get('/', async (req, res) => {
     try {
-        await sequelize.authenticate()
-        await Student.sync({ force: true })
-        await Instructor.sync({ force: true })
-        await Course.sync({ force: true })
-        await Task.sync({ force: true })
-        const courses = [1, 2]
-        const jane = await Student.create({
-            name: 'Jane',
-            courses: courses.toString(),
-            username: 'janedoe',
-            password: 'hellokitty',
-        })
-        const darvish = await Instructor.create({
-            name: 'Darvish',
-            courses: courses.toString(),
-            username: 'oose',
-            password: 'computer',
-        })
-        const admins = [1]
-        const tasks1 = [1, 2]
-        const tasks2 = [3, 4]
-        const tasks3 = [5, 6]
-        const oose = await Course.create({
-            //numTasks: 2,
-            admins: admins.toString(),
-            tasks: tasks1.toString(),
-            name: 'oose',
-        })
-        const algo = await Course.create({
-            //numTasks: 2,
-            admins: admins.toString(),
-            tasks: tasks2.toString(),
-            name: 'algo',
-        })
-        const csf = await Course.create({
-            //numTasks: 2,
-            admins: admins.toString(),
-            tasks: tasks3.toString(),
-            name: 'csf',
-        })
-        const automata = await Course.create({
-            //numTasks: 2,
-            admins: admins.toString(),
-            tasks: tasks1.toString(),
-            name: 'automata',
-        })
-        const statistics = await Course.create({
-            //numTasks: 2,
-            admins: admins.toString(),
-            tasks: tasks2.toString(),
-            name: 'statistics',
-        })
-        const uima = await Course.create({
-            //numTasks: 2,
-            admins: admins.toString(),
-            tasks: tasks2.toString(),
-            name: 'uima',
-        })
-        const hw1 = await Task.create({
-            type: "Homework",
-            deadline: "11/9/2020",
-            info: "Submit on blackboard."
-        })
-        const hw2 = await Task.create({
-            type: 'Homework',
-            deadline: '11/12/2020',
-            info: 'Submit on blackboard.',
-        })
-        const hw3 = await Task.create({
-            type: 'Homework',
-            deadline: '11/21/2020',
-            info: 'Submit on blackboard.',
-        })
-        const hw4 = await Task.create({
-            type: 'Homework',
-            deadline: '11/19/2020',
-            info: 'Submit on blackboard.',
-        })
-        const hw5 = await Task.create({
-            type: 'Homework',
-            deadline: '11/29/2020',
-            info: 'Submit on blackboard.',
-        })
-        const hw6 = await Task.create({
-            type: 'Homework',
-            deadline: '11/21/2020',
-            info: 'Submit on blackboard.',
-        })
         res.send('Welcome to HopCalendar!')
     } catch (error) {
         res.send('failed')
@@ -155,7 +40,6 @@ app.post('/login', async (req, res) => {
     //get username, password and rolefrom req object role
     try {
         var userInfo = req.body
-        console.log(userInfo)
         var name = userInfo.username
         var pw = userInfo.password
         var role = userInfo.role
@@ -558,5 +442,5 @@ app.post('/get_tasks', async (req, res) => {
     
 })
 app.listen(process.env.PORT || 3000, () => {
-    console.log(`app is running on port ${process.env.PORT}`)
+    console.log(`app is running on port ${process.env.PORT || 3000}`)
 });

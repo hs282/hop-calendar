@@ -15,12 +15,25 @@
                         title="Edit Task"
                         :visible.sync="dialogVisible"
                         width="30%"
-                        @open="newType = task.type; newDeadline = task.deadline; newInfo = task.info"
+                        @open="
+                            newType = task.type
+                            newDeadline = task.deadline
+                            newInfo = task.info
+                        "
                     >
                         <el-form>
-                            <el-input placeholder="Type" v-model="newType"></el-input>
-                            <el-input placeholder="Deadline" v-model="newDeadline"></el-input>
-                            <el-input placeholder="Info" v-model="newInfo"></el-input>
+                            <el-input
+                                placeholder="Type"
+                                v-model="newType"
+                            ></el-input>
+                            <el-input
+                                placeholder="Deadline"
+                                v-model="newDeadline"
+                            ></el-input>
+                            <el-input
+                                placeholder="Info"
+                                v-model="newInfo"
+                            ></el-input>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="dialogVisible = false"
@@ -28,14 +41,20 @@
                             >
                             <el-button
                                 type="primary"
-                                @click="dialogVisible = false; editTask(prevTask.id)"
+                                @click="
+                                    dialogVisible = false
+                                    editTask(prevTask.id)
+                                "
                                 >Confirm</el-button
                             >
                         </span>
                     </el-dialog>
                     <el-button
                         style="background-color:#008CBA; color:white"
-                        @click="dialogVisible = true; prevTask = task"
+                        @click="
+                            dialogVisible = true
+                            prevTask = task
+                        "
                     >
                         Edit task</el-button
                     >
@@ -47,29 +66,44 @@
                     </el-button>
                 </div>
                 <el-dialog
-                        title="Add Task"
-                        :visible.sync="dialogAddVisible"
-                        width="30%"
-                    >
-                        <el-form>
-                            <el-input placeholder="Type" v-model="newType"></el-input>
-                            <el-input placeholder="Deadline" v-model="newDeadline"></el-input>
-                            <el-input placeholder="Info" v-model="newInfo"></el-input>
-                        </el-form>
-                        <span slot="footer" class="dialog-footer">
-                            <el-button @click="dialogAddVisible = false"
-                                >Cancel</el-button
-                            >
-                            <el-button
-                                type="primary"
-                                @click="dialogAddVisible = false; addTask(prevCourse.id)"
-                                >Confirm</el-button
-                            >
-                        </span>
-                    </el-dialog>
+                    title="Add Task"
+                    :visible.sync="dialogAddVisible"
+                    width="30%"
+                >
+                    <el-form>
+                        <el-input
+                            placeholder="Type"
+                            v-model="newType"
+                        ></el-input>
+                        <el-input
+                            placeholder="Deadline"
+                            v-model="newDeadline"
+                        ></el-input>
+                        <el-input
+                            placeholder="Info"
+                            v-model="newInfo"
+                        ></el-input>
+                    </el-form>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button @click="dialogAddVisible = false"
+                            >Cancel</el-button
+                        >
+                        <el-button
+                            type="primary"
+                            @click="
+                                dialogAddVisible = false
+                                addTask(prevCourse.id)
+                            "
+                            >Confirm</el-button
+                        >
+                    </span>
+                </el-dialog>
                 <el-button
                     style="background-color:#008CBA; color:white"
-                    @click="dialogAddVisible = true; prevCourse = course;"
+                    @click="
+                        dialogAddVisible = true
+                        prevCourse = course
+                    "
                 >
                     Add task
                 </el-button>
@@ -119,9 +153,9 @@ export default {
             tasks: [],
             dialogVisible: false,
             dialogAddVisible: false,
-            newType: "",
-            newDeadline: "",
-            newInfo: ""
+            newType: '',
+            newDeadline: '',
+            newInfo: '',
         }
     },
     computed: {
@@ -129,7 +163,7 @@ export default {
     },
     async mounted() {
         /*const user = this.getUser
-        const res = await axios.post('http://localhost:3000/getcourses', {
+        const res = await axios.post('https://immense-garden-94246.herokuapp.com/getcourses', {
             role: "instructor",
             id: user.id,
         })
@@ -152,19 +186,22 @@ export default {
             document.getElementById(courseID).style.display = ''
         },
         async addTask(courseID) {
-            const res = await axios.post('http://localhost:3000/add_task', {
-                courseId: courseID,
-                type: this.newType,
-                deadline: this.newDeadline,
-                info: this.newInfo,
-            })
+            const res = await axios.post(
+                'https://immense-garden-94246.herokuapp.com/add_task',
+                {
+                    courseId: courseID,
+                    type: this.newType,
+                    deadline: this.newDeadline,
+                    info: this.newInfo,
+                }
+            )
             //document.getElementById('add').style.display = 'none'
             this.getCourses()
         },
         async deleteTask(courseID, taskID) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
-                'http://localhost:3000/delete_task',
+                'https://immense-garden-94246.herokuapp.com/delete_task',
                 {
                     courseId: courseID,
                     taskId: taskID,
@@ -173,7 +210,7 @@ export default {
             this.getCourses()
         },
         async editTask(taskID) {
-            const res = await axios.post('http://localhost:3000/edit_task', {
+            const res = await axios.post('https://immense-garden-94246.herokuapp.com/edit_task', {
                 taskId: taskID,
                 type: this.newType,
                 deadline: this.newDeadline,
@@ -184,7 +221,7 @@ export default {
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)
-            const res = await axios.post('http://localhost:3000/getcourses', {
+            const res = await axios.post('https://immense-garden-94246.herokuapp.com/getcourses', {
                 id: parseInt(user.id),
                 role: 'instructor',
             })

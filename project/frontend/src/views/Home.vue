@@ -24,12 +24,8 @@ home.vue
                 <v-icon>mdi-chevron-right</v-icon>
             </v-btn>
         </div>
-        <el-dialog
-            :title="dialogName"
-            :visible.sync="showDialog"
-            width="30%"
-        >
-         {{ dialogInfo }}
+        <el-dialog :title="dialogName" :visible.sync="showDialog" width="30%">
+            {{ dialogInfo }}
         </el-dialog>
         <div
             class="buttons"
@@ -83,8 +79,8 @@ export default {
         selectedElement: null,
         selectedOpen: false,
         showDialog: false,
-        dialogName: "",
-        dialogInfo: "",
+        dialogName: '',
+        dialogInfo: '',
     }),
     computed: {
         ...mapGetters(['getUser', 'getMode']),
@@ -136,12 +132,12 @@ export default {
             return Math.floor((b - a + 1) * Math.random()) + a
         },
         showEvent({ nativeEvent, event }) {
-            this.showDialog = true;
+            this.showDialog = true
             console.log(event)
             this.dialogName = event.name
             for (let course of this.courses) {
                 for (let task of course.taskObjs) {
-                    if (task.name = event.name) {
+                    if ((task.name = event.name)) {
                         this.dialogInfo = task.info
                     }
                 }
@@ -150,10 +146,13 @@ export default {
     },
     async mounted() {
         const user = JSON.parse(this.getUser)
-        const res = await axios.post('http://localhost:3000/getcourses', {
-            id: parseInt(user.id),
-            role: 'student',
-        })
+        const res = await axios.post(
+            'https://immense-garden-94246.herokuapp.com/getcourses',
+            {
+                id: parseInt(user.id),
+                role: 'student',
+            }
+        )
         this.courses = res.data.courseArray
         this.tasks = res.data.taskArray
         /*const events = []
