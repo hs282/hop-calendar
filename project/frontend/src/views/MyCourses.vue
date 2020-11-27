@@ -60,6 +60,7 @@ export default {
         return {
             courses: [],
             tasks: [],
+            completedT: [],
             selected: 0,
         }
     },
@@ -68,14 +69,12 @@ export default {
     },
     methods: {
         checkIfCompleted(taskID) {
-            // if taskID is in user's completed task array, return true. otherwise, return false.
-            const user = JSON.parse(this.getUser)
-            if (user.completedTasks) {
-                if (user.completedTasks.split(',').includes(taskID)) {
-                    return true;
+            for (let i = 0; i < this.completedT.length; i++) {
+                if (this.completedT[i] == taskID) {
+                    return true
                 }
             }
-            return false;
+            return false
         },
         async toggle(event, taskID, courseID, course) {
 
@@ -120,6 +119,16 @@ export default {
                 document.getElementById(t.id).style.display = ""
             }
         },
+        async getCompletedTasks() {
+            const user = JSON.parse(this.getUser)
+            const res = await axios.post(
+                'http://localhost:3000/getcompletedtasks',
+                {
+                    id: parseInt(user.id),
+                }
+            )
+            this.completedT = res.data.array
+        },
         async getCourses() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
@@ -153,6 +162,7 @@ export default {
         console.log(JSON.parse(this.getUser).id)
         console.log(JSON.parse(this.getUser).role)
         this.getCourses()
+        this.getCompletedTasks()
     },
 }
 </script>
