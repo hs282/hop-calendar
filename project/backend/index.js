@@ -381,14 +381,18 @@ app.post('/mark_complete', async (req, res) => {
         const studentId = reqBody.studentId
         const student = await Student.findByPk(studentId)
         let complTasks = student.dataValues.completedTasks.split(',')
-        let newCompletedTasks = complTasks.push(`${taskId}`)
-
-        await Student.update({completedTasks: newCompletedTasks.toString()}, {
+        if (complTasks[0] == '') {
+            complTasks[0] = `${taskId}`
+        } else {
+            complTasks.push(`${taskId}`)
+        }
+    
+        await Student.update({completedTasks: complTasks.toString()}, {
             where: {
-                id: studentId
-            }
+                id: studentId,
+            },
         })
-
+        
         /*const completedTaskArray = []
         for (let taskId of Student.dataValues.completedTasks) {
             const completedTask = await Task.findByPk(parseInt(taskId))
@@ -433,6 +437,14 @@ app.post('/mark_incomplete', async (req, res) => {
     catch (error) {
         res.sendStatus(500)
     }
+})
+
+app.post('/getcompletedtasks', async (req, res) => {
+    const reqBody = req.body
+    const studentId = reqBody.id
+    const student = await Student.findByPk(studentId)
+    let array = student.completedTasks.split(',')
+    res.send({array})
 })
 
 //endpoint get all courses and tasks associated with the student 
