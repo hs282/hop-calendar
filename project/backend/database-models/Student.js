@@ -45,7 +45,6 @@ const Student = sequelize.define('Student', {
   }, 
   completedTasks: {
     type: DataTypes.STRING,
-    allowNull: false
   }
 }, {
     freezeTableName: true

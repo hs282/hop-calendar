@@ -73,15 +73,15 @@
                     <el-form>
                         <el-input
                             placeholder="Type"
-                            v-model="newType"
+                            v-model="newT"
                         ></el-input>
                         <el-input
                             placeholder="Deadline"
-                            v-model="newDeadline"
+                            v-model="newD"
                         ></el-input>
                         <el-input
                             placeholder="Info"
-                            v-model="newInfo"
+                            v-model="newI"
                         ></el-input>
                     </el-form>
                     <span slot="footer" class="dialog-footer">
@@ -157,6 +157,9 @@ export default {
             newType: '',
             newDeadline: '',
             newInfo: '',
+            newT: '',
+            newD: '',
+            newI: ''
         }
     },
     computed: {
@@ -191,9 +194,9 @@ export default {
                 `${BASE_URL}/add_task`,
                 {
                     courseId: courseID,
-                    type: this.newType,
-                    deadline: this.newDeadline,
-                    info: this.newInfo,
+                    type: this.newT,
+                    deadline: this.newD,
+                    info: this.newI,
                 }
             )
             //document.getElementById('add').style.display = 'none'
