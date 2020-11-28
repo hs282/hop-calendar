@@ -11,8 +11,9 @@ const scraperObject = {
         await page.waitForSelector('.courseList--coursesForTerm');
 
         let urls = await page.$$eval('a', links => {
-        //    links = links.filter(link => link.innerText !== "Fall 2020")
-        //  Extract the links from the data
+            //has to be a course
+            links = links.filter(link => link.className == "courseBox")
+            //Extract the links from the data
             links = links.map(el =>  el.href)
             return links;
         });
