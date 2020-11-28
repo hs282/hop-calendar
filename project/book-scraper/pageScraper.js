@@ -18,7 +18,37 @@ const scraperObject = {
             return links;
         });
 
-        console.log(urls);
+        // Loop through each of those links, open a new page instance and get the relevant data from them
+        let pagePromise = (link) => new Promise(async(resolve, reject) => {
+            let dataObj = {};
+            let newPage = await browser.newPage();
+            await newPage.goto(link);
+            //check it is fall 2020 course
+            let verify = await newPage.$eval('main header > div', text => text.textContent);
+            if (verify == "Fall 2020") {
+                dataObj['taskName'] = await newPage.$$eval('tbody > tr >th', names => {
+                    names = names.map(name => name.textContent)
+                    return names;
+                });
+                dataObj['taskDue'] = await newPage.$$eval('tbody > tr > td > div > div > span', spans => {
+                    //has to be a due-date
+                    spans = spans.filter(span => span.className == "submissionTimeChart--dueDate")
+                    spans = spans.filter(span => span.textContent.substring(0,4) != "Late")
+                    //Extract the links from the data
+                    spans = spans.map(el =>  el.textContent)
+                    return spans;
+                });
+                dataObj['taskBlob'] = "scraped from gradescope - submit to gradescope";
+            }
+            resolve(dataObj);
+            await newPage.close();
+        });
+
+        for(link in urls){
+            let currentPageData = await pagePromise(urls[link]);
+            // scrapedData.push(currentPageData);
+            console.log(currentPageData);
+        }
     }
 }
 
