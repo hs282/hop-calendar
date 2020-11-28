@@ -11,7 +11,7 @@
                     <i class="el-icon-s-home"></i>
                     <span>Home</span>
                 </el-menu-item>
-                <el-radio-group v-model="view">
+                <el-radio-group v-model="view" v-if="$route.name == 'Home'">
                     <el-radio-button label="day">Daily</el-radio-button>
                     <el-radio-button label="week">Weekly</el-radio-button>
                     <el-radio-button label="month">Monthly</el-radio-button>

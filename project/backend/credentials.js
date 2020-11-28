@@ -33,7 +33,15 @@ password = 'postgres';
 port = '5432';
 database = 'oose';
 path = '';
-
+// if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
+//     // the application is executed on Heroku ... use the postgres database
+//     sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
+//       dialect:  'postgres',
+//       protocol: 'postgres',
+//       port:     match[4],
+//       host:     match[3],
+//       logging:  true //false
+//     })
 // if (System.getenv("DATABASE_URL") != null) {
 //     database: 'd3nnndm0co39db';
 //     user: 'muecqrlopmrbnc';

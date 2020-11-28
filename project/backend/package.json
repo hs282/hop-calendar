@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "npm test"
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "commonjs": "0.0.1",
     "cors": "^2.8.5",

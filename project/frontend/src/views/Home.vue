@@ -24,19 +24,15 @@ home.vue
                 <v-icon>mdi-chevron-right</v-icon>
             </v-btn>
         </div>
-        <el-dialog
-            :title="dialogName"
-            :visible.sync="showDialog"
-            width="30%"
-        >
-         {{ dialogInfo }}
+        <el-dialog :title="dialogName" :visible.sync="showDialog" width="30%">
+            {{ dialogInfo }}
         </el-dialog>
         <div
             class="buttons"
             style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 20px;"
         >
             <el-button type="primary" @click="pushMyCourse"
-                >My Course</el-button
+                >My Courses</el-button
             >
             <el-button type="primary" @click="pushAddCourse"
                 >Add Course</el-button
@@ -50,6 +46,7 @@ home.vue
 
 <script>
 import axios from 'axios'
+import {BASE_URL} from '../api.js'
 import { mapGetters } from 'vuex'
 export default {
     data: () => ({
@@ -83,8 +80,8 @@ export default {
         selectedElement: null,
         selectedOpen: false,
         showDialog: false,
-        dialogName: "",
-        dialogInfo: "",
+        dialogName: '',
+        dialogInfo: '',
     }),
     computed: {
         ...mapGetters(['getUser', 'getMode']),
@@ -136,12 +133,12 @@ export default {
             return Math.floor((b - a + 1) * Math.random()) + a
         },
         showEvent({ nativeEvent, event }) {
-            this.showDialog = true;
+            this.showDialog = true
             console.log(event)
             this.dialogName = event.name
             for (let course of this.courses) {
                 for (let task of course.taskObjs) {
-                    if (task.name = event.name) {
+                    if ((task.name = event.name)) {
                         this.dialogInfo = task.info
                     }
                 }
@@ -150,10 +147,13 @@ export default {
     },
     async mounted() {
         const user = JSON.parse(this.getUser)
-        const res = await axios.post('http://localhost:3000/getcourses', {
-            id: parseInt(user.id),
-            role: 'student',
-        })
+        const res = await axios.post(
+            `${BASE_URL}/getcourses`,
+            {
+                id: parseInt(user.id),
+                role: 'student',
+            }
+        )
         this.courses = res.data.courseArray
         this.tasks = res.data.taskArray
         /*const events = []
