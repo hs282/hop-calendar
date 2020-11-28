@@ -1,1 +1,0 @@
-web: cd ./project/backend && node db.js && npm start
