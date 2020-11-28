@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body class="container">
+        <main>
+            <h1>My Courses</h1>
+            <ul>
+                <% courses.forEach(function(course) { %>
+                <h2><%= course.name %></h2>
+                course.tasks.forEach(function(task) {
+                <li>
+                    <%= task.deadline %> <%= task.type %> <%= task.blurb %>
+                </li>
+                })
+                <el-button
+                    style="background-color:#008CBA; color:white"
+                    @click="addtask()"
+                >
+                    Add task
+                </el-button>
+                <el-button
+                    style="background-color:#008CBA; color:white"
+                    @click="deletetask()"
+                >
+                    Delete task
+                </el-button>
+                <el-button
+                    style="background-color:#008CBA; color:white"
+                    @click="edittask()"
+                >
+                    Edit task
+                </el-button>
+                <% }); %>
+
+                <el-button
+                    type="primary"
+                    @click="pushAddCourse"
+                    style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 20px;"
+                    >Add Course</el-button
+                >
+            </ul>
+        </main>
+
+        <script>
+            export default {
+                methods: {
+                    addtask() {
+                        const response = await axios.post('https://immense-garden-94246.herokuapp.com/add_task',
+                            {
+                                /*
+                                deadline:
+                                courseId:
+                                type:
+                                blurb: */
+                            }
+                        );
+
+                        window.location.reload()
+                    },
+                    deletetask() {
+                        const response = await axios.post('https://immense-garden-94246.herokuapp.com/delete_task',
+                            {
+                                /*
+                                courseId:
+                                taskId: */
+                            }
+                        );
+
+                        window.location.reload()
+                    },
+                    edittask() {
+                        const response = await axios.post('https://immense-garden-94246.herokuapp.com/edit_task',
+                            {
+                                /*courseId:
+                                taskId:
+                                type:
+                                deadline:
+                                info:*/
+                            }
+                        );
+
+                        window.location.reload()
+                    }
+                },
+            }
+        </script>
+    </body>
+</html>
