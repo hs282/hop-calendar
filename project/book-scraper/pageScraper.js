@@ -26,6 +26,7 @@ const scraperObject = {
             //check it is fall 2020 course
             let verify = await newPage.$eval('main header > div', text => text.textContent);
             if (verify == "Fall 2020") {
+                dataObj['courseName'] = await newPage.$eval('main header > h1', text => text.textContent);
                 dataObj['taskName'] = await newPage.$$eval('tbody > tr >th', names => {
                     names = names.map(name => name.textContent)
                     return names;
