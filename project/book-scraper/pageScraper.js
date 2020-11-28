@@ -5,7 +5,7 @@ const scraperObject = {
         let page = await browser.newPage();
         console.log(`Navigating to ${this.url}...`);
         await page.goto(this.url);
-
+        let scrapedData = [];
         
         // Wait for the required DOM to be rendered
         await page.waitForSelector('.courseList--coursesForTerm');
@@ -46,9 +46,13 @@ const scraperObject = {
 
         for(link in urls){
             let currentPageData = await pagePromise(urls[link]);
-            // scrapedData.push(currentPageData);
-            console.log(currentPageData);
+            //if empty not include in scraped data 
+            if (currentPageData != {}) {
+                scrapedData.push(currentPageData);
+            }
         }
+
+        console.log(scrapedData);
     }
 }
 
