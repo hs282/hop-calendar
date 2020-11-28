@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f8e1f573d404ea0ecd9fa7600f2bd0c61549e852740246634fc59f556307bbb7
-size 381
+//test
+const pageScraper = require('./pageScraper');
+async function scrapeAll(browserInstance){
+    let browser;
+    try{
+        browser = await browserInstance;
+        await pageScraper.scraper(browser);
+
+    }
+    catch(err){
+        console.log("Could not resolve the browser instance => ", err);
+    }
+}
+
+module.exports = (browserInstance) => scrapeAll(browserInstance)

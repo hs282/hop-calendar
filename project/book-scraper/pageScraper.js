@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f69fc24ff62194a67bc97b0b437756fd78d39f7e5b413b461d7b84cb479c4964
-size 273
+//test
+const scraperObject = {
+    url: 'http://books.toscrape.com',
+    async scraper(browser){
+        let page = await browser.newPage();
+        console.log(`Navigating to ${this.url}...`);
+        await page.goto(this.url);
+
+    }
+}
+
+module.exports = scraperObject;
