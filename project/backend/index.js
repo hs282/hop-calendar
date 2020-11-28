@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser'
 import Sequelize from 'sequelize'
+import axios from 'axios'
 import { user, host, password, port, database } from './credentials.js'
 const app = express();
 app.use(cors());

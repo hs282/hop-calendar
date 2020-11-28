@@ -145,6 +145,7 @@
 
 <script>
 import axios from 'axios'
+import {BASE_URL} from '../api.js'
 import { mapGetters } from 'vuex'
 export default {
     data() {
@@ -187,7 +188,7 @@ export default {
         },
         async addTask(courseID) {
             const res = await axios.post(
-                'https://immense-garden-94246.herokuapp.com/add_task',
+                `${BASE_URL}/add_task`,
                 {
                     courseId: courseID,
                     type: this.newType,
@@ -201,7 +202,7 @@ export default {
         async deleteTask(courseID, taskID) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
-                'https://immense-garden-94246.herokuapp.com/delete_task',
+                `${BASE_URL}/delete_task`,
                 {
                     courseId: courseID,
                     taskId: taskID,
@@ -210,7 +211,7 @@ export default {
             this.getCourses()
         },
         async editTask(taskID) {
-            const res = await axios.post('https://immense-garden-94246.herokuapp.com/edit_task', {
+            const res = await axios.post(`${BASE_URL}/edit_task`, {
                 taskId: taskID,
                 type: this.newType,
                 deadline: this.newDeadline,
@@ -221,7 +222,7 @@ export default {
         },
         async getCourses() {
             const user = JSON.parse(this.getUser)
-            const res = await axios.post('https://immense-garden-94246.herokuapp.com/getcourses', {
+            const res = await axios.post(`${BASE_URL}/getcourses`, {
                 id: parseInt(user.id),
                 role: 'instructor',
             })

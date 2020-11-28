@@ -46,6 +46,7 @@ home.vue
 
 <script>
 import axios from 'axios'
+import {BASE_URL} from '../api.js'
 import { mapGetters } from 'vuex'
 export default {
     data: () => ({
@@ -147,7 +148,7 @@ export default {
     async mounted() {
         const user = JSON.parse(this.getUser)
         const res = await axios.post(
-            'https://immense-garden-94246.herokuapp.com/getcourses',
+            `${BASE_URL}/getcourses`,
             {
                 id: parseInt(user.id),
                 role: 'student',

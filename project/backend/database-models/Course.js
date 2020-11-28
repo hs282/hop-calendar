@@ -19,37 +19,41 @@ if (process.env.DATABASE_URL) {
 }
 const DataTypes = Sequelize.DataTypes
 
-const Course = sequelize.define('Course', {
-  // Model attributes are defined here
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  /*numTasks: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },*/
-  admins: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  tasks: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  /*taskObjs: {
-    type: DataTypes.ARRAY(Task),
-    allowNull: false
-  },*/
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-}, {
-    freezeTableName: true
-});
+const Course = sequelize.define(
+    'Course',
+    {
+        // Model attributes are defined here
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            unique: true,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        admins: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        instructor: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        classNumber: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        tasks: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+    },
+    {
+        freezeTableName: true,
+    }
+)
 
 export default Course;

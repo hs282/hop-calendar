@@ -58,6 +58,7 @@
 
 <script>
 import axios from 'axios'
+import {BASE_URL} from '../api.js'
 import { mapGetters } from 'vuex'
 export default {
     data() {
@@ -84,7 +85,7 @@ export default {
         async markIncomplete(taskID, courseID, course) {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
-                'http://localhost:3000/mark_incomplete',
+                `${BASE_URL}/mark_incomplete`,
                 {
                     taskId: taskID,
                     studentId: user.id
@@ -95,7 +96,7 @@ export default {
         async view(courseId, course) {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
-                'https://immense-garden-94246.herokuapp.com/get_tasks',
+                `${BASE_URL}/get_tasks`,
                 {
                     id: user.id,
                     role: 'student',
@@ -111,7 +112,7 @@ export default {
         async getCourses() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
-                'https://immense-garden-94246.herokuapp.com/getcourses',
+                `${BASE_URL}/getcourses`,
                 {
                     id: parseInt(user.id),
                     role: user.role,
@@ -121,9 +122,6 @@ export default {
         },
     },
     async mounted() {
-        console.log('hello')
-        console.log(JSON.parse(this.getUser).id)
-        console.log(JSON.parse(this.getUser).role)
         this.getCourses()
     },
 }

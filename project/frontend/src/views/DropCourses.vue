@@ -54,6 +54,7 @@
 
 <script>
 import axios from 'axios'
+import {BASE_URL} from '../api.js'
 import { mapGetters } from 'vuex'
 export default {
     data() {
@@ -69,7 +70,7 @@ export default {
         async drop(courseId) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
-                'https://immense-garden-94246.herokuapp.com/delete_course',
+                `${BASE_URL}/delete_course`,
                 {
                     id: user.id,
                     role: user.role,
@@ -86,7 +87,7 @@ export default {
         async getCourses() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
-                'https://immense-garden-94246.herokuapp.com/getcourses',
+                `${BASE_URL}/getcourses`,
                 {
                     id: parseInt(user.id),
                     role: user.role,

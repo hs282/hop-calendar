@@ -34,6 +34,7 @@
 
 <script>
 import axios from 'axios'
+import {BASE_URL} from '../api.js'
 import { mapActions } from 'vuex'
 export default {
     data() {
@@ -49,7 +50,7 @@ export default {
         async create_account() {
             try {
                 const response = await axios.post(
-                    'https://immense-garden-94246.herokuapp.com/create_account',
+                    `${BASE_URL}/create_account`,
                     {
                         username: this.email,
                         password: this.password,

@@ -28,6 +28,7 @@
 
 <script>
     import axios from 'axios'
+    import {BASE_URL} from '../api.js'
     import { mapActions } from 'vuex'
     export default {
         data() {
@@ -58,7 +59,7 @@
                 //DEFAULT LOGIN IS 'janedoe', 'hellokitty', student role.
                 //that is the only registered user in the database.
                 try {
-                    const response = await axios.post('https://immense-garden-94246.herokuapp.com/login',
+                    const response = await axios.post(`${BASE_URL}/login`,
                     {
                         username: this.email,
                         password: this.password,
