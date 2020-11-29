@@ -40,6 +40,9 @@ home.vue
             <el-button type="primary" @click="pushDropCourse"
                 >Drop Course</el-button
             >
+            <el-button type="primary" @click="pushGradescope"
+                >Update Gradescope</el-button
+            >
         </div>
     </div>
 </template>
@@ -95,6 +98,9 @@ export default {
         },
         pushMyCourse() {
             this.$router.push('MyCourses')
+        },
+        pushGradescope() {
+            this.$router.push('GradescopeScraper')
         },
         getEvents({ start, end }) {
             this.courses.forEach(course => {
