@@ -7,10 +7,11 @@ const scraperObject = {
         await page.goto(this.url);
         let scrapedData = [];
         
+        //await page.type('placeholderConatiner', )
         // Wait for the required DOM to be rendered
         await page.waitForSelector('.courseList--coursesForTerm');
 
-        let urls = await page.$$eval('a', links => {
+        let urls = await page.$$eval("div.courseList > div:nth-child(2) > a", links => {
             //has to be a course
             links = links.filter(link => link.className == "courseBox")
             //Extract the links from the data
