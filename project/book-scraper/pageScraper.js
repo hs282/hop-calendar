@@ -9,18 +9,24 @@ const scraperObject = {
         await page.goto(this.url);
         let scrapedData = [];
         
+        
+        //logging in through school authorization
         await page.waitForSelector('div.form-group.col-md-24');
-        await page.type('#i0116', my_id);
-        //await page.click('#idSIButton9');
-        //await page.waitForSelector('div.form-group.col-md-24');
-        await page.type('#i0118', my_pw);
-        await page.keyboard.press( "Enter" );
-        //page.waitForNavigation();
+        await page.type('#i0116', my_id, {delay: 100});
+        await page.waitForSelector('#idSIButton9');        
+        await page.focus('#idSIButton9');
         await page.click('#idSIButton9');
-        // console.log("cool");
-        // console.log("awesome");
-        //await page.keyboard.press("Enter");
+
+        
+        await page.waitForSelector('div.form-group.col-md-24');
+        await page.type('#i0118', my_pw);
+        await page.waitFor(4000)
+        //await page.waitForSelector('#idSIButton9');
+        await page.focus('#idSIButton9');
+        await page.click('#idSIButton9');
         // Wait for the required DOM to be rendered
+
+        //in blackboard
         await page.waitForSelector('.courseList--coursesForTerm');
 
         let urls = await page.$$eval("div.courseList > div:nth-child(2) > a", links => {
