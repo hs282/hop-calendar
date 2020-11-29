@@ -515,6 +515,45 @@ app.post('/get_tasks', async (req, res) => {
     }
     
 })
+
+//endpoint login => find which student it is 
+app.post('/gradescope_scraper', async (req, res) => {
+    //get username, password and rolefrom req object role
+    try {
+        var userInfo = req.body
+        var name = userInfo.username
+        var pw = userInfo.password
+        var type = userInfo.type
+        
+        if (type == "gradescope") {
+            //we call gradescope scraper
+            //scraper data organized as -- coursename(1 element) - taskname (n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
+            //pass in name and pw to scraper & run scraper
+            //return data from scraper
+            // for (i = 0; i < data.length; i++) {
+            //     coursename = data[i][0]
+            //     tasknames = data[i][1]
+            //     taskduedates = data[i][2]
+            //     taskblob = data[i][3]
+            //     //query course using coursename (prob need to think abt this as well but most courses follow a similar format
+            //     // either xxx.xxx or EN xxx.xxx or EN xxx.xxx/yyy) => so just get numbers and disregard any letters; also when / exists, ignore anything that comes after (as of now)
+            //     //compare number of tasks under course vs tasknames.length
+            //     //if diff, need to update
+            //     //num_new_tasks = tasknames.length(from scraper) - course.tasks.length (From our db)
+            //     //for (i = 0; i < num_new_tasks; i++) {
+            //         //task = new Task(tasknames[i], taskduedates[i], taskblob)
+            //         //add task to tasks (our db)
+            //         //we could use this whole process using what we already have (just like an instructor would add for a class)
+            //     //} 
+            // }
+
+        }
+    } catch (error) {
+        res.sendStatus(500)
+    }
+    
+})
+
 app.listen(process.env.PORT || 3000, () => {
     console.log(`app is running on port ${process.env.PORT || 3000}`)
 });
