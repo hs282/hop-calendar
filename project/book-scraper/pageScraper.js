@@ -3,11 +3,23 @@ const scraperObject = {
     url: 'https://www.gradescope.com/auth/saml/jhu',
     async scraper(browser){
         let page = await browser.newPage();
+        let my_id = "ima2@jh.edu";
+        let my_pw = "Wodngud1ghkdlxld!!!"
         console.log(`Navigating to ${this.url}...`);
         await page.goto(this.url);
         let scrapedData = [];
         
-        //await page.type('placeholderConatiner', )
+        await page.waitForSelector('div.form-group.col-md-24');
+        await page.type('#i0116', my_id);
+        //await page.click('#idSIButton9');
+        //await page.waitForSelector('div.form-group.col-md-24');
+        await page.type('#i0118', my_pw);
+        await page.keyboard.press( "Enter" );
+        //page.waitForNavigation();
+        await page.click('#idSIButton9');
+        // console.log("cool");
+        // console.log("awesome");
+        //await page.keyboard.press("Enter");
         // Wait for the required DOM to be rendered
         await page.waitForSelector('.courseList--coursesForTerm');
 
