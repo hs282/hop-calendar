@@ -3,14 +3,33 @@ const scraperObject = {
     url: 'https://www.gradescope.com/auth/saml/jhu',
     async scraper(browser){
         let page = await browser.newPage();
+        let my_id = "ima2@jh.edu";
+        let my_pw = "Wodngud1ghkdlxld!!!"
         console.log(`Navigating to ${this.url}...`);
         await page.goto(this.url);
         let scrapedData = [];
         
+        
+        //logging in through school authorization
+        await page.waitForSelector('div.form-group.col-md-24');
+        await page.type('#i0116', my_id, {delay: 100});
+        await page.waitForSelector('#idSIButton9');        
+        await page.focus('#idSIButton9');
+        await page.click('#idSIButton9');
+
+        
+        await page.waitForSelector('div.form-group.col-md-24');
+        await page.type('#i0118', my_pw);
+        await page.waitFor(4000)
+        //await page.waitForSelector('#idSIButton9');
+        await page.focus('#idSIButton9');
+        await page.click('#idSIButton9');
         // Wait for the required DOM to be rendered
+
+        //in blackboard
         await page.waitForSelector('.courseList--coursesForTerm');
 
-        let urls = await page.$$eval('a', links => {
+        let urls = await page.$$eval("div.courseList > div:nth-child(2) > a", links => {
             //has to be a course
             links = links.filter(link => link.className == "courseBox")
             //Extract the links from the data

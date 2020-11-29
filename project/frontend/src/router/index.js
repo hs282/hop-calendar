@@ -7,6 +7,7 @@ import AllCourses from '../views/AllCourses.vue'
 import MyCourses from '../views/MyCourses.vue'
 import CreateAccount from '../views/CreateAccount.vue'
 import InstructorCourses from '../views/InstructorCourses.vue'
+import GradescopeScraper from '../views/GradescopeScraper.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -39,6 +40,11 @@ const routes = [
         path: '/instructorcourses',
         name: 'InstructorCourses',
         component: InstructorCourses,
+    },
+    {
+        path: '/gradescopescraper',
+        name: 'GradescopeScraper',
+        component: GradescopeScraper,
     },
     {
         path: '/createaccount',
