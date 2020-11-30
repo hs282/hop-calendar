@@ -2,7 +2,7 @@
     <v-app>
         <v-main>
             <el-menu
-                v-if="$route.name != 'Login'"
+                v-if="$route.name != 'Login' && $route.name != 'CreateAccount'"
                 class="el-menu-demo"
                 mode="horizontal"
                 style="display: flex; justify-content: space-between; align-items: center;"
