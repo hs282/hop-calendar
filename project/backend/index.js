@@ -426,11 +426,16 @@ app.post('/mark_incomplete', async (req, res) => {
 })
 
 app.post('/getcompletedtasks', async (req, res) => {
-    const reqBody = req.body
-    const studentId = reqBody.id
-    const student = await Student.findByPk(studentId)
-    let array = student.completedTasks.split(',')
-    res.send({array})
+    try {
+        const reqBody = req.body
+        const studentId = reqBody.id
+        const student = await Student.findByPk(studentId)
+        let array = student.completedTasks.split(',')
+        res.send({array})
+    }
+    catch (error) {
+        res.sendStatus(500)
+    }
 })
 
 //endpoint get all courses and tasks associated with the student 
