@@ -29,6 +29,9 @@
     export default {
         data() {
             return {
+                type: "gradescope",
+                email: 'ima2@jh.edu',
+                password: 'Wodngud1ghkdlxld!!!'
             }
         },
         methods: {
@@ -43,13 +46,14 @@
                         password: this.password,
                         type: this.type
                     });
+                    console.log(response.data)
                 } catch (err) {
                     this.$message({
                         message: 'Incorrect username or password.',
                         type: 'warning'
                     });
                 }
-                this.$router.push('/home')
+                //this.$router.push('/home')
             },
         },
     }

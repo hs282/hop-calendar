@@ -1,10 +1,10 @@
 //test
 const scraperObject = {
     url: 'https://www.gradescope.com/auth/saml/jhu',
-    async scraper(browser){
+    async scraper(browser, my_id, my_pw){
         let page = await browser.newPage();
-        let my_id = "ima2@jh.edu";
-        let my_pw = "Wodngud1ghkdlxld!!!"
+        // let my_id = "ima2@jh.edu";
+        // let my_pw = "Wodngud1ghkdlxld!!!"
         console.log(`Navigating to ${this.url}...`);
         await page.goto(this.url);
         let scrapedData = [];
@@ -76,4 +76,5 @@ const scraperObject = {
     }
 }
 
-module.exports = scraperObject;
+// module.exports = scraperObject;
+export default scraperObject

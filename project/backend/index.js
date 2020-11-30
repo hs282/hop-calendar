@@ -2,9 +2,8 @@
 import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser'
-import Sequelize from 'sequelize'
-import axios from 'axios'
 import { user, host, password, port, database } from './credentials.js'
+import startScraper from './scraper/index.js'
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
@@ -14,20 +13,6 @@ import Instructor from './database-models/Instructor.js';
 import Course from './database-models/Course.js';
 import Task from './database-models/Task.js';
 
-let sequelize = null
-if (process.env.DATABASE_URL) {
-    console.log("running on cloud")
-    sequelize = new Sequelize(
-        'postgres://ujnnamqnliqscn:edc2dd3fe40cca2b58aae0be177189bd5a9bee5e3d1b6024f17c5d8ff98abc74@ec2-54-84-98-18.compute-1.amazonaws.com:5432/dfh5kacbr40b52'
-    )
-} else {
-    console.log('running on local')
-    sequelize = new Sequelize(database, user, password, {
-        host,
-        port,
-        dialect: 'postgres',
-    })
-}
 app.get('/', async (req, res) => {
     try {
         res.send('Welcome to HopCalendar!')
@@ -526,6 +511,7 @@ app.post('/gradescope_scraper', async (req, res) => {
         var type = userInfo.type
         
         if (type == "gradescope") {
+            const data = await startScraper(name, pw)
             //we call gradescope scraper
             //scraper data organized as -- coursename(1 element) - taskname (n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
             //pass in name and pw to scraper & run scraper
@@ -548,7 +534,9 @@ app.post('/gradescope_scraper', async (req, res) => {
             // }
 
         }
+        res.send(data)
     } catch (error) {
+        console.log(error)
         res.sendStatus(500)
     }
     

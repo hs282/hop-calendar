@@ -1,12 +1,12 @@
 // const browserObject = require('./browser');
 // const scraperController = require('./pageController');
-import browserObject from './browser.js'
+import startBrowser from './browser.js'
 import scraperController from './pageController.js'
-function startScraper(id, pw) {
+async function startScraper(id, pw) {
     //Start the browser and create a browser instance
-    let browserInstance = browserObject.startBrowser()
-
+    let browserInstance = await startBrowser()
     // Pass the browser instance to the scraper controller
-    scraperController(browserInstance, id, pw)
+    const data = await scraperController(browserInstance, id, pw)
+    return data
 }
 export default startScraper
