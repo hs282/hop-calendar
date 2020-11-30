@@ -8,7 +8,7 @@
                     <el-radio v-model="role" label="student" id="student">Student</el-radio>
                     <el-radio v-model="role" label="instructor" id="instructor">Instructor</el-radio>
                 </el-form-item>
-                <el-form-item label="JHED ID">
+                <el-form-item label="Username">
                     <el-input v-model="email" id="input_email"></el-input>
                 </el-form-item>
                 <el-form-item label="HopCal Password">
@@ -20,7 +20,7 @@
             </el-button>
             <!-- create button redirects to create account view -->
             <el-button id="create" @click="create()">
-                Create
+                Create Account
             </el-button>
         </el-card>
     </div>
