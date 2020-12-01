@@ -143,7 +143,7 @@ app.post('/createpotentialinstructor', async (req, res) => {
 app.post('/getpotentialinstructors', async (req, res) => {
     try {
         const array = []
-        potinstructors = await PotentialInstructor.findAll()
+        const potinstructors = await PotentialInstructor.findAll()
         potinstructors.forEach((potinst) => {
             array.push(potinst.dataValues)
         })
