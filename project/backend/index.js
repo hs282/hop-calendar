@@ -12,6 +12,7 @@ import Student from './database-models/Student.js';
 import Instructor from './database-models/Instructor.js';
 import Course from './database-models/Course.js';
 import Task from './database-models/Task.js';
+import PotentialInstructor from './database-models/PotentialInstructor.js';
 
 app.get('/', async (req, res) => {
     try {
@@ -118,6 +119,38 @@ app.post('/create_account', async (req, res) => {
         res.sendStatus(500)
     }
     
+})
+
+app.post('/createpotentialinstructor', async (req, res) => {
+    try {
+        const reqBody = req.body
+        const username = reqBody.username
+        const password = reqBody.password
+        const email = reqBody.email
+        const name = reqBody.name
+        await PotentialInstructor.create({
+            username: username,
+            password: password,
+            email: email,
+            name: name,
+            courses: '',
+        })
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
+app.post('/getpotentialinstructors', async (req, res) => {
+    try {
+        const array = []
+        potinstructors = await PotentialInstructor.findAll()
+        potinstructors.forEach((potinst) => {
+            array.push(potinst.dataValues)
+        })
+        res.send(array)
+    } catch (error) {
+        res.sendStatus(500)
+    }
 })
 
 //endpoint delete account

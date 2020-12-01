@@ -24,5 +24,6 @@ db.courses = require('../../backend/database-models/Course.js')(sequelize, Seque
 db.instructors = require('../../backend/database-models/Instructor.js')(sequelize, Sequelize);
 db.students = require('../../backend/database-models/Student.js')(sequelize, Sequelize);
 db.tasks = require('../../backend/database-models/Task.js')(sequelize, Sequelize);
+db.potentialinstructors = require('../../backend/database-models/PotentialInstructor.js')(sequelize, Sequelize);
 
 module.exports = db;

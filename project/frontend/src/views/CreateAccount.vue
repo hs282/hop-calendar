@@ -205,6 +205,28 @@ export default {
             if (inputCode == this.code) {
                 try {
                     const response = await axios.post(
+                        `${BASE_URL}/createpotentialinstructor`,
+                        {
+                            username: this.username,
+                            password: this.password,
+                            name: this.name,
+                            email: this.email,
+                        }
+                    )
+                    this.alertVisible = true
+                    var r = this.$router
+                    setTimeout(function(){ r.push('/') }, 2000);
+                } catch (err) {
+                    this.$message({
+                        message: 'Existing username',
+                        type: 'warning',
+                    })
+                }
+            } else {
+                alert("Invalid code")
+            }
+                /*try {
+                    const response = await axios.post(
                         `${BASE_URL}/create_account`,
                         {
                             username: this.username,
@@ -224,7 +246,7 @@ export default {
                 }
             } else {
                 alert("Invalid code")
-            }
+            }*/
         },
     },
 }

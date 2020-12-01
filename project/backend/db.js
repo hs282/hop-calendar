@@ -3,6 +3,7 @@ import Student from './database-models/Student.js'
 import Instructor from './database-models/Instructor.js'
 import Course from './database-models/Course.js'
 import Task from './database-models/Task.js'
+import PotentialInstructor from './database-models/PotentialInstructor.js'
 import axios from 'axios'
 import { user, host, password, port, database, path } from './credentials.js'
 
@@ -26,6 +27,7 @@ if (process.env.DATABASE_URL) {
         await Instructor.sync({ force: true })
         await Course.sync({ force: true })
         await Task.sync({ force: true })
+        await PotentialInstructor.sync({ force: true })
         const courses = [1, 2]
         const jane = await Student.create({
             name: 'Jane',
