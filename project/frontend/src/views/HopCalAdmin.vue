@@ -67,9 +67,9 @@
                     }
                 )
 
-                console.log("Potential instructor email is: ")
-                console.log(potentialI.email)
-                console.log("Creating email now")
+                // console.log("Potential instructor email is: ")
+                // console.log(potentialI.email)
+                // console.log("Creating email now")
                 
                 // send email to instructor upon acceptance
                 var Email = { send: function (a) { 
@@ -99,7 +99,7 @@
                         } 
                     };
 
-                    console.log("sending email now")
+                    // console.log("sending email now")
 
                     Email.send({
                         Host : "smtp.gmail.com",
