@@ -593,7 +593,7 @@ app.post('/gradescope_scraper', async (req, res) => {
         var name = userInfo.username
         var pw = userInfo.password
         var type = userInfo.type
-        
+        var total_new_tasks = 0;
         if (type == "gradescope") {
             const data = await startScraper(name, pw)
             //we call gradescope scraper
@@ -601,17 +601,20 @@ app.post('/gradescope_scraper', async (req, res) => {
             //pass in name and pw to scraper & run scraper
             //return data from scraper
             for (let i = 0; i < data.length; i++) {
-                let coursenumber = data[i][0]
-                let tasknames = data[i][1]
-                let taskduedates = data[i][2]
-                let taskblob = data[i][3]
+                let coursenumber = data[i]['courseName']
+                //console.log(coursenumber);
+                let tasknames = data[i]['taskName']
+                let taskduedates = data[i]['taskDue']
+                let taskblob = data[i]['taskBlob']
             //     //query course using coursename (prob need to think abt this as well but most courses follow a similar format
             //     // either xxx.xxx or EN xxx.xxx or EN xxx.xxx/yyy) => so just get numbers and disregard any letters; also when / exists, ignore anything that comes after (as of now)
-                var course = await Course.findAll({
+                let courses = await Course.findAll({
                     where: {
                         classNumber: coursenumber
                     }
-                })    
+                })  
+                let course = courses[0]
+                //console.log(course)
             //compare number of tasks under course vs tasknames.length                
             //     //if diff, need to update
             //     //num_new_tasks = tasknames.length(from scraper) - course.tasks.length (From our db)
@@ -622,15 +625,18 @@ app.post('/gradescope_scraper', async (req, res) => {
             //     //} 
                 if (course) {
                     let taskArray = course.dataValues.tasks.split(',')
-                    if (taskArray.length > tasknames.length) {
+                    if (taskArray.length < tasknames.length) {
                         let num_new_tasks = tasknames.length - taskArray.length;
+                        total_new_tasks += num_new_tasks;
                         for (let i = 0; i < num_new_tasks; i++) {
                             var newTask = await Task.create({
                                 type: tasknames[i],
                                 deadline: taskduedates[i],
                                 info: taskblob,
                             });
+                            //console.log(newTask);
                             let taskId = newTask.dataValues.id
+                            let courseId = course.dataValues.id
                             taskArray.push(`${taskId}`)
                             await Course.update(
                                 { tasks: taskArray.toString() },
@@ -647,7 +653,9 @@ app.post('/gradescope_scraper', async (req, res) => {
             }
 
         }
-        res.send(num_new_tasks)
+        res.sendStatus(200)
+        //res.send(total_new_tasks)
+        //res.sendStatus(201)
     } catch (error) {
         console.log(error)
         res.sendStatus(500)

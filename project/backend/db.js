@@ -43,8 +43,9 @@ if (process.env.DATABASE_URL) {
             password: 'computer',
         })
         const res = await axios.get(
-            'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering%20Programs%20for%20Professionals/PE%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
-        )
+            //'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering%20Programs%20for%20Professionals/PE%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
+            'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering/EN%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
+            )
 
         const admins = [1]
         const tasks1 = [1, 2]
@@ -65,7 +66,7 @@ if (process.env.DATABASE_URL) {
                 tasks: alltasks[i].toString(),
                 name: course.Title,
                 instructor: course.InstructorsFullName,
-                classNumber: course.OfferingName
+                classNumber: course.OfferingName.match(/\d/g).join("")
             })
             i += 1
             if (i > 5) {

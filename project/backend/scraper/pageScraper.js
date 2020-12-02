@@ -1,7 +1,8 @@
 //test
 async function scraper(browser, my_id, my_pw) {
     let url = 'https://www.gradescope.com/auth/saml/jhu'
-    let page = await browser.newPage()
+    let page = (await browser.pages())[0]
+    //let page = await browser.newPage()
     // let my_id = "ima2@jh.edu";
     // let my_pw = "Wodngud1ghkdlxld!!!"
     console.log(`Navigating to ${url}...`)
@@ -49,10 +50,16 @@ async function scraper(browser, my_id, my_pw) {
                 (text) => text.textContent
             )
             if (verify == 'Fall 2020') {
-                dataObj['courseName'] = await newPage.$eval(
+                let unconventional = await newPage.$eval(
                     'main header > h1',
                     (text) => text.textContent
                 )
+                let slash = unconventional.indexOf('/');
+                if (slash >= 0) {
+                    unconventional = unconventional.substring(0, slash)
+                }
+                let conventional = unconventional.match(/\d/g).join("");
+                dataObj['courseName'] = conventional
                 dataObj['taskName'] = await newPage.$$eval(
                     'tbody > tr >th',
                     (names) => {
