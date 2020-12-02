@@ -30,8 +30,8 @@
         data() {
             return {
                 type: "gradescope",
-                email: 'ima2@jh.edu',
-                password: 'Wodngud1ghkdlxld!!!'
+                email: '',
+                password: ''
             }
         },
         methods: {
@@ -46,7 +46,11 @@
                         password: this.password,
                         type: this.type
                     });
-                    console.log(response.data)
+                    if (response.data > 0) {
+                        this.$message({
+                            message: 'Assignment updated -' + response.data + 'tasks added'
+                        })
+                    }
                 } catch (err) {
                     this.$message({
                         message: 'Incorrect username or password.',

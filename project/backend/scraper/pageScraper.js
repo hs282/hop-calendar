@@ -90,6 +90,7 @@ async function scraper(browser, my_id, my_pw) {
             scrapedData.push(currentPageData)
         }
     }
+    page.close()
     console.log(scrapedData)
     return scrapedData
 }

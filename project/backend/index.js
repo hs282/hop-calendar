@@ -597,17 +597,22 @@ app.post('/gradescope_scraper', async (req, res) => {
         if (type == "gradescope") {
             const data = await startScraper(name, pw)
             //we call gradescope scraper
-            //scraper data organized as -- coursename(1 element) - taskname (n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
+            //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
             //pass in name and pw to scraper & run scraper
             //return data from scraper
-            // for (i = 0; i < data.length; i++) {
-            //     coursename = data[i][0]
-            //     tasknames = data[i][1]
-            //     taskduedates = data[i][2]
-            //     taskblob = data[i][3]
+            for (let i = 0; i < data.length; i++) {
+                let coursenumber = data[i][0]
+                let tasknames = data[i][1]
+                let taskduedates = data[i][2]
+                let taskblob = data[i][3]
             //     //query course using coursename (prob need to think abt this as well but most courses follow a similar format
             //     // either xxx.xxx or EN xxx.xxx or EN xxx.xxx/yyy) => so just get numbers and disregard any letters; also when / exists, ignore anything that comes after (as of now)
-            //     //compare number of tasks under course vs tasknames.length
+                var course = await Course.findAll({
+                    where: {
+                        classNumber: coursenumber
+                    }
+                })    
+            //compare number of tasks under course vs tasknames.length                
             //     //if diff, need to update
             //     //num_new_tasks = tasknames.length(from scraper) - course.tasks.length (From our db)
             //     //for (i = 0; i < num_new_tasks; i++) {
@@ -615,10 +620,34 @@ app.post('/gradescope_scraper', async (req, res) => {
             //         //add task to tasks (our db)
             //         //we could use this whole process using what we already have (just like an instructor would add for a class)
             //     //} 
-            // }
+                if (course) {
+                    let taskArray = course.dataValues.tasks.split(',')
+                    if (taskArray.length > tasknames.length) {
+                        let num_new_tasks = tasknames.length - taskArray.length;
+                        for (let i = 0; i < num_new_tasks; i++) {
+                            var newTask = await Task.create({
+                                type: tasknames[i],
+                                deadline: taskduedates[i],
+                                info: taskblob,
+                            });
+                            let taskId = newTask.dataValues.id
+                            taskArray.push(`${taskId}`)
+                            await Course.update(
+                                { tasks: taskArray.toString() },
+                                {
+                                    where: {
+                                        id: courseId,
+                                    },
+                                }
+                            )
+                        }
+                    }
+                }
+            
+            }
 
         }
-        res.send(data)
+        res.send(num_new_tasks)
     } catch (error) {
         console.log(error)
         res.sendStatus(500)
