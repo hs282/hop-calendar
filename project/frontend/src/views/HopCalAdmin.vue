@@ -62,9 +62,14 @@
                         username: potentialI.username,
                         password: potentialI.password,
                         role: "potentialinstructor",
+                        email: potentialI.email,
                         courses: potentialI.courses, //potential instructor's courses
                     }
                 )
+
+                console.log("Potential instructor email is: ")
+                console.log(potentialI.email)
+                console.log("Creating email now")
                 
                 // send email to instructor upon acceptance
                 var Email = { send: function (a) { 
@@ -94,11 +99,13 @@
                         } 
                     };
 
+                    console.log("sending email now")
+
                     Email.send({
                         Host : "smtp.gmail.com",
                         Username : "fantasticsniffle@gmail.com",
                         Password : "fan12345!",
-                        To : this.email,
+                        To : potentialI.email,
                         From : "fantasticsniffle@gmail.com",
                         Subject : "Thank you for joining HopCalendar!",
                         Body : "Congratulations! Your HopCalendar instructor account has been successfully created."
