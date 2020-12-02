@@ -16,6 +16,12 @@
                     >
                         Validate Instructor
                     </el-button>
+                    <el-button
+                        style="background-color:#008CBA; color:white"
+                        @click="removePotentialInstructor(potentialI.username)"
+                    >
+                        Reject Instructor
+                    </el-button>
                 </div>
             </el-card>
         </div>
@@ -37,11 +43,17 @@
         },
         methods: {
             async getPotentialInstructors() {
-                console.log("hey")
                 const res = await axios.post(
                     `${BASE_URL}/getpotentialinstructors`
                 )
                 this.potentialInstructors = res.data
+            },
+            async removePotentialInstructor(username) {
+                const response = await axios.post(
+                    `${BASE_URL}/removepotentialinstructor`, {
+                        username: username,
+                    }
+                )
             },
             async validate(potentialI) {
                 const res = await axios.post(
@@ -49,9 +61,12 @@
                         name: potentialI.name,
                         username: potentialI.username,
                         password: potentialI.password,
-                        role: potentialI.role
+                        role: "potentialinstructor",
+                        courses: potentialI.courses, //potential instructor's courses
                     }
                 )
+                this.removePotentialInstructor(potentialI.username)
+                this.getPotentialInstructors()
             }
         },
     }

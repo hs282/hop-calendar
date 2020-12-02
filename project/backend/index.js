@@ -67,6 +67,10 @@ app.post('/create_account', async (req, res) => {
         var reqUsername = userInfo.username
         var reqPw = userInfo.password
         var role = userInfo.role
+        var userCourses = ""
+        if (role == "potentialinstructor") {
+            userCourses = userInfo.courses
+        }
         let query = null
         //first check whether same username exists in the database
         if (role == 'student') {
@@ -75,7 +79,8 @@ app.post('/create_account', async (req, res) => {
                     username: reqName,
                 },
             })
-        } else {
+        } 
+        else {
             query = await Instructor.findAll({
                 where: {
                     username: reqName,
@@ -105,7 +110,7 @@ app.post('/create_account', async (req, res) => {
             } else {
                 newUser = await Instructor.create({
                     name: reqName,
-                    courses: '',
+                    courses: userCourses,
                     username: reqUsername,
                     password: reqPw,
                     id: newId,
@@ -121,6 +126,31 @@ app.post('/create_account', async (req, res) => {
     
 })
 
+app.post('/getcourseids', async (req, res) => {
+    try {
+        const reqBody = req.body
+        const courseNumbers = reqBody.courseNumbers
+        const courseNumArray = courseNumbers.split(',')
+        let courseIDArray = []
+        for (let i = 0; i < courseNumArray.length; i++) {
+            //for each coursenumber, find the corresponding course
+            let courses = await Course.findAll({
+                where: {
+                    classNumber: courseNumArray[i]
+                }
+            })
+            // for each course in courses array, push its courseid to courseidarray
+            for (let i = 0; i < courses.length; i++) {
+                courseIDArray.push(courses[i].id)
+            }
+        }
+        //console.log(courseIDArray.toString())
+        res.send(courseIDArray.toString())
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
 app.post('/createpotentialinstructor', async (req, res) => {
     try {
         const reqBody = req.body
@@ -128,12 +158,13 @@ app.post('/createpotentialinstructor', async (req, res) => {
         const password = reqBody.password
         const email = reqBody.email
         const name = reqBody.name
+        const courses = reqBody.courses
         await PotentialInstructor.create({
             username: username,
             password: password,
             email: email,
             name: name,
-            courses: '',
+            courses: courses,
         })
     } catch (error) {
         res.sendStatus(500)
@@ -148,6 +179,21 @@ app.post('/getpotentialinstructors', async (req, res) => {
             array.push(potinst.dataValues)
         })
         res.send(array)
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
+app.post('/removepotentialinstructor', async (req, res) => {
+    try {
+        const reqBody = req.body
+        const username = reqBody.username
+        await PotentialInstructor.destroy({
+            where: {
+                username: username
+            }
+        });
+        
     } catch (error) {
         res.sendStatus(500)
     }

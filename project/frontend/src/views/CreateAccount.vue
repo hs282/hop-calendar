@@ -5,13 +5,13 @@
     >
         
         <el-card
-            style="height: 700px; width: 500px; display:flex; justify-content:center; align-items:center;"
+            style="height: 720px; width: 500px; display:flex; justify-content:center; align-items:center;"
         >
         <v-alert type="success" :value="alertVisible" >
             Account successfully created!
         </v-alert>
 
-            <h1>Create Account for Hop Calendar</h1>
+            <h1 id="title">Create Account for Hop Calendar</h1>
             <el-form>
                 <el-form-item>
                     <el-radio v-model="role" label="student" id="student"
@@ -30,8 +30,11 @@
                 <el-form-item label="Name">
                     <el-input v-model="name" id="input_name"></el-input>
                 </el-form-item>
-                <el-form-item label="Email">
+                <el-form-item v-if="role == 'instructor'" label="Email">
                     <el-input v-model="email" id="input_email"></el-input>
+                </el-form-item>
+                <el-form-item v-if="role == 'instructor'" label="Course ID(s) (if entering multiple courses, please separate with commas like this: EN.605.201,EN.610.100)">
+                    <el-input v-model="courseNumbers" id="input_course"></el-input>
                 </el-form-item>
             </el-form>
             <!--<el-button id="create_account" @click="create_account()">
@@ -86,10 +89,12 @@ export default {
             password: '',
             name: '',
             email: '',
+            courseNumbers: '',
             dialogCodeVisible: false,
             alertVisible: false,
             inputCode: '',
             code: '',
+            courseIDs: '',
             
         }
     },
@@ -200,7 +205,24 @@ export default {
                 }
             }
         },
+        /*async getCourseIDs() {
+            const response = await axios.post(
+                `${BASE_URL}/getcourseids`,
+                {
+                    courseNumbers: this.courseNumbers
+                }
+            )
+            this.courseIDs = response.data
+        },*/
         async verifyCode(inputCode) {
+            const response = await axios.post(
+                `${BASE_URL}/getcourseids`,
+                {
+                    courseNumbers: this.courseNumbers
+                }
+            )
+            this.courseIDs = response.data
+
             // create instructor account
             if (inputCode == this.code) {
                 try {
@@ -211,6 +233,7 @@ export default {
                             password: this.password,
                             name: this.name,
                             email: this.email,
+                            courses: this.courseIDs,
                         }
                     )
                     this.alertVisible = true
