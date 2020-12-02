@@ -594,6 +594,8 @@ app.post('/gradescope_scraper', async (req, res) => {
         var pw = userInfo.password
         var type = userInfo.type
         var total_new_tasks = 0;
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        const year = "2020"
         if (type == "gradescope") {
             const data = await startScraper(name, pw)
             //we call gradescope scraper
@@ -629,9 +631,12 @@ app.post('/gradescope_scraper', async (req, res) => {
                         let num_new_tasks = tasknames.length - taskArray.length;
                         total_new_tasks += num_new_tasks;
                         for (let i = 0; i < num_new_tasks; i++) {
+                            let timeArray = taskduedates[i].split(" ");
+                            let month = months.indexOf(timeArray[0]) + 1;
+                            let day = timeArray[1];
                             var newTask = await Task.create({
                                 type: tasknames[i],
-                                deadline: taskduedates[i],
+                                deadline: month + "/" + day + "/" + year,
                                 info: taskblob,
                             });
                             //console.log(newTask);
