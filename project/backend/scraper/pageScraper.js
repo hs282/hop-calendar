@@ -1,3 +1,5 @@
+import { DataTypes } from "sequelize/types";
+
 //test
 async function blackboard_link(input){
     let blink = await input.getAttribute('bb:rhs');
