@@ -7,6 +7,7 @@
                 <el-form-item>
                     <el-radio v-model="role" label="student" id="student">Student</el-radio>
                     <el-radio v-model="role" label="instructor" id="instructor">Instructor</el-radio>
+                    <el-radio v-model="role" label="admin" id="admin">Admin</el-radio>
                 </el-form-item>
                 <el-form-item label="Username">
                     <el-input v-model="email" id="input_email"></el-input>
@@ -58,26 +59,32 @@
                 //FOR INSTRUCTOR
                 //DEFAULT LOGIN IS 'janedoe', 'hellokitty', student role.
                 //that is the only registered user in the database.
-                try {
-                    const response = await axios.post(`${BASE_URL}/login`,
-                    {
-                        username: this.email,
-                        password: this.password,
-                        role: this.role
-                    });
-                    if (this.role == 'student' || this.role == 'Student') {
-                        this.$router.push('/home')
-                    } else {
-                        this.$router.push('/InstructorCourses')
+                if (this.role == "admin") {
+                    if (this.email == "abc" && this.password == "abc") {
+                        this.$router.push('/HopCalAdmin')
                     }
-                    const user = response.data
-                    const object = { id: user.id, name: user.name, courses: user.courses, role: this.role}
-                    this.setUser(JSON.stringify(object));
-                } catch (err) {
-                    this.$message({
-                        message: 'Incorrect username or password.',
-                        type: 'warning'
-                    });
+                } else {
+                    try {
+                        const response = await axios.post(`${BASE_URL}/login`,
+                        {
+                            username: this.email,
+                            password: this.password,
+                            role: this.role
+                        });
+                        if (this.role == 'student' || this.role == 'Student') {
+                            this.$router.push('/home')
+                        } else {
+                            this.$router.push('/InstructorCourses')
+                        }
+                        const user = response.data
+                        const object = { id: user.id, name: user.name, courses: user.courses, role: this.role}
+                        this.setUser(JSON.stringify(object));
+                    } catch (err) {
+                        this.$message({
+                            message: 'Incorrect username or password.',
+                            type: 'warning'
+                        });
+                    }
                 }
             },
             async create() {

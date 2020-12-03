@@ -8,6 +8,7 @@ import MyCourses from '../views/MyCourses.vue'
 import CreateAccount from '../views/CreateAccount.vue'
 import InstructorCourses from '../views/InstructorCourses.vue'
 import GradescopeScraper from '../views/GradescopeScraper.vue'
+import HopCalAdmin from '../views/HopCalAdmin.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -50,6 +51,11 @@ const routes = [
         path: '/createaccount',
         name: 'CreateAccount',
         component: CreateAccount,
+    },
+    {
+        path: '/hopcaladmin',
+        name: 'HopCalAdmin',
+        component: HopCalAdmin,
     },
 ]
 

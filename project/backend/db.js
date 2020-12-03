@@ -3,6 +3,7 @@ import Student from './database-models/Student.js'
 import Instructor from './database-models/Instructor.js'
 import Course from './database-models/Course.js'
 import Task from './database-models/Task.js'
+import PotentialInstructor from './database-models/PotentialInstructor.js'
 import axios from 'axios'
 import { user, host, password, port, database, path } from './credentials.js'
 
@@ -26,6 +27,7 @@ if (process.env.DATABASE_URL) {
         await Instructor.sync({ force: true })
         await Course.sync({ force: true })
         await Task.sync({ force: true })
+        await PotentialInstructor.sync({ force: true })
         const courses = [1, 2]
         const jane = await Student.create({
             name: 'Jane',
@@ -41,8 +43,9 @@ if (process.env.DATABASE_URL) {
             password: 'computer',
         })
         const res = await axios.get(
-            'https://sis.jhu.edu/api/classes/Whiting%20School%20of%20Engineering/EN%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
-        )
+            //'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering%20Programs%20for%20Professionals/PE%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
+            'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering/EN%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
+            )
 
         const admins = [1]
         const tasks1 = [1, 2]
@@ -63,7 +66,7 @@ if (process.env.DATABASE_URL) {
                 tasks: alltasks[i].toString(),
                 name: course.Title,
                 instructor: course.InstructorsFullName,
-                classNumber: course.OfferingName
+                classNumber: course.OfferingName.match(/\d/g).join("")
             })
             i += 1
             if (i > 5) {

@@ -12,6 +12,7 @@ import Student from './database-models/Student.js';
 import Instructor from './database-models/Instructor.js';
 import Course from './database-models/Course.js';
 import Task from './database-models/Task.js';
+import PotentialInstructor from './database-models/PotentialInstructor.js';
 
 app.get('/', async (req, res) => {
     try {
@@ -66,6 +67,10 @@ app.post('/create_account', async (req, res) => {
         var reqUsername = userInfo.username
         var reqPw = userInfo.password
         var role = userInfo.role
+        var userCourses = ""
+        if (role == "potentialinstructor") {
+            userCourses = userInfo.courses
+        }
         let query = null
         //first check whether same username exists in the database
         if (role == 'student') {
@@ -74,7 +79,8 @@ app.post('/create_account', async (req, res) => {
                     username: reqName,
                 },
             })
-        } else {
+        } 
+        else {
             query = await Instructor.findAll({
                 where: {
                     username: reqName,
@@ -104,7 +110,7 @@ app.post('/create_account', async (req, res) => {
             } else {
                 newUser = await Instructor.create({
                     name: reqName,
-                    courses: '',
+                    courses: userCourses,
                     username: reqUsername,
                     password: reqPw,
                     id: newId,
@@ -118,6 +124,79 @@ app.post('/create_account', async (req, res) => {
         res.sendStatus(500)
     }
     
+})
+
+app.post('/getcourseids', async (req, res) => {
+    try {
+        const reqBody = req.body
+        const courseNumbers = reqBody.courseNumbers
+        const courseNumArray = courseNumbers.split(',')
+        let courseIDArray = []
+        for (let i = 0; i < courseNumArray.length; i++) {
+            //for each coursenumber, find the corresponding course
+            let courses = await Course.findAll({
+                where: {
+                    classNumber: courseNumArray[i]
+                }
+            })
+            // for each course in courses array, push its courseid to courseidarray
+            for (let i = 0; i < courses.length; i++) {
+                courseIDArray.push(courses[i].id)
+            }
+        }
+        //console.log(courseIDArray.toString())
+        res.send(courseIDArray.toString())
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
+app.post('/createpotentialinstructor', async (req, res) => {
+    try {
+        const reqBody = req.body
+        const username = reqBody.username
+        const password = reqBody.password
+        const email = reqBody.email
+        const name = reqBody.name
+        const courses = reqBody.courses
+        await PotentialInstructor.create({
+            username: username,
+            password: password,
+            email: email,
+            name: name,
+            courses: courses,
+        })
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
+app.post('/getpotentialinstructors', async (req, res) => {
+    try {
+        const array = []
+        const potinstructors = await PotentialInstructor.findAll()
+        potinstructors.forEach((potinst) => {
+            array.push(potinst.dataValues)
+        })
+        res.send(array)
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
+app.post('/removepotentialinstructor', async (req, res) => {
+    try {
+        const reqBody = req.body
+        const username = reqBody.username
+        await PotentialInstructor.destroy({
+            where: {
+                username: username
+            }
+        });
+        
+    } catch (error) {
+        res.sendStatus(500)
+    }
 })
 
 //endpoint delete account
@@ -515,21 +594,32 @@ app.post('/gradescope_scraper', async (req, res) => {
         var pw = userInfo.password
         var type = userInfo.type
         let data = null
+        var total_new_tasks = 0;
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        const year = "2020"
         if (type == "gradescope") {
             data = await startScraper(name, pw)
             console.log(data)
             //we call gradescope scraper
-            //scraper data organized as -- coursename(1 element) - taskname (n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
+            //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
             //pass in name and pw to scraper & run scraper
             //return data from scraper
-            // for (i = 0; i < data.length; i++) {
-            //     coursename = data[i][0]
-            //     tasknames = data[i][1]
-            //     taskduedates = data[i][2]
-            //     taskblob = data[i][3]
+            for (let i = 0; i < data.length; i++) {
+                let coursenumber = data[i]['courseName']
+                //console.log(coursenumber);
+                let tasknames = data[i]['taskName']
+                let taskduedates = data[i]['taskDue']
+                let taskblob = data[i]['taskBlob']
             //     //query course using coursename (prob need to think abt this as well but most courses follow a similar format
             //     // either xxx.xxx or EN xxx.xxx or EN xxx.xxx/yyy) => so just get numbers and disregard any letters; also when / exists, ignore anything that comes after (as of now)
-            //     //compare number of tasks under course vs tasknames.length
+                let courses = await Course.findAll({
+                    where: {
+                        classNumber: coursenumber
+                    }
+                })  
+                let course = courses[0]
+                //console.log(course)
+            //compare number of tasks under course vs tasknames.length                
             //     //if diff, need to update
             //     //num_new_tasks = tasknames.length(from scraper) - course.tasks.length (From our db)
             //     //for (i = 0; i < num_new_tasks; i++) {
@@ -537,10 +627,42 @@ app.post('/gradescope_scraper', async (req, res) => {
             //         //add task to tasks (our db)
             //         //we could use this whole process using what we already have (just like an instructor would add for a class)
             //     //} 
-            // }
+                if (course) {
+                    let taskArray = course.dataValues.tasks.split(',')
+                    if (taskArray.length < tasknames.length) {
+                        let num_new_tasks = tasknames.length - taskArray.length;
+                        total_new_tasks += num_new_tasks;
+                        for (let i = 0; i < num_new_tasks; i++) {
+                            let timeArray = taskduedates[i].split(" ");
+                            let month = months.indexOf(timeArray[0]) + 1;
+                            let day = timeArray[1];
+                            var newTask = await Task.create({
+                                type: tasknames[i],
+                                deadline: month + "/" + day + "/" + year,
+                                info: taskblob,
+                            });
+                            //console.log(newTask);
+                            let taskId = newTask.dataValues.id
+                            let courseId = course.dataValues.id
+                            taskArray.push(`${taskId}`)
+                            await Course.update(
+                                { tasks: taskArray.toString() },
+                                {
+                                    where: {
+                                        id: courseId,
+                                    },
+                                }
+                            )
+                        }
+                    }
+                }
+            
+            }
 
         }
-        res.send(data)
+        res.sendStatus(200)
+        //res.send(total_new_tasks)
+        //res.sendStatus(201)
     } catch (error) {
         console.log(error)
         res.sendStatus(500)
