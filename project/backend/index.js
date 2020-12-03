@@ -642,7 +642,7 @@ app.post('/gradescope_scraper', async (req, res) => {
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         const year = "2020"
         if (type == "gradescope") {
-            data = await startScraper(name, pw)
+            data = await startScraper(name, pw, type)
             console.log(data)
             //we call gradescope scraper
             //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
