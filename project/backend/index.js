@@ -151,6 +151,50 @@ app.post('/getcourseids', async (req, res) => {
     }
 })
 
+app.post('/getUsername', async (req, res) => {
+    try {
+        var validUsername = false
+        const reqBody = req.body
+        const inputUsername = reqBody.username
+        
+        var existingUsername = null
+        existingUsername = await Student.findAll({
+            where: {
+                username: inputUsername
+            }
+        })
+
+        if (existingUsername == null) {
+            validUsername = true
+        }
+        res.send(validUsername)
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
+app.post('/getEmailAddress', async (req, res) => {
+    try {
+        var validEmailAddress = false
+        const reqBody = req.body
+        const inputEmailAddress = reqBody.email
+        
+        var existingEmailAddress = null
+        existingEmailAddress = await Student.findAll({
+            where: {
+                email: inputEmailAddress
+            }
+        })
+
+        if (existingEmailAddress == null) {
+            validEmailAddress = true
+        }
+        res.send(validEmailAddress)
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
 app.post('/createpotentialinstructor', async (req, res) => {
     try {
         const reqBody = req.body

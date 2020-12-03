@@ -5,10 +5,13 @@
     >
         
         <el-card
-            style="height: 720px; width: 500px; display:flex; justify-content:center; align-items:center;"
+            style="height: 800px; width: 500px; display:flex; justify-content:center; align-items:center;"
         >
         <v-alert type="success" :value="alertVisible" >
             Account successfully created!
+        </v-alert>
+        <v-alert type="warning" dismissible :value="invalidEmailAlertVisible" >
+            That email address is already taken. Try another.
         </v-alert>
 
             <h1 id="title">Create Account for Hop Calendar</h1>
@@ -21,7 +24,7 @@
                         >Instructor</el-radio
                     >
                 </el-form-item>
-                <el-form-item label="Username">
+                <el-form-item label="Email Address">
                     <el-input v-model="username" id="input_user"></el-input>
                 </el-form-item>
                 <el-form-item label="HopCal Password">
@@ -30,7 +33,7 @@
                 <el-form-item label="Name">
                     <el-input v-model="name" id="input_name"></el-input>
                 </el-form-item>
-                <el-form-item v-if="role == 'instructor'" label="Email">
+                <el-form-item v-if="role == 'instructor'" label="Please confirm your email address.">
                     <el-input v-model="email" id="input_email"></el-input>
                 </el-form-item>
                 <el-form-item v-if="role == 'instructor'" label="Course ID(s) (if entering multiple courses, please separate with commas like this: EN.605.201,EN.610.100)">
@@ -92,6 +95,8 @@ export default {
             courseNumbers: '',
             dialogCodeVisible: false,
             alertVisible: false,
+            invalidEmailAlertVisible: false,
+            validInput: false,
             inputCode: '',
             code: '',
             courseIDs: '',
@@ -125,33 +130,105 @@ export default {
         pushLogin() {
             this.$router.push('/')
         },
-        async validation() {
-
-            // for now, students don't have to get authenticated. anyone who signs up as a student can create an account
+        async checkExistingUsername() {
+            // call endpoint here to check if input email exists in db
+            var r = this.$router
+            this.invalidEmailAlertVisible = false
+            this.validInput = false
             if (this.role == 'student') {
-                try {
                 const response = await axios.post(
-                    `${BASE_URL}/create_account`,
+                    `${BASE_URL}/getUsername`,
                     {
-                        username: this.username,
-                        password: this.password,
-                        role: this.role,
-                        name: this.name,
+                        username: this.username
                     }
                 )
-                this.alertVisible = true
-                var r = this.$router
-                setTimeout(function(){ r.push('/') }, 2000);
-                } catch (err) {
-                    this.$message({
-                        message: 'Existing username',
-                        type: 'warning',
-                    })
+                if (response.data == false) {
+                    // this.invalidEmailAlertVisible = true
+                    this.validInput = false
+                } else {
+                    this.validInput = true
+                }
+            } else if (this.role == 'instructor') {
+                const response = await axios.post(
+                    `${BASE_URL}/getEmailAddress`,
+                    {
+                        email: this.email
+                    }
+                )
+                if (response.data == false) {
+                    // this.invalidEmailAlertVisible = true
+                    this.validInput = false
+                } else {
+                    this.validInput = true
                 }
             } else {
-                // call endpoint here to check if input email exists in db
-        
+                alert("Invalid email")
+            }
+            if (this.validInput == false) {
+                console.log("redirect")
+                r.push('/#/createaccount')
+                
+                this.$message({
+                    message: 'Existing username',
+                    type: 'warning',
+                })
+            }
+            this.invalidEmailAlertVisible = true
+        },
+        async validation() {
 
+            await this.checkExistingUsername()
+
+            // email validation for students
+            if (this.validInput == true) {
+                if (this.role == 'student') {
+
+                    this.code = Math.floor(Math.random() * 90000) + 10000
+
+                    // email this number to the student
+                    
+                    /* SmtpJS.com - v3.0.0 */
+                    var Email = { send: function (a) { 
+                        return new Promise(function (n, e) { 
+                            a.nocache = Math.floor(1e6 * Math.random() + 1), a.Action = "Send"; 
+                            var t = JSON.stringify(a); 
+                            Email.ajaxPost("https://smtpjs.com/v3/smtpjs.aspx?", t, function (e) { 
+                                n(e) 
+                                }) 
+                            }) 
+                        }, ajaxPost: function (e, n, t) { 
+                                var a = Email.createCORSRequest("POST", e); 
+                                a.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), a.onload = function () { 
+                                    var e = a.responseText; 
+                                    null != t && t(e) 
+                                }, 
+                                a.send(n) 
+                        }, ajax: function (e, n) { 
+                                var t = Email.createCORSRequest("GET", e); 
+                                t.onload = function () { 
+                                    var e = t.responseText; 
+                                    null != n && n(e) 
+                                }, 
+                                t.send() 
+                        }, createCORSRequest: function (e, n) { 
+                                var t = new XMLHttpRequest; return "withCredentials" in t ? t.open(e, n, !0) : "undefined" != typeof XDomainRequest ? (t = new XDomainRequest).open(e, n) : t = null, t 
+                        } 
+                    };
+                
+                Email.send({
+                    Host : "smtp.gmail.com",
+                    Username : "fantasticsniffle@gmail.com",
+                    Password : "fan12345!",
+                    To : this.username,
+                    From : "fantasticsniffle@gmail.com",
+                    Subject : "HopCalendar: Here's Your Code to Finish Setting Up Your Account",
+                    Body : this.code
+                }).then(
+                    //show dialog box to have instructor enter code
+                    this.dialogCodeVisible = true
+                );
+                console.log("email sent")
+            } else {
                 // this condition will be changed to check if input email is in the database as an admin email for at least one of the courses
                 if (this.role=="instructor") {
                     // generate a code (random number from 10000 to 99999)
@@ -187,24 +264,24 @@ export default {
                         } 
                     };
                 
-                    Email.send({
-                        Host : "smtp.gmail.com",
-                        Username : "fantasticsniffle@gmail.com",
-                        Password : "fan12345!",
-                        To : this.email,
-                        From : "fantasticsniffle@gmail.com",
-                        Subject : "HopCalendar: Here's Your Code to Finish Setting Up Your Account",
-                        Body : this.code
-                    }).then(
-                        //show dialog box to have instructor enter code
-                        this.dialogCodeVisible = true
-                    );
-
-                } else {
-                    alert("Invalid email")
-                }
+                Email.send({
+                    Host : "smtp.gmail.com",
+                    Username : "fantasticsniffle@gmail.com",
+                    Password : "fan12345!",
+                    To : this.email,
+                    From : "fantasticsniffle@gmail.com",
+                    Subject : "HopCalendar: Here's Your Code to Finish Setting Up Your Account",
+                    Body : this.code
+                }).then(
+                    //show dialog box to have instructor enter code
+                    this.dialogCodeVisible = true
+                );
+            } else {
+                alert("Invalid email")
             }
-        },
+        }
+        }
+    },
         /*async getCourseIDs() {
             const response = await axios.post(
                 `${BASE_URL}/getcourseids`,
@@ -215,38 +292,64 @@ export default {
             this.courseIDs = response.data
         },*/
         async verifyCode(inputCode) {
-            const response = await axios.post(
-                `${BASE_URL}/getcourseids`,
-                {
-                    courseNumbers: this.courseNumbers
+            if (this.role == 'student') {
+                if (this.code == inputCode) {
+                    try {
+                        const response = await axios.post(
+                            `${BASE_URL}/create_account`,
+                            {
+                                username: this.username,
+                                password: this.password,
+                                role: this.role,
+                                name: this.name,
+                            }
+                        )
+                        this.alertVisible = true
+                        var r = this.$router
+                        setTimeout(function(){ r.push('/') }, 2000);
+                    } catch (err) {
+                        this.$message({
+                            message: 'Existing username',
+                            type: 'warning',
+                        })
+                    }
+                } else {
+                    alert("Invalid code")
                 }
-            )
-            this.courseIDs = response.data
+            } else if (this.role == 'instructor') {
+                const response = await axios.post(
+                    `${BASE_URL}/getcourseids`,
+                    {
+                        courseNumbers: this.courseNumbers
+                    }
+                )
+                this.courseIDs = response.data
 
-            // create instructor account
-            if (inputCode == this.code) {
-                try {
-                    const response = await axios.post(
-                        `${BASE_URL}/createpotentialinstructor`,
-                        {
-                            username: this.username,
-                            password: this.password,
-                            name: this.name,
-                            email: this.email,
-                            courses: this.courseIDs,
-                        }
-                    )
-                    this.alertVisible = true
-                    var r = this.$router
-                    setTimeout(function(){ r.push('/') }, 2000);
-                } catch (err) {
-                    this.$message({
-                        message: 'Existing username',
-                        type: 'warning',
-                    })
+                // create instructor account
+                if (inputCode == this.code) {
+                    try {
+                        const response = await axios.post(
+                            `${BASE_URL}/createpotentialinstructor`,
+                            {
+                                username: this.username,
+                                password: this.password,
+                                name: this.name,
+                                email: this.email,
+                                courses: this.courseIDs,
+                            }
+                        )
+                        this.alertVisible = true
+                        var r = this.$router
+                        setTimeout(function(){ r.push('/') }, 2000);
+                    } catch (err) {
+                        this.$message({
+                            message: 'Existing username',
+                            type: 'warning',
+                        })
+                    }
                 }
             } else {
-                alert("Invalid code")
+                    alert("Invalid code")
             }
                 /*try {
                     const response = await axios.post(
