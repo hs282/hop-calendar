@@ -164,7 +164,7 @@ app.post('/getUsername', async (req, res) => {
             }
         })
 
-        if (existingUsername == null) {
+        if (existingUsername == "") {
             validUsername = true
         }
         res.send(validUsername)

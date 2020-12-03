@@ -142,6 +142,7 @@ export default {
                         username: this.username
                     }
                 )
+                console.log(response.data)
                 if (response.data == false) {
                     // this.invalidEmailAlertVisible = true
                     this.validInput = false
@@ -173,7 +174,6 @@ export default {
                     type: 'warning',
                 })
             }
-            this.invalidEmailAlertVisible = true
         },
         async validation() {
 
