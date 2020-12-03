@@ -131,15 +131,12 @@ async function scraper(browser, my_id, my_pw, my_type) {
         await page.focus('#idSIButton9')
         await page.click('#idSIButton9')
         // Wait for the required DOM to be rendered
-
+        await page.waitForSelector('#loginBox-JHU')
+        await page.click('#loginBox-JHU > h2 > a:nth-child(5)')
         //in blackboard
-        await page.waitForSelector('#module\:_58_1 > div.collapsible > ul > li:nth-child(3) > a')
-        let my_grades = await newPage.$eval(
-            '#module\:_58_1 > div.collapsible > ul > li:nth-child(3) > a',
-            (el) => el.href
-        )
-        await page.goto(my_grades);
-
+        await page.waitForSelector('div.collapsible > ul > li:nth-child(3) > a')
+        await page.click('div.collapsible > ul > li:nth-child(3) > a')
+        await page.waitForSelector('#left_stream_mygrades > div');
         let urls = await page.$$eval(
             '#left_stream_mygrades > div',
             

@@ -2,6 +2,7 @@
 // const scraperController = require('./pageController');
 import startBrowser from './browser.js'
 import scraperController from './pageController.js'
+
 async function startScraper(id, pw, type) {
     //Start the browser and create a browser instance
     let browserInstance = await startBrowser()
