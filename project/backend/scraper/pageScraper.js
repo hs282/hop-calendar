@@ -10,8 +10,8 @@ async function framelink(input){
     return blink;
 }
 async function scraper(browser, my_id, my_pw, my_type) {
-    let gradescope_year = 'Fall 2020'
-    let blackboard_year = 'FA20'
+    const gradescope_year = 'Fall 2020'
+    const blackboard_year = 'FA20'
     if (my_type == "gradescope") {
         let url = 'https://www.gradescope.com/auth/saml/jhu'
         let page = (await browser.pages())[0]
@@ -157,19 +157,24 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let frame_page = await browser.newPage()
         await frame_page.goto(frame_link);
         console.log("entering eval...")
+        await page.waitForSelector('#left_stream_mygrades');
         let urls = await frame_page.$$eval(
             '#left_stream_mygrades > div',
             (links) => {
                 //has to be a current year course
                 //EN.553.413.01.FA20
-                links = links.filter((link) => link > div.stream_context_bottom > span.textContent.substring(14,18) == blackboard_year)
+                // links = links.filter((link) => {
+                //     console.log(link);  
+                //     link > div.stream_context_bottom > span.textContent.substring(14,18) == blackboard_year;
+                // })
                 //Extract the links from the data
+                console.log(links[0]);
                 links = links.map((el) => 'https://blackboard.jhu.edu' + el.getAttribute('bb:rhs'))
                 return links
             }
         )
         console.log(urls);
-        await frame_page.close();
+        //await frame_page.close();
         // Loop through each of those links, open a new page instance and get the relevant data from them
         let pagePromise = (link) =>
             new Promise(async (resolve, reject) => {
