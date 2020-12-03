@@ -58,7 +58,6 @@ export default {
             } else {
                 this.$router.push('/InstructorCourses')
             }
-            //this.$router.push('Home')
         },
     },
 }

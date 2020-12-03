@@ -40,6 +40,7 @@ export default {
         ...mapGetters(['getUser']),
     },
     watch: {
+        // display courses whose names include what's entered in the search bar (case-insensitive)
         search(value) {
             let search = value.toLowerCase()
             this.courses = this.allCSCourses.filter(course =>
@@ -48,6 +49,7 @@ export default {
         },
     },
     methods: {
+        // add the given course ID to this user's string of course IDs
         async add(courseId) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
@@ -55,13 +57,14 @@ export default {
                 {
                     id: user.id,
                     role: user.role,
-                    username: user.username,
+                    email: user.email,
                     courseId: courseId,
                 }
             )
             if (response.data.success == '0') {
                 console.log('wrong course id or already exists in your courses')
             } else {
+                // redirect to user's home page
                 if (user.role == 'student' || user.role == 'Student') {
                     this.$router.push('/home')
                 } else {
@@ -69,6 +72,7 @@ export default {
                 }
             }
         },
+        // get all courses in the database
         async getCourses() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(

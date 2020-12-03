@@ -37,7 +37,6 @@
                             {{ task.completed }}
                         </span>
                         
-                        <!--<VueToggles @click="value = !value" :value="value" disabled="false" checkedText="Complete" uncheckedText="Incomplete" width="95"/>-->
                         <toggle-button :value="checkIfCompleted(task.id)" :height="35" :width="120" :font-size="15"
                             color="#08c708" :labels="{checked: 'Complete', unchecked: 'Incomplete'}" @change="toggle($event, task.id, course.id, course)"/>
 
@@ -83,7 +82,7 @@ export default {
            const user = JSON.parse(this.getUser)
             if (event.value == true) {
                 const res = await axios.post(
-                    'http://localhost:3000/mark_complete',
+                    `${BASE_URL}/mark_complete`,
                     {
                         taskId: taskID,
                         studentId: user.id
@@ -92,7 +91,7 @@ export default {
             }
             else {
                 const response = await axios.post(
-                    'http://localhost:3000/mark_incomplete',
+                    `${BASE_URL}/mark_incomplete`,
                     {
                         taskId: taskID,
                         studentId: user.id
@@ -123,7 +122,7 @@ export default {
         async getCompletedTasks() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
-                'http://localhost:3000/getcompletedtasks',
+                `${BASE_URL}/getcompletedtasks`,
                 {
                     id: parseInt(user.id),
                 }

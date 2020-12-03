@@ -24,24 +24,24 @@ app.get('/', async (req, res) => {
 
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
-    //get username, password and rolefrom req object role
+    //get email, password and rolefrom req object role
     try {
         var userInfo = req.body
-        var name = userInfo.username
+        var email = userInfo.email
         var pw = userInfo.password
         var role = userInfo.role
         let query = null
         if (role == 'Student' || role == 'student') {
             query = await Student.findAll({
                 where: {
-                    username: name,
+                    email: email,
                     password: pw,
                 },
             })
         } else {
             query = await Instructor.findAll({
                 where: {
-                    username: name,
+                    email: email,
                     password: pw,
                 },
             })
@@ -60,11 +60,11 @@ app.post('/login', async (req, res) => {
 
 //endpoint create account 
 app.post('/create_account', async (req, res) => {
-    //first get username, password, role, name from front end
+    //first get email, password, role, name from front end
     try {
         var userInfo = req.body
         var reqName = userInfo.name
-        var reqUsername = userInfo.username
+        var reqEmail = userInfo.email
         var reqPw = userInfo.password
         var role = userInfo.role
         var userCourses = ""
@@ -76,14 +76,14 @@ app.post('/create_account', async (req, res) => {
         if (role == 'student') {
             query = await Student.findAll({
                 where: {
-                    username: reqName,
+                    email: reqEmail,
                 },
             })
         } 
         else {
             query = await Instructor.findAll({
                 where: {
-                    username: reqName,
+                    email: reqEmail,
                 },
             })
         }
@@ -103,7 +103,7 @@ app.post('/create_account', async (req, res) => {
                 newUser = await Student.create({
                     name: reqName,
                     courses: '',
-                    username: reqUsername,
+                    email: reqEmail,
                     password: reqPw,
                     id: newId,
                 })
@@ -111,7 +111,7 @@ app.post('/create_account', async (req, res) => {
                 newUser = await Instructor.create({
                     name: reqName,
                     courses: userCourses,
-                    username: reqUsername,
+                    email: reqEmail,
                     password: reqPw,
                     id: newId,
                 })
@@ -126,6 +126,7 @@ app.post('/create_account', async (req, res) => {
     
 })
 
+// get course IDs of the courses represented by the given course numbers
 app.post('/getcourseids', async (req, res) => {
     try {
         const reqBody = req.body
@@ -144,14 +145,14 @@ app.post('/getcourseids', async (req, res) => {
                 courseIDArray.push(courses[i].id)
             }
         }
-        //console.log(courseIDArray.toString())
         res.send(courseIDArray.toString())
     } catch (error) {
         res.sendStatus(500)
     }
 })
 
-app.post('/getUsername', async (req, res) => {
+// check if given username already exists or not in the database 
+/*app.post('/getUsername', async (req, res) => {
     try {
         var validUsername = false
         const reqBody = req.body
@@ -171,8 +172,9 @@ app.post('/getUsername', async (req, res) => {
     } catch (error) {
         res.sendStatus(500)
     }
-})
+})*/
 
+// check if given email already exists or not in the database 
 app.post('/getEmailAddress', async (req, res) => {
     try {
         var validEmailAddress = false
@@ -198,13 +200,11 @@ app.post('/getEmailAddress', async (req, res) => {
 app.post('/createpotentialinstructor', async (req, res) => {
     try {
         const reqBody = req.body
-        const username = reqBody.username
         const password = reqBody.password
         const email = reqBody.email
         const name = reqBody.name
         const courses = reqBody.courses
         await PotentialInstructor.create({
-            username: username,
             password: password,
             email: email,
             name: name,
@@ -231,10 +231,10 @@ app.post('/getpotentialinstructors', async (req, res) => {
 app.post('/removepotentialinstructor', async (req, res) => {
     try {
         const reqBody = req.body
-        const username = reqBody.username
+        const email = reqBody.email
         await PotentialInstructor.destroy({
             where: {
-                username: username
+                email: email
             }
         });
         

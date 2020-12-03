@@ -18,7 +18,7 @@
                     </el-button>
                     <el-button
                         style="background-color:#008CBA; color:white"
-                        @click="removePotentialInstructor(potentialI.username)"
+                        @click="removePotentialInstructor(potentialI.email)"
                     >
                         Reject Instructor
                     </el-button>
@@ -48,10 +48,10 @@
                 )
                 this.potentialInstructors = res.data
             },
-            async removePotentialInstructor(username) {
+            async removePotentialInstructor(email) {
                 const response = await axios.post(
                     `${BASE_URL}/removepotentialinstructor`, {
-                        username: username,
+                        email: email,
                     }
                 )
             },
@@ -59,7 +59,6 @@
                 const res = await axios.post(
                     `${BASE_URL}/create_account`, {
                         name: potentialI.name,
-                        username: potentialI.username,
                         password: potentialI.password,
                         role: "potentialinstructor",
                         email: potentialI.email,
@@ -111,7 +110,7 @@
                         Body : "Congratulations! Your HopCalendar instructor account has been successfully created."
                     });
 
-                this.removePotentialInstructor(potentialI.username)
+                this.removePotentialInstructor(potentialI.email)
                 this.getPotentialInstructors()
             }
         },

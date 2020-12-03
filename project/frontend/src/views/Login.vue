@@ -9,7 +9,7 @@
                     <el-radio v-model="role" label="instructor" id="instructor">Instructor</el-radio>
                     <el-radio v-model="role" label="admin" id="admin">Admin</el-radio>
                 </el-form-item>
-                <el-form-item label="Username">
+                <el-form-item label="Email">
                     <el-input v-model="email" id="input_email"></el-input>
                 </el-form-item>
                 <el-form-item label="HopCal Password">
@@ -35,18 +35,18 @@
         data() {
             return {
                 role: 'student',
-                email: 'janedoe',
+                email: 'janedoe@jhu.edu',
                 password: 'hellokitty'
             }
         },
         watch: {
             role(newValue, oldValue) {
                 if (newValue == 'instructor') {
-                    this.email = 'oose'
+                    this.email = 'darvish@jhu.edu'
                     this.password = 'computer'
                 }
                 if (newValue == 'student') {
-                    this.email = 'janedoe'
+                    this.email = 'janedoe@jhu.edu'
                     this.password = 'hellokitty'
                 }
             }
@@ -57,8 +57,10 @@
             ]),
             async login() {
                 //FOR INSTRUCTOR
-                //DEFAULT LOGIN IS 'janedoe', 'hellokitty', student role.
+                //DEFAULT LOGIN IS 'janedoe@jhu.edu', 'hellokitty', student role.
                 //that is the only registered user in the database.
+
+                // to log in as admin, enter abc for both email and password 
                 if (this.role == "admin") {
                     if (this.email == "abc" && this.password == "abc") {
                         this.$router.push('/HopCalAdmin')
@@ -67,7 +69,7 @@
                     try {
                         const response = await axios.post(`${BASE_URL}/login`,
                         {
-                            username: this.email,
+                            email: this.email,
                             password: this.password,
                             role: this.role
                         });
@@ -81,14 +83,14 @@
                         this.setUser(JSON.stringify(object));
                     } catch (err) {
                         this.$message({
-                            message: 'Incorrect username or password.',
+                            message: 'Incorrect email or password.',
                             type: 'warning'
                         });
                     }
                 }
             },
             async create() {
-                //create account redirects 
+                // go to Create Account page 
                 this.$router.push('/createaccount')
             },
         },

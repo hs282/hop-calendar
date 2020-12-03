@@ -32,14 +32,14 @@ if (process.env.DATABASE_URL) {
         const jane = await Student.create({
             name: 'Jane',
             courses: courses.toString(),
-            username: 'janedoe',
+            email: 'janedoe@jhu.edu',
             password: 'hellokitty',
             completedTasks: '',
         })
         const darvish = await Instructor.create({
             name: 'Darvish',
             courses: courses.toString(),
-            username: 'oose',
+            email: 'darvish@jhu.edu',
             password: 'computer',
         })
         const res = await axios.get(
