@@ -82,7 +82,7 @@ export default {
            const user = JSON.parse(this.getUser)
             if (event.value == true) {
                 const res = await axios.post(
-                    'http://localhost:3000/mark_complete',
+                    `${BASE_URL}/mark_complete`,
                     {
                         taskId: taskID,
                         studentId: user.id
@@ -91,7 +91,7 @@ export default {
             }
             else {
                 const response = await axios.post(
-                    'http://localhost:3000/mark_incomplete',
+                    `${BASE_URL}/mark_incomplete`,
                     {
                         taskId: taskID,
                         studentId: user.id
@@ -122,7 +122,7 @@ export default {
         async getCompletedTasks() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
-                'http://localhost:3000/getcompletedtasks',
+                `${BASE_URL}/getcompletedtasks`,
                 {
                     id: parseInt(user.id),
                 }
