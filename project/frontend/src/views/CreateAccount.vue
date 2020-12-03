@@ -25,7 +25,7 @@
                     >
                 </el-form-item>
                 <el-form-item label="Email Address">
-                    <el-input v-model="username" id="input_user"></el-input>
+                    <el-input v-model="email" id="input_email"></el-input>
                 </el-form-item>
                 <el-form-item label="HopCal Password">
                     <el-input v-model="password" id="input_pw"></el-input>
@@ -33,9 +33,9 @@
                 <el-form-item label="Name">
                     <el-input v-model="name" id="input_name"></el-input>
                 </el-form-item>
-                <el-form-item v-if="role == 'instructor'" label="Please confirm your email address.">
+                <!--<el-form-item v-if="role == 'instructor'" label="Please confirm your email address.">
                     <el-input v-model="email" id="input_email"></el-input>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item v-if="role == 'instructor'" label="Course ID(s) (if entering multiple courses, please separate with commas like this: EN.605.201,EN.610.100)">
                     <el-input v-model="courseNumbers" id="input_course"></el-input>
                 </el-form-item>
@@ -88,7 +88,6 @@ export default {
     data() {
         return {
             role: 'student',
-            username: '',
             password: '',
             name: '',
             email: '',
@@ -130,7 +129,7 @@ export default {
         pushLogin() {
             this.$router.push('/')
         },
-        async checkExistingUsername() {
+        /*async checkExistingUsername() {
             // call endpoint here to check if input email exists in db
             var r = this.$router
             this.invalidEmailAlertVisible = false
@@ -174,10 +173,10 @@ export default {
                     type: 'warning',
                 })
             }
-        },
+        },*/
         async validation() {
 
-            await this.checkExistingUsername()
+            //await this.checkExistingUsername()
 
             // email validation for students
             if (this.validInput == true) {
@@ -219,7 +218,7 @@ export default {
                     Host : "smtp.gmail.com",
                     Username : "fantasticsniffle@gmail.com",
                     Password : "fan12345!",
-                    To : this.username,
+                    To : this.email,
                     From : "fantasticsniffle@gmail.com",
                     Subject : "HopCalendar: Here's Your Code to Finish Setting Up Your Account",
                     Body : this.code
@@ -298,7 +297,7 @@ export default {
                         const response = await axios.post(
                             `${BASE_URL}/create_account`,
                             {
-                                username: this.username,
+                                email: this.email,
                                 password: this.password,
                                 role: this.role,
                                 name: this.name,
@@ -309,7 +308,7 @@ export default {
                         setTimeout(function(){ r.push('/') }, 2000);
                     } catch (err) {
                         this.$message({
-                            message: 'Existing username',
+                            message: 'Existing email',
                             type: 'warning',
                         })
                     }
@@ -331,7 +330,6 @@ export default {
                         const response = await axios.post(
                             `${BASE_URL}/createpotentialinstructor`,
                             {
-                                username: this.username,
                                 password: this.password,
                                 name: this.name,
                                 email: this.email,
@@ -343,7 +341,7 @@ export default {
                         setTimeout(function(){ r.push('/') }, 2000);
                     } catch (err) {
                         this.$message({
-                            message: 'Existing username',
+                            message: 'Existing email',
                             type: 'warning',
                         })
                     }

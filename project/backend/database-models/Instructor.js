@@ -27,7 +27,7 @@ const Instructor = sequelize.define('Instructor', {
     primaryKey: true,
     autoIncrement: true
   },
-  username: {
+  email: {
     type: DataTypes.STRING,
     allowNull: false
   },

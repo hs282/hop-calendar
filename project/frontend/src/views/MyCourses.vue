@@ -37,7 +37,6 @@
                             {{ task.completed }}
                         </span>
                         
-                        <!--<VueToggles @click="value = !value" :value="value" disabled="false" checkedText="Complete" uncheckedText="Incomplete" width="95"/>-->
                         <toggle-button :value="checkIfCompleted(task.id)" :height="35" :width="120" :font-size="15"
                             color="#08c708" :labels="{checked: 'Complete', unchecked: 'Incomplete'}" @change="toggle($event, task.id, course.id, course)"/>
 

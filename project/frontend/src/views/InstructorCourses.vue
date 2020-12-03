@@ -36,17 +36,13 @@
                             ></el-input>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
-                            <el-button @click="dialogVisible = false"
-                                >Cancel</el-button
-                            >
+                            <el-button @click="dialogVisible = false">Cancel</el-button>
                             <el-button
                                 type="primary"
                                 @click="
                                     dialogVisible = false
                                     editTask(prevTask.id)
-                                "
-                                >Confirm</el-button
-                            >
+                                ">Confirm</el-button>
                         </span>
                     </el-dialog>
                     <el-button
@@ -107,24 +103,6 @@
                 >
                     Add task
                 </el-button>
-
-                <!-- <form :id="course.id" style="display:none">
-                    <div>
-                        <label>Name: </label>
-                        <input id="name" required />
-                    </div>
-                    <div>
-                        <label>Deadline: </label>
-                        <input id="deadline" required />
-                    </div>
-                    <div>
-                        <label>Description: </label>
-                        <input id="description" required />
-                    </div>
-                    <el-button id="submitAdd" @click="addTask(course.id)">
-                        Submit
-                    </el-button>
-                </form> -->
             </el-card>
         </div>
 
@@ -199,7 +177,6 @@ export default {
                     info: this.newI,
                 }
             )
-            //document.getElementById('add').style.display = 'none'
             this.getCourses()
         },
         async deleteTask(courseID, taskID) {
@@ -220,7 +197,6 @@ export default {
                 deadline: this.newDeadline,
                 info: this.newInfo,
             })
-            // document.getElementById('edit').style.display = 'none'
             this.getCourses()
         },
         async getCourses() {
