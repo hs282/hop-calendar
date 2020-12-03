@@ -514,9 +514,10 @@ app.post('/gradescope_scraper', async (req, res) => {
         var name = userInfo.username
         var pw = userInfo.password
         var type = userInfo.type
-        
+        let data = null
         if (type == "gradescope") {
-            const data = await startScraper(name, pw)
+            data = await startScraper(name, pw)
+            console.log(data)
             //we call gradescope scraper
             //scraper data organized as -- coursename(1 element) - taskname (n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
             //pass in name and pw to scraper & run scraper

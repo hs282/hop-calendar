@@ -53,6 +53,10 @@ async function scraper(browser, my_id, my_pw) {
                     'main header > h1',
                     (text) => text.textContent
                 )
+                dataObj['courseTitle'] = await newPage.$eval(
+                    'nav .sidebar--subtitle',
+                    (text) => text.textContent
+                )
                 dataObj['taskName'] = await newPage.$$eval(
                     'tbody > tr >th',
                     (names) => {
@@ -90,7 +94,6 @@ async function scraper(browser, my_id, my_pw) {
             scrapedData.push(currentPageData)
         }
     }
-    console.log(scrapedData)
     return scrapedData
 }
 
