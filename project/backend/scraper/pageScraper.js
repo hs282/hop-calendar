@@ -59,10 +59,10 @@ async function scraper(browser, my_id, my_pw, my_type) {
                         'main header > h1',
                         (text) => text.textContent
                     )
-                    dataObj['courseTitle'] = await newPage.$eval(
-                        'nav .sidebar--subtitle',
-                        (text) => text.textContent
-                    )
+                    // dataObj['courseTitle'] = await newPage.$eval(
+                    //     'nav .sidebar--subtitle',
+                    //     (text) => text.textContent
+                    // )
                     let slash = unconventional.indexOf('/');
                     if (slash >= 0) {
                         unconventional = unconventional.substring(0, slash)
@@ -146,7 +146,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
             (links) => {
                 //has to be a current year course
                 //EN.553.413.01.FA20
-                links = links.filter((link) => link > div.stream_context_bottom > span.textContent.substring(14,16) == 'FA')
+                links = links.filter((link) => link > div.stream_context_bottom > span.textContent.substring(14,16) == blackboard_year)
                 //Extract the links from the data
                 links = links.map((el) => blackboard_link(el))
                 return links
@@ -159,45 +159,32 @@ async function scraper(browser, my_id, my_pw, my_type) {
                 let dataObj = {}
                 let newPage = await browser.newPage()
                 await newPage.goto(link)
-                //check it is fall 2020 course
+                //check it has due dates => or else no point of scraping teh data
                 let verify = await newPage.$eval(
-                    'main header > div',
+                    'div.cell.gradable > div.activityType',
                     (text) => text.textContent
                 )
-                if (verify == 'Fall 2020') {
+                if (verify && verify.indexOf('Due') >= 0) {
                     let unconventional = await newPage.$eval(
-                        'main header > h1',
+                        '#streamDetailHeaderRight > span.context',
                         (text) => text.textContent
                     )
-                    dataObj['courseTitle'] = await newPage.$eval(
-                        'nav .sidebar--subtitle',
-                        (text) => text.textContent
-                    )
-                    let slash = unconventional.indexOf('/');
+                    let slash = unconventional.indexOf(blackboard_year);
                     if (slash >= 0) {
                         unconventional = unconventional.substring(0, slash)
                     }
                     let conventional = unconventional.match(/\d/g).join("");
                     dataObj['courseName'] = conventional
                     dataObj['taskName'] = await newPage.$$eval(
-                        'tbody > tr >th',
+                        'div.cell.gradable > a',
                         (names) => {
                             names = names.map((name) => name.textContent)
                             return names
                         }
                     )
                     dataObj['taskDue'] = await newPage.$$eval(
-                        'tbody > tr > td > div > div > span',
+                        'div.cell.gradable > div.activityType',
                         (spans) => {
-                            //has to be a due-date
-                            spans = spans.filter(
-                                (span) =>
-                                    span.className == 'submissionTimeChart--dueDate'
-                            )
-                            spans = spans.filter(
-                                (span) => span.textContent.substring(0, 4) != 'Late'
-                            )
-                            //Extract the links from the data
                             spans = spans.map((el) => el.textContent)
                             return spans
                         }
