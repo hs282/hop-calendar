@@ -73,24 +73,19 @@ app.post('/create_account', async (req, res) => {
         }
         
         //create a new user based on the role
-        //need to create an id (Get an id that is + 1 from most recently created account's id)
-        let newUser = null
-        newId = Math.max(await Student.max('id'), await Instructor.max('id')) + 1
         if (role == 'Student' || role == 'student') {
-            newUser = await Student.create({
+            await Student.create({
                 name: reqName,
                 courses: '',
                 email: reqEmail,
                 password: reqPw,
-                id: newId,
             })
         } else {
-            newUser = await Instructor.create({
+            await Instructor.create({
                 name: reqName,
                 courses: userCourses,
                 email: reqEmail,
                 password: reqPw,
-                id: newId,
             })
         }
         res.sendStatus(200)
