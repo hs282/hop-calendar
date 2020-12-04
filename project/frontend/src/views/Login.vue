@@ -73,11 +73,14 @@
                             password: this.password,
                             role: this.role
                         });
+
+                        // go to user's homepage
                         if (this.role == 'student' || this.role == 'Student') {
                             this.$router.push('/home')
                         } else {
                             this.$router.push('/InstructorCourses')
                         }
+                        
                         const user = response.data
                         const object = { id: user.id, name: user.name, courses: user.courses, role: this.role}
                         this.setUser(JSON.stringify(object));

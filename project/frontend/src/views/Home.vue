@@ -94,7 +94,7 @@ export default {
         pushMyCourse() {
             this.$router.push('MyCourses')
         },
-        // go to page 
+        // go to page where you can update tasks from gradescope/blackboard 
         pushGradescope() {
             this.$router.push('GradescopeScraper')
         },
@@ -158,18 +158,8 @@ export default {
         )
         this.courses = res.data.courseArray
         this.tasks = res.data.taskArray
-        /*const events = []
-            for (let task of this.tasks) {
-                console.log(task)
-                console.log(new Date(Date.parse(task.deadline)))
-                events.push({
-                    name: task.type,
-                    start: new Date(Date.parse(task.deadline)),
-                    end: new Date(Date.parse(task.deadline)),
-                    color: this.colors[this.rnd(0, this.colors.length - 1)],
-                    timed: false,
-                })
-            }*/
+
+        // create array of task objects for each course
         this.courses.forEach(course => {
             course.taskObjs = []
             let taskIds = course.tasks.split(',') //ids stored in the course obj
@@ -185,6 +175,7 @@ export default {
             })
         })
 
+        // create calendar events out of all of the tasks
         const events = []
         for (let course of this.courses) {
             for (let task of course.taskObjs) {

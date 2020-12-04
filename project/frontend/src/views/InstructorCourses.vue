@@ -9,8 +9,9 @@
                     v-for="task in course.taskObjs"
                     v-bind:key="task.id"
                 >
-                    <!-- if this task.id is in course.tasks, then display the following -->
                     {{ task.deadline + ':' + task.type }}<br />{{ task.info }}
+
+                    <!-- Edit Task form -->
                     <el-dialog
                         title="Edit Task"
                         :visible.sync="dialogVisible"
@@ -45,6 +46,7 @@
                                 ">Confirm</el-button>
                         </span>
                     </el-dialog>
+
                     <el-button
                         style="background-color:#008CBA; color:white"
                         @click="
@@ -54,6 +56,7 @@
                     >
                         Edit task</el-button
                     >
+                    
                     <el-button
                         style="background-color:#008CBA; color:white"
                         @click="deleteTask(course.id, task.id)"
@@ -61,6 +64,8 @@
                         Delete task
                     </el-button>
                 </div>
+
+                <!-- Add Task form -->
                 <el-dialog
                     title="Add Task"
                     :visible.sync="dialogAddVisible"
@@ -94,6 +99,7 @@
                         >
                     </span>
                 </el-dialog>
+
                 <el-button
                     style="background-color:#008CBA; color:white"
                     @click="
@@ -155,18 +161,27 @@ export default {
         this.getCourses()
     },
     methods: {
+        // go to Drop Courses page
         dropCourse() {
             this.$router.push('DropCourses')
         },
+
+        // go to All Courses page
         addCourse() {
             this.$router.push('AllCourses')
         },
+
+        // display Edit Task form
         async displayEditForm(taskID) {
             document.getElementById(taskID).style.display = ''
         },
+
+        // display Add Task form
         async displayAddForm(courseID) {
             document.getElementById(courseID).style.display = ''
         },
+
+        // add task to course
         async addTask(courseID) {
             const res = await axios.post(
                 `${BASE_URL}/add_task`,
@@ -179,6 +194,8 @@ export default {
             )
             this.getCourses()
         },
+
+        // delete task from course
         async deleteTask(courseID, taskID) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
@@ -190,6 +207,8 @@ export default {
             )
             this.getCourses()
         },
+
+        // update task
         async editTask(taskID) {
             const res = await axios.post(`${BASE_URL}/edit_task`, {
                 taskId: taskID,
@@ -199,14 +218,9 @@ export default {
             })
             this.getCourses()
         },
-        async getCourses() {
-            const user = JSON.parse(this.getUser)
-            const res = await axios.post(`${BASE_URL}/getcourses`, {
-                id: parseInt(user.id),
-                role: 'instructor',
-            })
-            this.courses = res.data.courseArray
-            this.tasks = res.data.taskArray
+
+        // for each course in instructor's course array, create array of its task objects
+        createTaskObjArr() {
             this.courses.forEach(course => {
                 course.taskObjs = []
                 let taskIds = course.tasks.split(',') //ids stored in the course obj
@@ -221,6 +235,16 @@ export default {
                     })
                 })
             })
+        },
+        async getCourses() {
+            const user = JSON.parse(this.getUser)
+            const res = await axios.post(`${BASE_URL}/getcourses`, {
+                id: parseInt(user.id),
+                role: 'instructor',
+            })
+            this.courses = res.data.courseArray
+            this.tasks = res.data.taskArray
+            this.createTaskObjArr()
         },
     },
 }
