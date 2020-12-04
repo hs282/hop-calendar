@@ -24,7 +24,7 @@ app.get('/', async (req, res) => {
 
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
-    //get email, password and rolefrom req object role
+    //get email, password and role
     try {
         var userInfo = req.body
         var email = userInfo.email
@@ -71,53 +71,27 @@ app.post('/create_account', async (req, res) => {
         if (role == "potentialinstructor") {
             userCourses = userInfo.courses
         }
-        let query = null
-        //first check whether same username exists in the database
-        if (role == 'student') {
-            query = await Student.findAll({
-                where: {
-                    email: reqEmail,
-                },
+        
+        //create a new user based on the role
+        //need to create an id (Get an id that is + 1 from most recently created account's id)
+        let newUser = null
+        newId = Math.max(await Student.max('id'), await Instructor.max('id')) + 1
+        if (role == 'Student' || role == 'student') {
+            newUser = await Student.create({
+                name: reqName,
+                courses: '',
+                email: reqEmail,
+                password: reqPw,
+                id: newId,
             })
-        } 
-        else {
-            query = await Instructor.findAll({
-                where: {
-                    email: reqEmail,
-                },
-            })
-        }
-        let newId = 100
-        if (query.length != 0) {
-            console.log('wrong id')
-            return res.send('choose a different userid')
         } else {
-            //if succeeds create a new user based on the role
-            //need to create an id (Get an id that is + 1 from most recently created account's id)
-            console.log('new')
-            let newUser = null
-            newId =
-                Math.max(await Student.max('id'), await Instructor.max('id')) +
-                1
-            if (role == 'Student' || role == 'student') {
-                newUser = await Student.create({
-                    name: reqName,
-                    courses: '',
-                    email: reqEmail,
-                    password: reqPw,
-                    id: newId,
-                })
-            } else {
-                newUser = await Instructor.create({
-                    name: reqName,
-                    courses: userCourses,
-                    email: reqEmail,
-                    password: reqPw,
-                    id: newId,
-                })
-            }
-            //console.log(newUser)
-            //added to database
+            newUser = await Instructor.create({
+                name: reqName,
+                courses: userCourses,
+                email: reqEmail,
+                password: reqPw,
+                id: newId,
+            })
         }
         res.sendStatus(200)
     } catch (error) {
@@ -151,44 +125,29 @@ app.post('/getcourseids', async (req, res) => {
     }
 })
 
-// check if given username already exists or not in the database 
-/*app.post('/getUsername', async (req, res) => {
-    try {
-        var validUsername = false
-        const reqBody = req.body
-        const inputUsername = reqBody.username
-        
-        var existingUsername = null
-        existingUsername = await Student.findAll({
-            where: {
-                username: inputUsername
-            }
-        })
-
-        if (existingUsername == "") {
-            validUsername = true
-        }
-        res.send(validUsername)
-    } catch (error) {
-        res.sendStatus(500)
-    }
-})*/
-
 // check if given email already exists or not in the database 
 app.post('/getEmailAddress', async (req, res) => {
     try {
         var validEmailAddress = false
         const reqBody = req.body
         const inputEmailAddress = reqBody.email
+        const role = reqBody.role
         
         var existingEmailAddress = null
-        existingEmailAddress = await Student.findAll({
-            where: {
-                email: inputEmailAddress
-            }
-        })
-
-        if (existingEmailAddress == null) {
+        if (role == "student") {
+            existingEmailAddress = await Student.findAll({
+                where: {
+                    email: inputEmailAddress
+                }
+            })
+        } else {
+            existingEmailAddress = await Instructor.findAll({
+                where: {
+                    email: inputEmailAddress
+                }
+            })
+        }  
+        if (existingEmailAddress.length == 0) {
             validEmailAddress = true
         }
         res.send(validEmailAddress)
@@ -197,6 +156,7 @@ app.post('/getEmailAddress', async (req, res) => {
     }
 })
 
+// create potential instructor account that will either be approved or rejected by app admin
 app.post('/createpotentialinstructor', async (req, res) => {
     try {
         const reqBody = req.body
@@ -215,6 +175,7 @@ app.post('/createpotentialinstructor', async (req, res) => {
     }
 })
 
+// get all potential instructors
 app.post('/getpotentialinstructors', async (req, res) => {
     try {
         const array = []
@@ -228,6 +189,7 @@ app.post('/getpotentialinstructors', async (req, res) => {
     }
 })
 
+// delete the specified potential instructor
 app.post('/removepotentialinstructor', async (req, res) => {
     try {
         const reqBody = req.body
@@ -248,7 +210,7 @@ app.get('/delete', async (req, res) => {
     res.send(backToObjJSON._name)
 })
 
-//endpoint all courses
+//endpoint get all courses
 app.post('/AllCourses', async (req, res) => {
     try {
         const courses = await Course.findAll()
@@ -263,7 +225,7 @@ app.post('/AllCourses', async (req, res) => {
     
 })
 
-//endpoint add courses for a user 
+//endpoint add course for a user 
 app.post('/add_course', async (req, res) => {
     try {
         const reqBody = req.body
@@ -284,7 +246,6 @@ app.post('/add_course', async (req, res) => {
         if (newCourse == null) {
             return res.send({ success, user })
         }
-        console.log(user)
         let courseArray = user.dataValues.courses.split(',')
         for (let i = 0; i < courseArray.length; i++) {
             if (courseArray[i] == '') {
@@ -292,7 +253,6 @@ app.post('/add_course', async (req, res) => {
             }
             newCourseArray.push(courseArray[i])
             if (courseArray[i] == courseId) {
-                console.log(1)
                 return res.send({ success, user })
             }
         }
@@ -325,7 +285,7 @@ app.post('/add_course', async (req, res) => {
     
 })
 
-//endpoint delete courses for a user 
+//endpoint delete course for a user 
 app.post('/delete_course', async (req, res) => {
     try {
         const reqBody = req.body
@@ -378,8 +338,7 @@ app.post('/delete_course', async (req, res) => {
     }
 })
 
-//endpoint add tasks for instructor
-//endpoint add tasks for instructor
+//endpoint add task for instructor
 app.post('/add_task', async (req, res) => {
     try {
         const reqBody = req.body
@@ -411,7 +370,7 @@ app.post('/add_task', async (req, res) => {
     
 })
 
-//endpoint delete tasks for instructor 
+//endpoint delete task for instructor 
 app.post('/delete_task', async (req, res) => {
     try {
         const reqBody = req.body
@@ -439,7 +398,7 @@ app.post('/delete_task', async (req, res) => {
     
 })
 
-//endpoint edit tasks for instructor
+//endpoint edit task for instructor
 app.post('/edit_task', async (req, res) => {
     try {
         const reqBody = req.body
@@ -483,6 +442,7 @@ app.post('/edit_task', async (req, res) => {
     
 })
 
+// mark task as being completed. this feature is only for students 
 app.post('/mark_complete', async (req, res) => {
     try {
         const reqBody = req.body
@@ -501,13 +461,6 @@ app.post('/mark_complete', async (req, res) => {
                 id: studentId,
             },
         })
-        
-        /*const completedTaskArray = []
-        for (let taskId of Student.dataValues.completedTasks) {
-            const completedTask = await Task.findByPk(parseInt(taskId))
-            completedTaskArray.push(completedTask)
-        }
-        res.send(completedTaskArray)*/
     }
     catch (error) {
         res.sendStatus(500)
@@ -515,6 +468,7 @@ app.post('/mark_complete', async (req, res) => {
 
 })
 
+// mark task as being incomplete. this feature is only for students 
 app.post('/mark_incomplete', async (req, res) => {
     try {
         const reqBody = req.body
@@ -535,19 +489,13 @@ app.post('/mark_incomplete', async (req, res) => {
                 id: studentId
             }
         })
-
-        /*const completedTaskArray = []
-        for (let taskId of Student.dataValues.completedTasks) {
-            const completedTask = await Task.findByPk(parseInt(taskId))
-            completedTaskArray.push(completedTask)
-        }
-        res.send(completedTaskArray)*/
     }
     catch (error) {
         res.sendStatus(500)
     }
 })
 
+// get the specified student's completed tasks
 app.post('/getcompletedtasks', async (req, res) => {
     try {
         const reqBody = req.body
@@ -567,7 +515,6 @@ app.post('/getcourses', async (req, res) => {
     try {
         const reqBody = req.body
         const role = reqBody.role
-        //const id = reqBody.id
         const id = parseInt(reqBody.id)
         let user = null
         if (role == 'student' || role == 'Student') {
@@ -575,8 +522,6 @@ app.post('/getcourses', async (req, res) => {
         } else {
             user = await Instructor.findByPk(id)
         }
-        // const student = await Student.findByPk(id)
-        // const courses = student.dataValues.courses
         const courses = user.dataValues.courses
         if (courses == '') {
             res.send({ courseArray: [], taskArray: [] })
@@ -588,7 +533,6 @@ app.post('/getcourses', async (req, res) => {
             const course = await Course.findByPk(parseInt(courseId))
             courseArray.push(course)
         }
-        console.log(courseArray)
         const taskArray = []
         for (let course of courseArray) {
             const taskIds = course.tasks.split(',')

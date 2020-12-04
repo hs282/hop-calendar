@@ -32,9 +32,6 @@
                 <el-form-item label="Name">
                     <el-input v-model="name" id="input_name"></el-input>
                 </el-form-item>
-                <!--<el-form-item v-if="role == 'instructor'" label="Please confirm your email address.">
-                    <el-input v-model="email" id="input_email"></el-input>
-                </el-form-item>-->
                 <el-form-item v-if="role == 'instructor'" label="Course ID(s) (if entering multiple courses, please separate with commas like this: EN.605.201,EN.610.100)">
                     <el-input v-model="courseNumbers" id="input_course"></el-input>
                 </el-form-item>
@@ -146,6 +143,8 @@ export default {
         pushLogin() {
             this.$router.push('/')
         },
+
+        // check if there is already a student/instructor with an account under this email
         async checkExistingEmail() {
             var r = this.$router
             this.invalidEmailAlertVisible = false
@@ -163,7 +162,6 @@ export default {
                 this.validInput = true
             }
             if (this.validInput == false) {
-                console.log("redirect")
                 r.push('/#/createaccount')
                 
                 this.$message({
@@ -219,7 +217,6 @@ export default {
                     //show dialog box to have user enter code
                     this.dialogCodeVisible = true
                 );
-                console.log("email sent")
             }
         },
         async getCourseIDs() {

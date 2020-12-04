@@ -56,7 +56,7 @@
                     >
                         Edit task</el-button
                     >
-                    
+
                     <el-button
                         style="background-color:#008CBA; color:white"
                         @click="deleteTask(course.id, task.id)"
@@ -150,14 +150,6 @@ export default {
         ...mapGetters(['getUser']),
     },
     async mounted() {
-        /*const user = this.getUser
-        const res = await axios.post('https://immense-garden-94246.herokuapp.com/getcourses', {
-            role: "instructor",
-            id: user.id,
-        })
-        this.courses = res.data.courseArray
-        console.log(this.courses)*/
-        console.log(JSON.parse(this.getUser).id)
         this.getCourses()
     },
     methods: {

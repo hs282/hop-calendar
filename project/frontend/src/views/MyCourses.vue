@@ -79,7 +79,7 @@ export default {
         },
         async toggle(event, taskID, courseID, course) {
 
-            // if value of toggle button is true, add task's ID to student's completed tasks array
+            // if value of toggle button is true, add task's ID to student's string of completed task IDs
            const user = JSON.parse(this.getUser)
             if (event.value == true) {
                 const res = await axios.post(
@@ -91,8 +91,8 @@ export default {
                 )
             }
             else {
-                /* toggle button's value is false, so task is incomplete. Remove task ID from student's
-                completed tasks array */
+                /* toggle button's value is false, so task is incomplete. Remove task ID from student's string
+                of completed task IDs */
                 const response = await axios.post(
                     `${BASE_URL}/mark_incomplete`,
                     {

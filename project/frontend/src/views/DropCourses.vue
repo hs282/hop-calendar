@@ -71,9 +71,6 @@ export default {
         },
     },
     async mounted() {
-        console.log('hello')
-        console.log(JSON.parse(this.getUser).id)
-        console.log(JSON.parse(this.getUser).role)
         this.getCourses()
     },
 }

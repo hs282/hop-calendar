@@ -57,10 +57,11 @@
             ]),
             async login() {
                 //FOR INSTRUCTOR
-                //DEFAULT LOGIN IS 'janedoe@jhu.edu', 'hellokitty', student role.
-                //that is the only registered user in the database.
+                //DEFAULT LOGIN is 'janedoe@jhu.edu', 'hellokitty', student role.
+                //If "Instructor" is selected, 'darvish@jhu.edu' and 'computer' are the default email and password
+                //these are the only registered users in the database.
 
-                // to log in as admin, enter abc for both email and password 
+                // abc is admin's email and password
                 if (this.role == "admin") {
                     if (this.email == "abc" && this.password == "abc") {
                         this.$router.push('/HopCalAdmin')

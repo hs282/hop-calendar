@@ -60,6 +60,8 @@ if (process.env.DATABASE_URL) {
                 a.findIndex((t) => t.OfferingName === v.OfferingName) === i
         )
         let i = 0
+
+        // create course objects using course info from SIS
         filtered.forEach(course => {
             Course.create({
                 admins: admins.toString(),
@@ -73,42 +75,7 @@ if (process.env.DATABASE_URL) {
                 i = 0
             }
         });
-        // const oose = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks1.toString(),
-        //     name: 'oose',
-        // })
-        // const algo = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks2.toString(),
-        //     name: 'algo',
-        // })
-        // const csf = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks3.toString(),
-        //     name: 'csf',
-        // })
-        // const automata = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks4.toString(),
-        //     name: 'automata',
-        // })
-        // const statistics = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks5.toString(),
-        //     name: 'statistics',
-        // })
-        // const uima = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks6.toString(),
-        //     name: 'uima',
-        // })
+
         const hw1 = await Task.create({
             type: 'Homework',
             deadline: '11/9/2020',
