@@ -26,7 +26,7 @@
                 <el-form-item label="Your JHED Email Address (@jh.edu or @jhu.edu)">
                     <el-input v-model="email" id="input_email"></el-input>
                 </el-form-item>
-                <el-form-item label="HopCal Password">
+                <el-form-item label="HopCal Password (length of 8 or longer)">
                     <el-input v-model="password" id="input_pw"></el-input>
                 </el-form-item>
                 <el-form-item label="Name">
@@ -90,6 +90,7 @@ export default {
             invalidEmailAlertVisible: false,
             validInput: false,
             validJHEDEmail: false,
+            validPassword: false,
             inputCode: '',
             code: '',
             courseIDs: '',
@@ -163,6 +164,21 @@ export default {
             }
         },
 
+        async checkValidPassword() {
+            this.validPassword = false
+            const inputPassword = this.password.toString()
+            const passwordLength = inputPassword.length
+
+            if (passwordLength < 8) {
+                this.$message({
+                    message: 'Please enter a valid password. Passwords need to be of length 8 or longer.',
+                    type: 'warning',
+                })
+            } else {
+                this.validPassword = true
+            }
+        },
+
         // check if there is already a student/instructor with an account under this email
         async checkExistingEmail() {
             var r = this.$router
@@ -192,8 +208,9 @@ export default {
         async validation() {
             await this.checkJHEDEmail()
             await this.checkExistingEmail()
+            await this.checkValidPassword()
 
-            if (this.validJHEDEmail && this.validInput) {
+            if (this.validJHEDEmail && this.validInput && this.validPassword) {
                 this.code = Math.floor(Math.random() * 90000) + 10000
 
                 // email this number to the user
