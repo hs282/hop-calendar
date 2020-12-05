@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <h1 id="title" style="padding-left: 50px">My Courses</h1>
-        <div class="div" v-for="course in courses" v-bind:key="course.id">
-            <el-card class="card">
+    <div style="background-color:cornflowerblue;  height : 100vh;">
+        <h1 id="title" style="padding-left:520px; padding-top:40px; padding-bottom:40px">My Courses</h1>
+        <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:500px;">
+            <el-card class="card" style="width:40%;">
                 <div
                     class="body"
                     style="height: 100%; display: flex; justify-content: space-between; align-items: center;"
@@ -10,7 +10,7 @@
                     <span class="name">
                         {{ course.name }}
                     </span>
-                    <el-button
+                    <el-button :id="course.id"
                         style="background-color:#008CBA; color:white"
                         @click="view(course.id, course)"
                     >
@@ -19,7 +19,7 @@
                 </div>
             </el-card>
             <div class="task" v-for="task in course.taskObjs" v-bind:key="task.id">
-                <el-card class="card2" :id="task.id" style="display:none">
+                <el-card class="card2" :id="task.id" style="display:none; width:70%">
                     <div
                         class="body"
                         style="height: 100%; display: flex; justify-content: space-between; align-items: center;"
@@ -28,10 +28,10 @@
                             {{ task.type }}
                         </span>
                         <span class="deadline">
-                            {{ task.deadline }}
+                            Due: {{ task.deadline }}
                         </span>
                         <span class="info">
-                            {{ task.info }}
+                            Instructions: {{ task.info }}
                         </span>
                         <span class="completed">
                             {{ task.completed }}
@@ -105,6 +105,7 @@ export default {
 
         // display all tasks for the given course
         async view(courseId, course) {
+            document.getElementById(courseId).value = "Hide Tasks"
             for (let t of course.taskObjs) {
                 document.getElementById(t.id).style.display = ""
             }
@@ -149,6 +150,7 @@ export default {
             this.courses = res.data.courseArray
             this.tasks = res.data.taskArray
             this.createTaskObjArr()
+
         },
     },
     async mounted() {

@@ -1,6 +1,6 @@
 
 <template>
-    <div style="height : 100vh; display:flex; justify-content:center; align-items:center;">
+    <div style="background-color:cornflowerblue; height : 100vh; display:flex; justify-content:center; align-items:center;">
         <el-card style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;">
             <h1>Hop Calendar</h1>
             <el-form>

@@ -159,11 +159,13 @@ app.post('/createpotentialinstructor', async (req, res) => {
         const email = reqBody.email
         const name = reqBody.name
         const courses = reqBody.courses
+        const courseNums = reqBody.courseNumbers
         await PotentialInstructor.create({
             password: password,
             email: email,
             name: name,
             courses: courses,
+            courseNumbers: courseNums
         })
     } catch (error) {
         res.sendStatus(500)

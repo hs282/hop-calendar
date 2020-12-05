@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div style="background-color:cornflowerblue;height : 100vh">
         <h1 style="padding-left: 50px">My Courses</h1>
         <div class="div" v-for="course in courses" v-bind:key="course.id">
-            <el-card style="height: 500px; width: 900px;">
+            <el-card style="width: 700px;">
                 {{ course.name }}
                 <div
                     class="div"

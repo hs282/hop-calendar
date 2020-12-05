@@ -1,7 +1,10 @@
 home.vue
 
 <template>
-    <div class="home">
+    <div class="home" style="padding-top:40px;">
+        <v-toolbar-title v-if="$refs.calendar" style="padding-bottom: 20px; text-align:center; font-size:30px">
+            {{ $refs.calendar.title }}
+        </v-toolbar-title>
         <div class="content" style="display:flex; align-items: center;">
             <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
                 <v-icon>mdi-chevron-left</v-icon>
@@ -29,7 +32,7 @@ home.vue
         </el-dialog>
         <div
             class="buttons"
-            style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 20px;"
+            style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 50px;"
         >
             <el-button type="primary" @click="pushMyCourse">My Courses</el-button>
             <el-button type="primary" @click="pushAddCourse">Add Course</el-button>
