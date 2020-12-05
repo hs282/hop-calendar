@@ -23,7 +23,7 @@
                         >Instructor</el-radio
                     >
                 </el-form-item>
-                <el-form-item label="Email Address">
+                <el-form-item label="Your JHED Email Address (@jh.edu or @jhu.edu)">
                     <el-input v-model="email" id="input_email"></el-input>
                 </el-form-item>
                 <el-form-item label="HopCal Password">
@@ -89,6 +89,7 @@ export default {
             alertVisible: false,
             invalidEmailAlertVisible: false,
             validInput: false,
+            validJHEDEmail: false,
             inputCode: '',
             code: '',
             courseIDs: '',
@@ -144,6 +145,24 @@ export default {
             this.$router.push('/')
         },
 
+        async checkJHEDEmail() {
+            this.validJHEDEmail = false
+            const inputEmail = this.email
+            // equality comparison (==) does not work if JSON.stringify used, need to use toString() here for some reason
+            const emailDomain = inputEmail.split('@', 2)[1].toString()
+
+            if (emailDomain == 'jhu.edu' || emailDomain == 'jh.edu'
+                || emailDomain == "jhu.edu" || emailDomain == "jh.edu") {
+                this.validJHEDEmail = true
+            }
+            if (this.validJHEDEmail == false) {
+                this.$message({
+                    message: 'Not a JHED email. Please enter a valid JHED email.',
+                    type: 'warning',
+                })
+            }
+        },
+
         // check if there is already a student/instructor with an account under this email
         async checkExistingEmail() {
             var r = this.$router
@@ -171,9 +190,10 @@ export default {
             }
         },
         async validation() {
+            await this.checkJHEDEmail()
             await this.checkExistingEmail()
 
-            if (this.validInput) {
+            if (this.validJHEDEmail && this.validInput) {
                 this.code = Math.floor(Math.random() * 90000) + 10000
 
                 // email this number to the user
