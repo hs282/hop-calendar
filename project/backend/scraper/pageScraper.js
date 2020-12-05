@@ -162,6 +162,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
             (links) => {
                 //has to be a current year course
                 //EN.553.413.01.FA20
+                console.log(links[0])
                 links = links.filter((link) => link > div.stream_context_bottom > span.textContent.substring(14,18) == blackboard_year)
                 //Extract the links from the data
                 links = links.map((el) => 'https://blackboard.jhu.edu' + el.getAttribute('bb:rhs'))

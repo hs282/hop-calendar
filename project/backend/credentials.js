@@ -27,9 +27,9 @@ var path
 // } catch (e) {
 //     }
 
-user = 'postgres';
+user = '';
 host = 'localhost';
-password = 'postgres';
+password = '';
 port = '5432';
 database = 'oose';
 path = '';

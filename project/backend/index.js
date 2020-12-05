@@ -643,11 +643,7 @@ app.post('/gradescope_scraper', async (req, res) => {
         const year = "2020"
 
         data = await startScraper(name, pw, type)
-        console.log(data)
-        //we call gradescope scraper
         //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
-        //pass in name and pw to scraper & run scraper
-        //return data from scraper
         for (let i = 0; i < data.length; i++) {
             let coursenumber = data[i]['courseName']
             //console.log(coursenumber);
@@ -662,7 +658,6 @@ app.post('/gradescope_scraper', async (req, res) => {
                 }
             })  
             let course = courses[0]
-            //console.log(course)
         //compare number of tasks under course vs tasknames.length                
         //     //if diff, need to update
         //     //num_new_tasks = tasknames.length(from scraper) - course.tasks.length (From our db)
@@ -697,7 +692,6 @@ app.post('/gradescope_scraper', async (req, res) => {
                                 info: taskblob,
                             });
                         }
-                        //console.log(newTask);
                         let taskId = newTask.dataValues.id
                         let courseId = course.dataValues.id
                         taskArray.push(`${taskId}`)
@@ -714,11 +708,7 @@ app.post('/gradescope_scraper', async (req, res) => {
             }
         
         }
-
-        
         res.sendStatus(200)
-        //res.send(total_new_tasks)
-        //res.sendStatus(201)
     } catch (error) {
         console.log(error)
         res.sendStatus(500)
