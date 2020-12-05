@@ -44,7 +44,8 @@ if (process.env.DATABASE_URL) {
         })
         const res = await axios.get(
             //'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering%20Programs%20for%20Professionals/PE%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
-            'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering/EN%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
+            //'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering/EN%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
+            'https://sis.jhu.edu/api/classes/Whiting%20School%20of%20Engineering/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
             )
 
         const admins = [1]

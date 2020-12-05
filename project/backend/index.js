@@ -583,33 +583,28 @@ app.post('/gradescope_scraper', async (req, res) => {
 
         data = await startScraper(name, pw, type)
         console.log(data)
+        console.log(type)
         //we call gradescope scraper
         //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
         //pass in name and pw to scraper & run scraper
         //return data from scraper
         for (let i = 0; i < data.length; i++) {
+            let course, tasknames, taskduedates, taskblob = null;
             let coursenumber = data[i]['courseName']
-            //console.log(coursenumber);
-            let tasknames = data[i]['taskName']
-            let taskduedates = data[i]['taskDue']
-            let taskblob = data[i]['taskBlob']
-        //     //query course using coursename (prob need to think abt this as well but most courses follow a similar format
-        //     // either xxx.xxx or EN xxx.xxx or EN xxx.xxx/yyy) => so just get numbers and disregard any letters; also when / exists, ignore anything that comes after (as of now)
-            let courses = await Course.findAll({
-                where: {
-                    classNumber: coursenumber
-                }
-            })  
-            let course = courses[0]
-            //console.log(course)
-        //compare number of tasks under course vs tasknames.length                
-        //     //if diff, need to update
-        //     //num_new_tasks = tasknames.length(from scraper) - course.tasks.length (From our db)
-        //     //for (i = 0; i < num_new_tasks; i++) {
-        //         //task = new Task(tasknames[i], taskduedates[i], taskblob)
-        //         //add task to tasks (our db)
-        //         //we could use this whole process using what we already have (just like an instructor would add for a class)
-        //     //} 
+            if (coursenumber != "unsupported") {
+                tasknames = data[i]['taskName']
+                taskduedates = data[i]['taskDue']
+                taskblob = data[i]['taskBlob']
+            //     //query course using coursename (prob need to think abt this as well but most courses follow a similar format
+            //     // either xxx.xxx or EN xxx.xxx or EN xxx.xxx/yyy) => so just get numbers and disregard any letters; also when / exists, ignore anything that comes after (as of now)
+                let courses = await Course.findAll({
+                    where: {
+                        classNumber: coursenumber
+                    }
+                })
+                course = courses[0]  
+            }
+            
             if (course) {
                 let taskArray = course.dataValues.tasks.split(',')
                 if (taskArray.length < tasknames.length) {
@@ -627,9 +622,11 @@ app.post('/gradescope_scraper', async (req, res) => {
                                 info: taskblob,
                             });
                         } else if (type == "blackboard") {
+                            console.log("creating...")
+                            console.log(taskduedates[i]);
                             let timeArray = taskduedates[i].replace(',','').split(" ");
-                            let month = months.indexOf(timeArray[0]) + 1;
-                            let day = timeArray[1];
+                            let month = months.indexOf(timeArray[1]) + 1;
+                            let day = timeArray[2];
                             newTask = await Task.create({
                                 type: tasknames[i],
                                 deadline: month + "/" + day + "/" + year,
