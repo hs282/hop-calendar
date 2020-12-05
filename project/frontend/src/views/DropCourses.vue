@@ -1,35 +1,5 @@
 <template>
     <div>
-        <!-- <h1 style="padding-left: 50px">Drop Courses</h1>
-        <br />
-        <form style="padding-left: 100px">
-            <input type="checkbox" /> EN.601.104 Computer Ethics
-            <p style="padding-left: 17px">
-                W 4:30PM - 6:30PM, T. Leschke
-            </p>
-            <input type="checkbox" /> EN.601.467 Introduction to Human Language
-            Technology
-            <p style="padding-left: 17px">
-                TTh 9:00AM - 10:15AM, P. Koehn
-            </p>
-            <input type="checkbox" /> AS.210.111 Spanish Elements
-            <p style="padding-left: 17px">
-                MWF 9:00AM - 9:50am, M. Tracy
-            </p>
-            <input type="checkbox" /> AS.020.329 Microbiology
-            <p style="padding-left: 17px">
-                TTh 10:30AM - 11:45AM, E. Fisher
-            </p>
-        </form>
-
-        <p style="padding-left: 300px">
-            <el-button
-                style="background-color:#008CBA; color:white"
-                @click="drop"
-            >
-                Drop
-            </el-button>
-        </p> -->
         <h1 style="padding-left: 50px">Drop Courses</h1>
         <div class="div" v-for="course in courses" v-bind:key="course.id">
             <el-card class="card">
@@ -67,6 +37,7 @@ export default {
         ...mapGetters(['getUser']),
     },
     methods: {
+        // remove the given course ID from this user's string of course IDs
         async drop(courseId) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
@@ -78,12 +49,15 @@ export default {
                 }
             )
             this.getCourses()
+
+            // redirect to user's homepage
             if (user.role == 'student' || user.role == 'Student') {
                 this.$router.push('/home')
             } else {
                 this.$router.push('/InstructorCourses')
             }
         },
+        // get all of the user's courses
         async getCourses() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
@@ -97,9 +71,6 @@ export default {
         },
     },
     async mounted() {
-        console.log('hello')
-        console.log(JSON.parse(this.getUser).id)
-        console.log(JSON.parse(this.getUser).role)
         this.getCourses()
     },
 }

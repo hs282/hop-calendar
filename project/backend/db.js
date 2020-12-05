@@ -32,19 +32,20 @@ if (process.env.DATABASE_URL) {
         const jane = await Student.create({
             name: 'Jane',
             courses: courses.toString(),
-            username: 'janedoe',
+            email: 'janedoe@jhu.edu',
             password: 'hellokitty',
             completedTasks: '',
         })
         const darvish = await Instructor.create({
             name: 'Darvish',
             courses: courses.toString(),
-            username: 'oose',
+            email: 'darvish@jhu.edu',
             password: 'computer',
         })
         const res = await axios.get(
             //'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering%20Programs%20for%20Professionals/PE%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
-            'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering/EN%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
+            //'https://sis.jhu.edu/api//classes/Whiting%20School%20of%20Engineering/EN%20Computer%20Science/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
+            'https://sis.jhu.edu/api/classes/Whiting%20School%20of%20Engineering/current?key=HU86bHdqJaIM6Kr7vHwMfaIfJUKIDf0j'
             )
 
         const admins = [1]
@@ -60,6 +61,8 @@ if (process.env.DATABASE_URL) {
                 a.findIndex((t) => t.OfferingName === v.OfferingName) === i
         )
         let i = 0
+
+        // create course objects using course info from SIS
         filtered.forEach(course => {
             Course.create({
                 admins: admins.toString(),
@@ -73,42 +76,7 @@ if (process.env.DATABASE_URL) {
                 i = 0
             }
         });
-        // const oose = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks1.toString(),
-        //     name: 'oose',
-        // })
-        // const algo = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks2.toString(),
-        //     name: 'algo',
-        // })
-        // const csf = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks3.toString(),
-        //     name: 'csf',
-        // })
-        // const automata = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks4.toString(),
-        //     name: 'automata',
-        // })
-        // const statistics = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks5.toString(),
-        //     name: 'statistics',
-        // })
-        // const uima = await Course.create({
-        //     //numTasks: 2,
-        //     admins: admins.toString(),
-        //     tasks: tasks6.toString(),
-        //     name: 'uima',
-        // })
+
         const hw1 = await Task.create({
             type: 'Homework',
             deadline: '11/9/2020',

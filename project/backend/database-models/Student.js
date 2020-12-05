@@ -27,7 +27,7 @@ const Student = sequelize.define('Student', {
     primaryKey: true,
     autoIncrement: true
   },
-  username: {
+  email: {
     type: DataTypes.STRING,
     allowNull: false
   },

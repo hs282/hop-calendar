@@ -37,7 +37,6 @@
                             {{ task.completed }}
                         </span>
                         
-                        <!--<VueToggles @click="value = !value" :value="value" disabled="false" checkedText="Complete" uncheckedText="Incomplete" width="95"/>-->
                         <toggle-button :value="checkIfCompleted(task.id)" :height="35" :width="120" :font-size="15"
                             color="#08c708" :labels="{checked: 'Complete', unchecked: 'Incomplete'}" @change="toggle($event, task.id, course.id, course)"/>
 
@@ -69,6 +68,7 @@ export default {
         ...mapGetters(['getUser']),
     },
     methods: {
+        // if taskID is in the student's string of completed task IDs, set toggle button's value to true
         checkIfCompleted(taskID) {
             for (let i = 0; i < this.completedT.length; i++) {
                 if (this.completedT[i] == taskID) {
@@ -79,11 +79,11 @@ export default {
         },
         async toggle(event, taskID, courseID, course) {
 
-            // if value of toggle button is true, add task to student's completed tasks array
+            // if value of toggle button is true, add task's ID to student's string of completed task IDs
            const user = JSON.parse(this.getUser)
             if (event.value == true) {
                 const res = await axios.post(
-                    'http://localhost:3000/mark_complete',
+                    `${BASE_URL}/mark_complete`,
                     {
                         taskId: taskID,
                         studentId: user.id
@@ -91,8 +91,10 @@ export default {
                 )
             }
             else {
+                /* toggle button's value is false, so task is incomplete. Remove task ID from student's string
+                of completed task IDs */
                 const response = await axios.post(
-                    'http://localhost:3000/mark_incomplete',
+                    `${BASE_URL}/mark_incomplete`,
                     {
                         taskId: taskID,
                         studentId: user.id
@@ -100,22 +102,9 @@ export default {
                 )
             }
         },
+
+        // display all tasks for the given course
         async view(courseId, course) {
-            /*const user = JSON.parse(this.getUser)
-            const res = await axios.post(
-                `${BASE_URL}/get_tasks`,
-                {
-                    id: user.id,
-                    role: 'student',
-                    courseId: courseId,
-                }
-            )
-            this.task_of_courseId = res.data.taskArray
-            if (this.task_of_courseId == null) {
-                console.log('its null')
-            }
-            course.tasks = this.task_of_courseId*/
-            
             for (let t of course.taskObjs) {
                 document.getElementById(t.id).style.display = ""
             }
@@ -123,25 +112,16 @@ export default {
         async getCompletedTasks() {
             const user = JSON.parse(this.getUser)
             const res = await axios.post(
-                'http://localhost:3000/getcompletedtasks',
+                `${BASE_URL}/getcompletedtasks`,
                 {
                     id: parseInt(user.id),
                 }
             )
             this.completedT = res.data.array
         },
-        async getCourses() {
-            const user = JSON.parse(this.getUser)
-            const res = await axios.post(
-                `${BASE_URL}/getcourses`,
-                {
-                    id: parseInt(user.id),
-                    role: user.role,
-                }
-            )
-            this.courses = res.data.courseArray
-            this.tasks = res.data.taskArray
-            
+        
+        // for each course in student's course array, create array of its task objects
+        createTaskObjArr() {
             this.courses.forEach(course => {
                 course.taskObjs = []
                 let taskIds = course.tasks.split(',') //ids stored in the course obj
@@ -156,6 +136,19 @@ export default {
                     })
                 })
             })
+        },
+        async getCourses() {
+            const user = JSON.parse(this.getUser)
+            const res = await axios.post(
+                `${BASE_URL}/getcourses`,
+                {
+                    id: parseInt(user.id),
+                    role: user.role,
+                }
+            )
+            this.courses = res.data.courseArray
+            this.tasks = res.data.taskArray
+            this.createTaskObjArr()
         },
     },
     async mounted() {

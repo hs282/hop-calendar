@@ -10,8 +10,9 @@ async function framelink(input){
     return blink;
 }
 async function scraper(browser, my_id, my_pw, my_type) {
-    let gradescope_year = 'Fall 2020'
-    let blackboard_year = 'FA20'
+    const gradescope_year = 'Fall 2020'
+    const blackboard_year = 'FA20'
+    const blackboard_course_query = '#toggle_other_' + blackboard_year
     if (my_type == "gradescope") {
         let url = 'https://www.gradescope.com/auth/saml/jhu'
         let page = (await browser.pages())[0]
@@ -139,49 +140,47 @@ async function scraper(browser, my_id, my_pw, my_type) {
         await page.waitForSelector('#loginBox-JHU')
         await page.click('#loginBox-JHU > h2 > a:nth-child(5)')
         //in blackboard
-        await page.waitForSelector('div.collapsible > ul > li:nth-child(3) > a')
-        await page.click('div.collapsible > ul > li:nth-child(3) > a')
-        
-        await page.waitForSelector('#mybbCanvas');
-        console.log("entering frame...")
-        //var frame = await page.frames().find(frame.name() === '#mybbCanvas')
-        await page.waitForSelector('#mybbCanvas');   
-        //console.log(page.getElementById('mybbCanvas').src)   
-        
-        // let frame_link = await page.$eval(
-        //     '#mybbCanvas[src]',
-        //     (el) => 'https://blackboard.jhu.edu' + el.src
-        // )
-        let frame_link = 'https://blackboard.jhu.edu/webapps/streamViewer/streamViewer?cmd=view&streamName=mygrades&&override_stream=mygrades&globalNavigation=false'
-        console.log("framelink is " + frame_link)
-        let frame_page = await browser.newPage()
-        await frame_page.goto(frame_link);
-        console.log("entering eval...")
-        let urls = await frame_page.$$eval(
-            '#left_stream_mygrades > div',
+        //get course ids for select semester
+        await page.waitForSelector('#toggle_other_FA20')
+        let course_urls = await page.$$eval(
+            '#toggle_other_FA20 > tbody > tr > td > span > a ',
             (links) => {
-                //has to be a current year course
-                //EN.553.413.01.FA20
-                console.log(links[0])
-                links = links.filter((link) => link > div.stream_context_bottom > span.textContent.substring(14,18) == blackboard_year)
-                //Extract the links from the data
-                links = links.map((el) => 'https://blackboard.jhu.edu' + el.getAttribute('bb:rhs'))
+                links = links.map((el) => el.href)
                 return links
             }
         )
-        console.log(urls);
-        await frame_page.close();
-        // Loop through each of those links, open a new page instance and get the relevant data from them
+
+        console.log(course_urls)
+        let course_ids = []
+        for (let course_url of course_urls) {
+            let c_index = course_url.indexOf("id=") + 3;
+            let course_id = course_url.substring(c_index)
+            course_ids.push(course_id)
+        }
+
+        console.log(course_ids);
+
+        let urls = []
+        for (let course_id of course_ids) {
+            let link = "https://blackboard.jhu.edu/webapps/bb-mygrades-bb_bb60/myGrades?course_id="
+            + course_id + "&stream_name=mygrades"
+            urls.push(link)
+        }
         let pagePromise = (link) =>
             new Promise(async (resolve, reject) => {
                 let dataObj = {}
                 let newPage = await browser.newPage()
                 await newPage.goto(link)
                 //check it has due dates => or else no point of scraping teh data
-                let verify = await newPage.$eval(
-                    'div.cell.gradable > div.activityType',
-                    (text) => text.textContent
-                )
+                let verify = null;
+                try {
+                    verify = await newPage.$eval(
+                        'div.cell.gradable > div.activityType',
+                        (text) => text.textContent
+                    )
+                } catch (error) {
+                    dataObj['courseName'] = "unsupported"
+                }
                 console.log("verify:" + verify);
                 if (verify && verify.indexOf('Due') >= 0) {
                     let unconventional = await newPage.$eval(
@@ -193,7 +192,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
                     if (slash >= 0) {
                         unconventional = unconventional.substring(0, slash)
                     }
-                    let conventional = unconventional.match(/\d/g).join("");
+                    unconventional = unconventional.match(/\d/g).join("");
+                    let conventional = unconventional.substring(0,6)
                     dataObj['courseName'] = conventional
                     dataObj['taskName'] = await newPage.$$eval(
                         'div.cell.gradable > a',
@@ -206,7 +206,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
                     dataObj['taskDue'] = await newPage.$$eval(
                         'div.cell.gradable > div.activityType',
                         (spans) => {
-                            spans = spans.map((el) => el.textContent)
+                            spans = spans.map((el) => el.textContent.trim())
                             return spans
                         }
                     )

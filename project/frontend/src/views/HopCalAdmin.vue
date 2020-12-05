@@ -18,7 +18,7 @@
                     </el-button>
                     <el-button
                         style="background-color:#008CBA; color:white"
-                        @click="removePotentialInstructor(potentialI.username)"
+                        @click="removePotentialInstructor(potentialI.email)"
                     >
                         Reject Instructor
                     </el-button>
@@ -48,30 +48,16 @@
                 )
                 this.potentialInstructors = res.data
             },
-            async removePotentialInstructor(username) {
+            async removePotentialInstructor(email) {
                 const response = await axios.post(
                     `${BASE_URL}/removepotentialinstructor`, {
-                        username: username,
+                        email: email,
                     }
                 )
             },
-            async validate(potentialI) {
-                const res = await axios.post(
-                    `${BASE_URL}/create_account`, {
-                        name: potentialI.name,
-                        username: potentialI.username,
-                        password: potentialI.password,
-                        role: "potentialinstructor",
-                        email: potentialI.email,
-                        courses: potentialI.courses, //potential instructor's courses
-                    }
-                )
 
-                // console.log("Potential instructor email is: ")
-                // console.log(potentialI.email)
-                // console.log("Creating email now")
-                
-                // send email to instructor upon acceptance
+            // send email to validated instructor saying their account has been made successfully
+            sendConfirmationEmail(potentialI) {
                 var Email = { send: function (a) { 
                         return new Promise(function (n, e) { 
                             a.nocache = Math.floor(1e6 * Math.random() + 1), a.Action = "Send"; 
@@ -99,19 +85,30 @@
                         } 
                     };
 
-                    // console.log("sending email now")
+                Email.send({
+                    Host : "smtp.gmail.com",
+                    Username : "fantasticsniffle@gmail.com",
+                    Password : "fan12345!",
+                    To : potentialI.email,
+                    From : "fantasticsniffle@gmail.com",
+                    Subject : "Thank you for joining HopCalendar!",
+                    Body : "Congratulations! Your HopCalendar instructor account has been successfully created."
+                });
+            },
 
-                    Email.send({
-                        Host : "smtp.gmail.com",
-                        Username : "fantasticsniffle@gmail.com",
-                        Password : "fan12345!",
-                        To : potentialI.email,
-                        From : "fantasticsniffle@gmail.com",
-                        Subject : "Thank you for joining HopCalendar!",
-                        Body : "Congratulations! Your HopCalendar instructor account has been successfully created."
-                    });
-
-                this.removePotentialInstructor(potentialI.username)
+            // validate the given potential instructor by creating an instructor account for them
+            async validate(potentialI) {
+                const res = await axios.post(
+                    `${BASE_URL}/create_account`, {
+                        name: potentialI.name,
+                        password: potentialI.password,
+                        role: "potentialinstructor",
+                        email: potentialI.email,
+                        courses: potentialI.courses,
+                    }
+                )
+                this.sendConfirmationEmail(potentialI)
+                this.removePotentialInstructor(potentialI.email)
                 this.getPotentialInstructors()
             }
         },

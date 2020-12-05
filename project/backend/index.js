@@ -24,24 +24,24 @@ app.get('/', async (req, res) => {
 
 //endpoint login => find which student it is 
 app.post('/login', async (req, res) => {
-    //get username, password and rolefrom req object role
+    //get email, password and role
     try {
         var userInfo = req.body
-        var name = userInfo.username
+        var email = userInfo.email
         var pw = userInfo.password
         var role = userInfo.role
         let query = null
         if (role == 'Student' || role == 'student') {
             query = await Student.findAll({
                 where: {
-                    username: name,
+                    email: email,
                     password: pw,
                 },
             })
         } else {
             query = await Instructor.findAll({
                 where: {
-                    username: name,
+                    email: email,
                     password: pw,
                 },
             })
@@ -60,64 +60,33 @@ app.post('/login', async (req, res) => {
 
 //endpoint create account 
 app.post('/create_account', async (req, res) => {
-    //first get username, password, role, name from front end
+    //first get email, password, role, name from front end
     try {
         var userInfo = req.body
         var reqName = userInfo.name
-        var reqUsername = userInfo.username
+        var reqEmail = userInfo.email
         var reqPw = userInfo.password
         var role = userInfo.role
         var userCourses = ""
         if (role == "potentialinstructor") {
             userCourses = userInfo.courses
         }
-        let query = null
-        //first check whether same username exists in the database
-        if (role == 'student') {
-            query = await Student.findAll({
-                where: {
-                    username: reqName,
-                },
+        
+        //create a new user based on the role
+        if (role == 'Student' || role == 'student') {
+            await Student.create({
+                name: reqName,
+                courses: '',
+                email: reqEmail,
+                password: reqPw,
             })
-        } 
-        else {
-            query = await Instructor.findAll({
-                where: {
-                    username: reqName,
-                },
-            })
-        }
-        let newId = 100
-        if (query.length != 0) {
-            console.log('wrong id')
-            return res.send('choose a different userid')
         } else {
-            //if succeeds create a new user based on the role
-            //need to create an id (Get an id that is + 1 from most recently created account's id)
-            console.log('new')
-            let newUser = null
-            newId =
-                Math.max(await Student.max('id'), await Instructor.max('id')) +
-                1
-            if (role == 'Student' || role == 'student') {
-                newUser = await Student.create({
-                    name: reqName,
-                    courses: '',
-                    username: reqUsername,
-                    password: reqPw,
-                    id: newId,
-                })
-            } else {
-                newUser = await Instructor.create({
-                    name: reqName,
-                    courses: userCourses,
-                    username: reqUsername,
-                    password: reqPw,
-                    id: newId,
-                })
-            }
-            //console.log(newUser)
-            //added to database
+            await Instructor.create({
+                name: reqName,
+                courses: userCourses,
+                email: reqEmail,
+                password: reqPw,
+            })
         }
         res.sendStatus(200)
     } catch (error) {
@@ -126,6 +95,7 @@ app.post('/create_account', async (req, res) => {
     
 })
 
+// get course IDs of the courses represented by the given course numbers
 app.post('/getcourseids', async (req, res) => {
     try {
         const reqBody = req.body
@@ -144,49 +114,35 @@ app.post('/getcourseids', async (req, res) => {
                 courseIDArray.push(courses[i].id)
             }
         }
-        //console.log(courseIDArray.toString())
         res.send(courseIDArray.toString())
     } catch (error) {
         res.sendStatus(500)
     }
 })
 
-app.post('/getUsername', async (req, res) => {
-    try {
-        var validUsername = false
-        const reqBody = req.body
-        const inputUsername = reqBody.username
-        
-        var existingUsername = null
-        existingUsername = await Student.findAll({
-            where: {
-                username: inputUsername
-            }
-        })
-
-        if (existingUsername == "") {
-            validUsername = true
-        }
-        res.send(validUsername)
-    } catch (error) {
-        res.sendStatus(500)
-    }
-})
-
+// check if given email already exists or not in the database 
 app.post('/getEmailAddress', async (req, res) => {
     try {
         var validEmailAddress = false
         const reqBody = req.body
         const inputEmailAddress = reqBody.email
+        const role = reqBody.role
         
         var existingEmailAddress = null
-        existingEmailAddress = await Student.findAll({
-            where: {
-                email: inputEmailAddress
-            }
-        })
-
-        if (existingEmailAddress == null) {
+        if (role == "student") {
+            existingEmailAddress = await Student.findAll({
+                where: {
+                    email: inputEmailAddress
+                }
+            })
+        } else {
+            existingEmailAddress = await Instructor.findAll({
+                where: {
+                    email: inputEmailAddress
+                }
+            })
+        }  
+        if (existingEmailAddress.length == 0) {
             validEmailAddress = true
         }
         res.send(validEmailAddress)
@@ -195,16 +151,15 @@ app.post('/getEmailAddress', async (req, res) => {
     }
 })
 
+// create potential instructor account that will either be approved or rejected by app admin
 app.post('/createpotentialinstructor', async (req, res) => {
     try {
         const reqBody = req.body
-        const username = reqBody.username
         const password = reqBody.password
         const email = reqBody.email
         const name = reqBody.name
         const courses = reqBody.courses
         await PotentialInstructor.create({
-            username: username,
             password: password,
             email: email,
             name: name,
@@ -215,6 +170,7 @@ app.post('/createpotentialinstructor', async (req, res) => {
     }
 })
 
+// get all potential instructors
 app.post('/getpotentialinstructors', async (req, res) => {
     try {
         const array = []
@@ -228,13 +184,14 @@ app.post('/getpotentialinstructors', async (req, res) => {
     }
 })
 
+// delete the specified potential instructor
 app.post('/removepotentialinstructor', async (req, res) => {
     try {
         const reqBody = req.body
-        const username = reqBody.username
+        const email = reqBody.email
         await PotentialInstructor.destroy({
             where: {
-                username: username
+                email: email
             }
         });
         
@@ -248,7 +205,7 @@ app.get('/delete', async (req, res) => {
     res.send(backToObjJSON._name)
 })
 
-//endpoint all courses
+//endpoint get all courses
 app.post('/AllCourses', async (req, res) => {
     try {
         const courses = await Course.findAll()
@@ -263,7 +220,7 @@ app.post('/AllCourses', async (req, res) => {
     
 })
 
-//endpoint add courses for a user 
+//endpoint add course for a user 
 app.post('/add_course', async (req, res) => {
     try {
         const reqBody = req.body
@@ -284,7 +241,6 @@ app.post('/add_course', async (req, res) => {
         if (newCourse == null) {
             return res.send({ success, user })
         }
-        console.log(user)
         let courseArray = user.dataValues.courses.split(',')
         for (let i = 0; i < courseArray.length; i++) {
             if (courseArray[i] == '') {
@@ -292,7 +248,6 @@ app.post('/add_course', async (req, res) => {
             }
             newCourseArray.push(courseArray[i])
             if (courseArray[i] == courseId) {
-                console.log(1)
                 return res.send({ success, user })
             }
         }
@@ -325,7 +280,7 @@ app.post('/add_course', async (req, res) => {
     
 })
 
-//endpoint delete courses for a user 
+//endpoint delete course for a user 
 app.post('/delete_course', async (req, res) => {
     try {
         const reqBody = req.body
@@ -378,8 +333,7 @@ app.post('/delete_course', async (req, res) => {
     }
 })
 
-//endpoint add tasks for instructor
-//endpoint add tasks for instructor
+//endpoint add task for instructor
 app.post('/add_task', async (req, res) => {
     try {
         const reqBody = req.body
@@ -411,7 +365,7 @@ app.post('/add_task', async (req, res) => {
     
 })
 
-//endpoint delete tasks for instructor 
+//endpoint delete task for instructor 
 app.post('/delete_task', async (req, res) => {
     try {
         const reqBody = req.body
@@ -439,7 +393,7 @@ app.post('/delete_task', async (req, res) => {
     
 })
 
-//endpoint edit tasks for instructor
+//endpoint edit task for instructor
 app.post('/edit_task', async (req, res) => {
     try {
         const reqBody = req.body
@@ -483,6 +437,7 @@ app.post('/edit_task', async (req, res) => {
     
 })
 
+// mark task as being completed. this feature is only for students 
 app.post('/mark_complete', async (req, res) => {
     try {
         const reqBody = req.body
@@ -501,13 +456,6 @@ app.post('/mark_complete', async (req, res) => {
                 id: studentId,
             },
         })
-        
-        /*const completedTaskArray = []
-        for (let taskId of Student.dataValues.completedTasks) {
-            const completedTask = await Task.findByPk(parseInt(taskId))
-            completedTaskArray.push(completedTask)
-        }
-        res.send(completedTaskArray)*/
     }
     catch (error) {
         res.sendStatus(500)
@@ -515,6 +463,7 @@ app.post('/mark_complete', async (req, res) => {
 
 })
 
+// mark task as being incomplete. this feature is only for students 
 app.post('/mark_incomplete', async (req, res) => {
     try {
         const reqBody = req.body
@@ -535,19 +484,13 @@ app.post('/mark_incomplete', async (req, res) => {
                 id: studentId
             }
         })
-
-        /*const completedTaskArray = []
-        for (let taskId of Student.dataValues.completedTasks) {
-            const completedTask = await Task.findByPk(parseInt(taskId))
-            completedTaskArray.push(completedTask)
-        }
-        res.send(completedTaskArray)*/
     }
     catch (error) {
         res.sendStatus(500)
     }
 })
 
+// get the specified student's completed tasks
 app.post('/getcompletedtasks', async (req, res) => {
     try {
         const reqBody = req.body
@@ -567,7 +510,6 @@ app.post('/getcourses', async (req, res) => {
     try {
         const reqBody = req.body
         const role = reqBody.role
-        //const id = reqBody.id
         const id = parseInt(reqBody.id)
         let user = null
         if (role == 'student' || role == 'Student') {
@@ -575,8 +517,6 @@ app.post('/getcourses', async (req, res) => {
         } else {
             user = await Instructor.findByPk(id)
         }
-        // const student = await Student.findByPk(id)
-        // const courses = student.dataValues.courses
         const courses = user.dataValues.courses
         if (courses == '') {
             res.send({ courseArray: [], taskArray: [] })
@@ -588,7 +528,6 @@ app.post('/getcourses', async (req, res) => {
             const course = await Course.findByPk(parseInt(courseId))
             courseArray.push(course)
         }
-        console.log(courseArray)
         const taskArray = []
         for (let course of courseArray) {
             const taskIds = course.tasks.split(',')
@@ -643,29 +582,27 @@ app.post('/gradescope_scraper', async (req, res) => {
         const year = "2020"
 
         data = await startScraper(name, pw, type)
+        console.log(data)
+        console.log(type)
+        //we call gradescope scraper
         //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
         for (let i = 0; i < data.length; i++) {
+            let course, tasknames, taskduedates, taskblob = null;
             let coursenumber = data[i]['courseName']
-            //console.log(coursenumber);
-            let tasknames = data[i]['taskName']
-            let taskduedates = data[i]['taskDue']
-            let taskblob = data[i]['taskBlob']
-        //     //query course using coursename (prob need to think abt this as well but most courses follow a similar format
-        //     // either xxx.xxx or EN xxx.xxx or EN xxx.xxx/yyy) => so just get numbers and disregard any letters; also when / exists, ignore anything that comes after (as of now)
-            let courses = await Course.findAll({
-                where: {
-                    classNumber: coursenumber
-                }
-            })  
-            let course = courses[0]
-        //compare number of tasks under course vs tasknames.length                
-        //     //if diff, need to update
-        //     //num_new_tasks = tasknames.length(from scraper) - course.tasks.length (From our db)
-        //     //for (i = 0; i < num_new_tasks; i++) {
-        //         //task = new Task(tasknames[i], taskduedates[i], taskblob)
-        //         //add task to tasks (our db)
-        //         //we could use this whole process using what we already have (just like an instructor would add for a class)
-        //     //} 
+            if (coursenumber != "unsupported") {
+                tasknames = data[i]['taskName']
+                taskduedates = data[i]['taskDue']
+                taskblob = data[i]['taskBlob']
+            //     //query course using coursename (prob need to think abt this as well but most courses follow a similar format
+            //     // either xxx.xxx or EN xxx.xxx or EN xxx.xxx/yyy) => so just get numbers and disregard any letters; also when / exists, ignore anything that comes after (as of now)
+                let courses = await Course.findAll({
+                    where: {
+                        classNumber: coursenumber
+                    }
+                })
+                course = courses[0]  
+            }
+            
             if (course) {
                 let taskArray = course.dataValues.tasks.split(',')
                 if (taskArray.length < tasknames.length) {
@@ -683,9 +620,11 @@ app.post('/gradescope_scraper', async (req, res) => {
                                 info: taskblob,
                             });
                         } else if (type == "blackboard") {
+                            console.log("creating...")
+                            console.log(taskduedates[i]);
                             let timeArray = taskduedates[i].replace(',','').split(" ");
-                            let month = months.indexOf(timeArray[0]) + 1;
-                            let day = timeArray[1];
+                            let month = months.indexOf(timeArray[1]) + 1;
+                            let day = timeArray[2];
                             newTask = await Task.create({
                                 type: tasknames[i],
                                 deadline: month + "/" + day + "/" + year,
