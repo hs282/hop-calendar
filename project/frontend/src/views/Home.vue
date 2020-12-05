@@ -34,7 +34,7 @@ home.vue
             <el-button type="primary" @click="pushMyCourse">My Courses</el-button>
             <el-button type="primary" @click="pushAddCourse">Add Course</el-button>
             <el-button type="primary" @click="pushDropCourse">Drop Course</el-button>
-            <el-button type="primary" @click="pushGradescope">Update Gradescope</el-button>
+            <el-button type="primary" @click="pushGradescope">Update Tasks</el-button>
         </div>
     </div>
 </template>
