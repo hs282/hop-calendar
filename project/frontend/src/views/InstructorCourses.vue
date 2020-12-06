@@ -165,16 +165,6 @@ export default {
             this.$router.push('AllCourses')
         },
 
-        // display Edit Task form
-        async displayEditForm(taskID) {
-            document.getElementById(taskID).style.display = ''
-        },
-
-        // display Add Task form
-        async displayAddForm(courseID) {
-            document.getElementById(courseID).style.display = ''
-        },
-
         // add task to course
         async addTask(courseID) {
             const res = await axios.post(
