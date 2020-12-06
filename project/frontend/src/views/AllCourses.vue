@@ -13,7 +13,7 @@
                     </span>
                     <el-button
                         style="background-color:#008CBA; color:white"
-                        @click="add(course.id)"
+                        @click="add(course.id, course.name)"
                     >
                         Add
                     </el-button>
@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         // add the given course ID to this user's string of course IDs
-        async add(courseId) {
+        async add(courseId, courseName) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
                 `${BASE_URL}/add_course`,
@@ -62,14 +62,15 @@ export default {
                 }
             )
             if (response.data.success == '0') {
-                console.log('wrong course id or already exists in your courses')
+                alert("You have already added " + "'" + courseName + "'")
             } else {
+                alert("'" + courseName + "'" + " has been successfully added!")
                 // redirect to user's home page
-                if (user.role == 'student' || user.role == 'Student') {
+                /*if (user.role == 'student' || user.role == 'Student') {
                     this.$router.push('/home')
                 } else {
                     this.$router.push('/InstructorCourses')
-                }
+                }*/
             }
         },
         // get all courses in the database

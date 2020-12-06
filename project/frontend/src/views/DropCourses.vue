@@ -12,7 +12,7 @@
                     </span>
                     <el-button
                         style="background-color:#008CBA; color:white"
-                        @click="drop(course.id)"
+                        @click="drop(course.id, course.name)"
                     >
                         Drop
                     </el-button>
@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         // remove the given course ID from this user's string of course IDs
-        async drop(courseId) {
+        async drop(courseId, courseName) {
             const user = JSON.parse(this.getUser)
             const response = await axios.post(
                 `${BASE_URL}/delete_course`,
@@ -49,13 +49,13 @@ export default {
                 }
             )
             this.getCourses()
-
+            alert("'" + courseName + "'" + " has been successfully dropped!")
             // redirect to user's homepage
-            if (user.role == 'student' || user.role == 'Student') {
+            /*if (user.role == 'student' || user.role == 'Student') {
                 this.$router.push('/home')
             } else {
                 this.$router.push('/InstructorCourses')
-            }
+            }*/
         },
         // get all of the user's courses
         async getCourses() {

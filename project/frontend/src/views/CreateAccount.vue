@@ -32,16 +32,23 @@
                 <el-form-item label="Name">
                     <el-input v-model="name" id="input_name"></el-input>
                 </el-form-item>
-                <el-form-item v-if="role == 'instructor'" label="Course ID(s) (if entering multiple courses, please separate with commas like this: EN.605.201,EN.610.100)">
+                <el-form-item v-if="role == 'instructor'" label="Course ID(s) (if entering multiple courses, please separate with commas like this: 500132,500133)">
                     <el-input v-model="courseNumbers" id="input_course"></el-input>
                 </el-form-item>
             </el-form>
-            <el-button id="validation" @click="validation">
-                Submit
-            </el-button>
-            <el-button id="gotologin" @click="pushLogin">
-                Back to Login
-            </el-button>
+
+            <span style="padding-left:350px">
+                <el-button id="validation" @click="validation" style="background-color:deepskyblue; color:white; font-size:18px">
+                    Submit
+                </el-button>
+            </span>
+            <br><br>
+
+            <span style="padding-left:290px">
+                <el-button id="gotologin" @click="pushLogin">
+                    Back to Login Page
+                </el-button>
+            </span>
 
             <el-dialog
                 title="We have emailed you a code. Please enter it below."
@@ -91,6 +98,7 @@ export default {
             validInput: false,
             validJHEDEmail: false,
             validPassword: false,
+            noFieldsEmpty: true,
             inputCode: '',
             code: '',
             courseIDs: '',
@@ -147,18 +155,25 @@ export default {
         },
 
         async checkJHEDEmail() {
-            this.validJHEDEmail = false
-            const inputEmail = this.email
-            // equality comparison (==) does not work if JSON.stringify used, need to use toString() here for some reason
-            const emailDomain = inputEmail.split('@', 2)[1].toString()
+            try {
+                this.validJHEDEmail = false
+                const inputEmail = this.email
+                // equality comparison (==) does not work if JSON.stringify used, need to use toString() here for some reason
+                const emailDomain = inputEmail.split('@', 2)[1].toString()
 
-            if (emailDomain == 'jhu.edu' || emailDomain == 'jh.edu'
-                || emailDomain == "jhu.edu" || emailDomain == "jh.edu") {
-                this.validJHEDEmail = true
-            }
-            if (this.validJHEDEmail == false) {
+                if (emailDomain == 'jhu.edu' || emailDomain == 'jh.edu'
+                    || emailDomain == "jhu.edu" || emailDomain == "jh.edu") {
+                    this.validJHEDEmail = true
+                }
+                if (this.validJHEDEmail == false) {
+                    this.$message({
+                        message: 'Not a JHED email. Please enter a valid JHED email.',
+                        type: 'warning',
+                    })
+                }
+            } catch (err) {
                 this.$message({
-                    message: 'Not a JHED email. Please enter a valid JHED email.',
+                    message: 'Please enter a valid JHED email',
                     type: 'warning',
                 })
             }
@@ -205,55 +220,96 @@ export default {
                 })
             }
         },
+        checkEmptyFields() {
+            /*if (this.role == 'student'){
+                if (this.email == '' || this.password == '' || this.name == '') {
+                    this.$message({
+                        message: 'Please fill out all fields',
+                        type: 'warning'
+                    });
+                    this.noFieldsEmpty = false
+                }
+            } else {
+                if (this.email == '' || this.password == '' || this.name == '' || this.courseNumbers =='') {
+                    this.$message({
+                        message: 'Please fill out all fields',
+                        type: 'warning'
+                    });
+                    this.noFieldsEmpty = false
+                }
+            }*/
+
+            if (this.email == '' || this.password == '' || this.name == '') {
+                this.noFieldsEmpty = false
+            }
+            if (this.role == 'instructor') {
+                if (this.courseNumbers == '') {
+                    this.noFieldsEmpty = false
+                }
+            }
+            if (!this.noFieldsEmpty) {
+                this.$message({
+                    message: 'Please fill out all fields.'
+                });
+            }
+        },
         async validation() {
-            await this.checkJHEDEmail()
-            await this.checkExistingEmail()
-            await this.checkValidPassword()
+            await this.checkEmptyFields()
+            if (this.noFieldsEmpty) {
+                await this.checkJHEDEmail()
+                await this.checkExistingEmail()
+                await this.checkValidPassword()
 
-            if (this.validJHEDEmail && this.validInput && this.validPassword) {
-                this.code = Math.floor(Math.random() * 90000) + 10000
+                if (this.validJHEDEmail && this.validInput && this.validPassword) {
+                    this.code = Math.floor(Math.random() * 90000) + 10000
 
-                // email this number to the user
-                /* SmtpJS.com - v3.0.0 */
-                var Email = { send: function (a) { 
-                    return new Promise(function (n, e) { 
-                        a.nocache = Math.floor(1e6 * Math.random() + 1), a.Action = "Send"; 
-                        var t = JSON.stringify(a); 
-                        Email.ajaxPost("https://smtpjs.com/v3/smtpjs.aspx?", t, function (e) { 
-                            n(e) 
+                    // email this number to the user
+                    /* SmtpJS.com - v3.0.0 */
+                    var Email = { send: function (a) { 
+                        return new Promise(function (n, e) { 
+                            a.nocache = Math.floor(1e6 * Math.random() + 1), a.Action = "Send"; 
+                            var t = JSON.stringify(a); 
+                            Email.ajaxPost("https://smtpjs.com/v3/smtpjs.aspx?", t, function (e) { 
+                                n(e) 
+                                }) 
                             }) 
-                        }) 
-                    }, ajaxPost: function (e, n, t) { 
-                            var a = Email.createCORSRequest("POST", e); 
-                            a.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), a.onload = function () { 
-                                var e = a.responseText; 
-                                null != t && t(e) 
-                            }, 
-                            a.send(n) 
-                    }, ajax: function (e, n) { 
-                            var t = Email.createCORSRequest("GET", e); 
-                            t.onload = function () { 
-                                var e = t.responseText; 
-                                null != n && n(e) 
-                            }, 
-                            t.send() 
-                    }, createCORSRequest: function (e, n) { 
-                            var t = new XMLHttpRequest; return "withCredentials" in t ? t.open(e, n, !0) : "undefined" != typeof XDomainRequest ? (t = new XDomainRequest).open(e, n) : t = null, t 
-                    } 
-                };
-            
-                Email.send({
-                    Host : "smtp.gmail.com",
-                    Username : "fantasticsniffle@gmail.com",
-                    Password : "fan12345!",
-                    To : this.email,
-                    From : "fantasticsniffle@gmail.com",
-                    Subject : "HopCalendar: Here's Your Code to Finish Setting Up Your Account",
-                    Body : this.code
-                }).then(
-                    //show dialog box to have user enter code
-                    this.dialogCodeVisible = true
-                );
+                        }, ajaxPost: function (e, n, t) { 
+                                var a = Email.createCORSRequest("POST", e); 
+                                a.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), a.onload = function () { 
+                                    var e = a.responseText; 
+                                    null != t && t(e) 
+                                }, 
+                                a.send(n) 
+                        }, ajax: function (e, n) { 
+                                var t = Email.createCORSRequest("GET", e); 
+                                t.onload = function () { 
+                                    var e = t.responseText; 
+                                    null != n && n(e) 
+                                }, 
+                                t.send() 
+                        }, createCORSRequest: function (e, n) { 
+                                var t = new XMLHttpRequest; return "withCredentials" in t ? t.open(e, n, !0) : "undefined" != typeof XDomainRequest ? (t = new XDomainRequest).open(e, n) : t = null, t 
+                        } 
+                    };
+                
+                    Email.send({
+                        Host : "smtp.gmail.com",
+                        Username : "fantasticsniffle@gmail.com",
+                        Password : "fan12345!",
+                        To : this.email,
+                        From : "fantasticsniffle@gmail.com",
+                        Subject : "HopCalendar: Here's Your Code to Finish Setting Up Your Account",
+                        Body : this.code
+                    }).then(
+                        //show dialog box to have user enter code
+                        this.dialogCodeVisible = true
+                    );
+                } /*else {
+                    this.$message({
+                        message: 'Please fill out all fields',
+                        type: 'warning'
+                    });
+                }*/
             }
         },
         async getCourseIDs() {
