@@ -36,6 +36,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### To push Heroku
 git add . 
 git commit -m
-git subtree push --prefix project/backend heroku master
+git subtree push --prefix project/backend heroku main
 heroku logs --tail (to see console logs)
 heroku run bash (run remote terminal to run db.js)
