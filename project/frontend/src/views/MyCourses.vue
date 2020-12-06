@@ -1,7 +1,7 @@
 <template>
-    <div style="background-color:cornflowerblue;  height : 100vh;">
+    <div style="background-color:cornflowerblue; ">
         <h1 id="title" style="padding-left:520px; padding-top:40px; padding-bottom:40px">My Courses</h1>
-        <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:500px;">
+        <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:500px; padding-bottom:20px">
             <el-card class="card" style="width:40%;">
                 <div
                     class="body"

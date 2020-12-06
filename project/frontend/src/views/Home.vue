@@ -1,7 +1,7 @@
 home.vue
 
 <template>
-    <div class="home" style="padding-top:40px;">
+    <div class="home" style="padding-top:20px;">
         <v-toolbar-title v-if="$refs.calendar" style="padding-bottom: 20px; text-align:center; font-size:30px">
             {{ $refs.calendar.title }}
         </v-toolbar-title>

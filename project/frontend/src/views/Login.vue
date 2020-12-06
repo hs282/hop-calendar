@@ -16,13 +16,19 @@
                     <el-input v-model="password" id="input_pw"></el-input>
                 </el-form-item>
             </el-form>
-            <el-button id="login" @click="login()">
+            <span style="padding-left:200px">
+            <el-button id="login" @click="login()" style="background-color:deepskyblue; color:white; font-size:18px">
                 Login
             </el-button>
+            </span>
+            
+            <br><br>
             <!-- create button redirects to create account view -->
+            <span style="padding-left:150px">
             <el-button id="create" @click="create()">
                 Create Account
             </el-button>
+            </span>
         </el-card>
     </div>
 </template>
