@@ -65,6 +65,11 @@
                 if (this.role == "admin") {
                     if (this.email == "abc" && this.password == "abc") {
                         this.$router.push('/HopCalAdmin')
+                    } else {
+                        this.$message({
+                            message: 'Incorrect email or password.',
+                            type: 'warning'
+                        });
                     }
                 } else {
                     try {

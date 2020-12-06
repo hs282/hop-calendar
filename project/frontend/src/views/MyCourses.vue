@@ -10,15 +10,13 @@
                     <span class="name">
                         {{ course.name }}
                     </span>
-                    <el-button :id="course.id"
+                    <el-button :id="'courseID' + course.id"
                         style="background-color:#008CBA; color:white"
-                        @click="view(course.id, course)"
-                    >
-                        View Tasks
-                    </el-button>
+                        @click="view(course)"
+                    >View Tasks</el-button>
                 </div>
             </el-card>
-            <div class="task" v-for="task in course.taskObjs" v-bind:key="task.id">
+            <div class="task" v-for="task in course.taskObjs" v-bind:key="'taskID' + task.id">
                 <el-card class="card2" :id="task.id" style="display:none; width:70%">
                     <div
                         class="body"
@@ -103,11 +101,18 @@ export default {
             }
         },
 
-        // display all tasks for the given course
-        async view(courseId, course) {
-            document.getElementById(courseId).value = "Hide Tasks"
-            for (let t of course.taskObjs) {
-                document.getElementById(t.id).style.display = ""
+        // display or hide all tasks for the given course
+        async view(course) {
+            if (document.getElementById('courseID' + course.id).innerText == "View Tasks") {
+                for (let t of course.taskObjs) {
+                    document.getElementById(t.id).style.display = ""
+                }
+                document.getElementById('courseID' + course.id).innerText = "Hide Tasks"
+            } else {
+                for (let t of course.taskObjs) {
+                    document.getElementById(t.id).style.display = "none"
+                }
+                document.getElementById('courseID' + course.id).innerText = "View Tasks"
             }
         },
         async getCompletedTasks() {
