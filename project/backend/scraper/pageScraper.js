@@ -113,23 +113,47 @@ async function scraper(browser, my_id, my_pw, my_type) {
     else if (my_type == "blackboard") {
         let url = 'https://blackboard.jhu.edu/webapps/login/sm/index.jsp?new_loc=/webapps/login'
         let page = (await browser.pages())[0]
+        await page.setViewport({ width: 1280, height: 800 })
         console.log(`Navigating to ${url}...`)
         await page.goto(url)
         let scrapedData = []
 
-        //logging in through school authorization
-        await page.waitForSelector('div.form-group.col-md-24')
-        await page.type('#i0116', my_id, { delay: 100 })
-        await page.waitForSelector('#idSIButton9')
-        await page.focus('#idSIButton9')
-        await page.click('#idSIButton9')
 
-        await page.waitForSelector('div.form-group.col-md-24')
-        await page.type('#i0118', my_pw)
+        //switch this part w comment and it will work locally at least
+        const navigationPromise = page.waitForNavigation();
+
+        await page.waitForSelector('[name="loginfmt"]');
+        await page.type('[name="loginfmt"]', my_id);
+        await page.evaluate(selector=>{
+            return document.querySelector(selector).click();
+        },'[type="submit"]')
+        console.log('clicked');
+        //await page.click('[type="submit"]');
+
+        await navigationPromise;
+        await page.waitForSelector('input[type="password"]', { visible: true });
+        await page.type('input[type="password"]', my_pw);
+        //await page.keyboard.press("Enter");
         await page.waitFor(4000)
-        //await page.waitForSelector('#idSIButton9');
-        await page.focus('#idSIButton9')
-        await page.click('#idSIButton9')
+        await page.evaluate(selector=>{
+            return document.querySelector(selector).click();
+        },'[type="submit"]')
+        console.log('clicked');
+        await navigationPromise;
+        //logging in through school authorization
+        //await page.waitForSelector('div.form-group.col-md-24')
+        // await page.type('#i0116', my_id, { delay: 100 })
+        // await page.waitForSelector('#idSIButton9')
+        // await page.focus('#idSIButton9')
+        // await page.click('#idSIButton9')
+       
+
+        // await page.waitForSelector('div.form-group.col-md-24')
+        // await page.type('#i0118', my_pw)
+        // await page.waitFor(4000)
+        // //await page.waitForSelector('#idSIButton9');
+        // await page.focus('#idSIButton9')
+        // await page.click('#idSIButton9')
 
         console.log(page.url())
         // Wait for the required DOM to be rendered
