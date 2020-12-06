@@ -121,7 +121,8 @@ export default {
             for (let course of this.courses) {
                 for (let task of course.taskObjs) {
                     events.push({
-                        name: course.name + ': ' + task.type,
+                        name: course.name + ':' + task.type,
+                        info: task.info,
                         start: new Date(Date.parse(task.deadline)),
                         end: new Date(Date.parse(task.deadline)),
                         color: this.colors[this.rnd(0, this.colors.length - 1)],
@@ -139,15 +140,8 @@ export default {
         },
         showEvent({ nativeEvent, event }) {
             this.showDialog = true
-            console.log(event)
             this.dialogName = event.name
-            for (let course of this.courses) {
-                for (let task of course.taskObjs) {
-                    if ((task.name = event.name)) {
-                        this.dialogInfo = task.info
-                    }
-                }
-            }
+            this.dialogInfo = event.info
         },
     },
     async mounted() {
@@ -182,10 +176,8 @@ export default {
         const events = []
         for (let course of this.courses) {
             for (let task of course.taskObjs) {
-                console.log(task)
-                console.log(new Date(Date.parse(task.deadline)))
                 events.push({
-                    name: course.name + ': ' + task.type,
+                    name: course.name + ':' + task.type + ":" + task.info,
                     start: new Date(Date.parse(task.deadline)),
                     end: new Date(Date.parse(task.deadline)),
                     color: this.colors[this.rnd(0, this.colors.length - 1)],
@@ -194,6 +186,7 @@ export default {
             }
         }
         this.events = events
+        console.log(this.events)
     },
 }
 </script>
