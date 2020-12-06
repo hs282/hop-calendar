@@ -46,12 +46,6 @@
                         password: this.password,
                         type: this.type
                     });
-                    // if (response.data > 0) {
-                    //     console.log(response.data)
-                    //     this.$message({
-                    //         message: 'Assignment updated -' + response.data + 'tasks added'
-                    //     })
-                    // }
                 } catch (err) {
                     this.$message({
                         message: 'Incorrect username or password.',
