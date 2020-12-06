@@ -17,17 +17,17 @@
                 </el-form-item>
             </el-form>
             <span style="padding-left:200px">
-            <el-button id="login" @click="login()" style="background-color:deepskyblue; color:white; font-size:18px">
-                Login
-            </el-button>
+                <el-button id="login" @click="login()" style="background-color:deepskyblue; color:white; font-size:18px">
+                    Login
+                </el-button>
             </span>
             
             <br><br>
             <!-- create button redirects to create account view -->
             <span style="padding-left:150px">
-            <el-button id="create" @click="create()">
-                Create Account
-            </el-button>
+                <el-button id="create" @click="create()">
+                    Create Account
+                </el-button>
             </span>
         </el-card>
     </div>
@@ -68,39 +68,47 @@
                 //these are the only registered users in the database.
 
                 // abc is admin's email and password
-                if (this.role == "admin") {
-                    if (this.email == "abc" && this.password == "abc") {
-                        this.$router.push('/HopCalAdmin')
-                    } else {
-                        this.$message({
-                            message: 'Incorrect email or password.',
-                            type: 'warning'
-                        });
-                    }
+                if (this.email == '' || this.password == '') {
+                    this.$message({
+                        message: 'Pleaase enter both an email and password',
+                        type: 'warning'
+                    });
                 } else {
-                    try {
-                        const response = await axios.post(`${BASE_URL}/login`,
-                        {
-                            email: this.email,
-                            password: this.password,
-                            role: this.role
-                        });
-
-                        // go to user's homepage
-                        if (this.role == 'student' || this.role == 'Student') {
-                            this.$router.push('/home')
+                    if (this.role == "admin") {
+                        if (this.email == "abc" && this.password == "abc") {
+                        this.$router.push('/HopCalAdmin')
                         } else {
-                            this.$router.push('/InstructorCourses')
+                            this.$message({
+                                message: 'Incorrect email or password.',
+                                type: 'warning'
+                            });
                         }
-                        
-                        const user = response.data
-                        const object = { id: user.id, name: user.name, courses: user.courses, role: this.role}
-                        this.setUser(JSON.stringify(object));
-                    } catch (err) {
-                        this.$message({
-                            message: 'Incorrect email or password.',
-                            type: 'warning'
-                        });
+                    } else {
+                        try {
+                            const response = await axios.post(`${BASE_URL}/login`,
+                            {
+                                email: this.email,
+                                password: this.password,
+                                role: this.role
+                            });
+
+                            // go to user's homepage
+                            if (this.role == 'student' || this.role == 'Student') {
+                                this.$router.push('/home')
+                            } else {
+                                this.$router.push('/InstructorCourses')
+                            }
+                            
+                            const user = response.data
+                            const object = { id: user.id, name: user.name, courses: user.courses, role: this.role}
+                            this.setUser(JSON.stringify(object));
+                        } catch (err) {
+                            this.$message({
+                                message: 'Incorrect email or password.',
+                                type: 'warning'
+                            });
+                        }
+
                     }
                 }
             },
