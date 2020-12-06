@@ -1,14 +1,5 @@
 //test
-async function blackboard_link(input){
-    let blink = await input.getAttribute('bb:rhs');
-    blink = 'https://blackboard.jhu.edu' + blink;
-    return blink;
-}
-async function framelink(input){
-    let blink = await input.getAttribute('src');
-    blink = 'https://blackboard.jhu.edu' + blink;
-    return blink;
-}
+
 async function scraper(browser, my_id, my_pw, my_type) {
     const gradescope_year = 'Fall 2020'
     const blackboard_year = 'FA20'
@@ -34,11 +25,13 @@ async function scraper(browser, my_id, my_pw, my_type) {
         await page.focus('#idSIButton9')
         await page.click('#idSIButton9')
         // Wait for the required DOM to be rendered
-
+        let page2 = await browser.newPage()
+        await page2.goto(url)
+        console.log(page.url())
         //in gradescope
-        await page.waitForSelector('.courseList--coursesForTerm')
+        await page2.waitForSelector('.courseList--coursesForTerm')
 
-        let urls = await page.$$eval(
+        let urls = await page2.$$eval(
             'div.courseList > div:nth-child(2) > a',
             (links) => {
                 //has to be a course
@@ -112,6 +105,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
                 scrapedData.push(currentPageData)
             }
         }
+        page2.close()
         page.close()
         console.log(scrapedData)
         return scrapedData
@@ -136,6 +130,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
         //await page.waitForSelector('#idSIButton9');
         await page.focus('#idSIButton9')
         await page.click('#idSIButton9')
+
+        console.log(page.url())
         // Wait for the required DOM to be rendered
         await page.waitForSelector('#loginBox-JHU')
         await page.click('#loginBox-JHU > h2 > a:nth-child(5)')
