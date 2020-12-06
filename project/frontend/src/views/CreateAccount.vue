@@ -121,7 +121,6 @@ export default {
             }
         },
         async createPotentialInstrAccount() {
-            await this.getCourseIDs()
             try {
                 const response = await axios.post(
                     `${BASE_URL}/createpotentialinstructor`,
@@ -198,10 +197,10 @@ export default {
                 this.validInput = true
             }
             if (this.validInput == false) {
-                r.push('/#/createaccount')
+                //r.push('/#/createaccount')
                 
                 this.$message({
-                    message: 'Existing email',
+                    message: 'An account already exists under this email',
                     type: 'warning',
                 })
             }
@@ -271,6 +270,7 @@ export default {
                 if (this.role == 'student') {
                     await this.createStudentAccount()
                 } else {
+                    await this.getCourseIDs()
                     await this.createPotentialInstrAccount()
                 }
             }  else {

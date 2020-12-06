@@ -128,21 +128,33 @@ app.post('/getEmailAddress', async (req, res) => {
         const inputEmailAddress = reqBody.email
         const role = reqBody.role
         
-        var existingEmailAddress = null
-        if (role == "student") {
-            existingEmailAddress = await Student.findAll({
+        //var existingStudEmailAddress = null
+        //var existingInstrEmailAddress = null
+        /*if (role == "student") {
+            existingStudEmailAddress = await Student.findAll({
                 where: {
                     email: inputEmailAddress
                 }
             })
         } else {
-            existingEmailAddress = await Instructor.findAll({
+            existingInstrEmailAddress = await Instructor.findAll({
                 where: {
                     email: inputEmailAddress
                 }
             })
-        }  
-        if (existingEmailAddress.length == 0) {
+        }  */
+
+        var existingStudEmailAddress = await Student.findAll({
+            where: {
+                email: inputEmailAddress
+            }
+        })
+        var existingInstrEmailAddress = await Instructor.findAll({
+            where: {
+                email: inputEmailAddress
+            }
+        })
+        if (existingStudEmailAddress.length == 0 && existingInstrEmailAddress.length == 0) {
             validEmailAddress = true
         }
         res.send(validEmailAddress)
