@@ -1,6 +1,6 @@
 
 <template>
-    <div style="height : 100vh; display:flex; justify-content:center; align-items:center;">
+    <div style="background-color:cornflowerblue; height : 100vh; display:flex; justify-content:center; align-items:center;">
         <el-card style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;">
             <h1>Hop Calendar</h1>
             <el-form>
@@ -16,13 +16,19 @@
                     <el-input v-model="password" id="input_pw"></el-input>
                 </el-form-item>
             </el-form>
-            <el-button id="login" @click="login()">
+            <span style="padding-left:200px">
+            <el-button id="login" @click="login()" style="background-color:deepskyblue; color:white; font-size:18px">
                 Login
             </el-button>
+            </span>
+            
+            <br><br>
             <!-- create button redirects to create account view -->
+            <span style="padding-left:150px">
             <el-button id="create" @click="create()">
                 Create Account
             </el-button>
+            </span>
         </el-card>
     </div>
 </template>
@@ -65,6 +71,11 @@
                 if (this.role == "admin") {
                     if (this.email == "abc" && this.password == "abc") {
                         this.$router.push('/HopCalAdmin')
+                    } else {
+                        this.$message({
+                            message: 'Incorrect email or password.',
+                            type: 'warning'
+                        });
                     }
                 } else {
                     try {

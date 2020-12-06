@@ -1,29 +1,36 @@
 <template>
-    <div>
-        <h1 style="padding-left: 50px">Admin</h1>
-        <div class="div" v-for="potentialI in potentialInstructors" v-bind:key="potentialI.id">
-            <el-card class="card">
+    <div style="background-color:cornflowerblue; height : 100vh">
+        <h1 style="padding-left: 500px; padding-top: 20px; padding-bottom: 20px">Welcome, Admin</h1>
+        <div v-if="potentialInstructors.length == 0">
+            <h2 style="padding-left: 500px">0 pending instructors</h2>
+        </div>
+        <div v-if="potentialInstructors.length != 0" >
+        <div class="div" v-for="potentialI in potentialInstructors" v-bind:key="potentialI.id" style="padding-left:500px">
+            <el-card class="card" style="width:50%">
                 <div
                     class="body"
-                    style="height: 100%; display: flex; justify-content: space-between; align-items: center;"
+                    style="height: 100%; display: flex; align-items: center; "
                 >
-                    <span class="name">
-                        {{ potentialI.name }} <strong>{{ potentialI.email }}</strong>
+                    <span class="name" style="padding-right:150px">
+                        <strong>Pending Instructor</strong><br>Name: {{ potentialI.name }}<br>Email: {{ potentialI.email }}<br>Course(s): {{ potentialI.courseNumbers }} 
                     </span>
+                    
                     <el-button
-                        style="background-color:#008CBA; color:white"
+                        style="background-color:#008CBA; color:white;"
                         @click="validate(potentialI)"
                     >
-                        Validate Instructor
+                        Validate
                     </el-button>
                     <el-button
                         style="background-color:#008CBA; color:white"
                         @click="removePotentialInstructor(potentialI.email)"
                     >
-                        Reject Instructor
+                        Reject
                     </el-button>
+                    
                 </div>
             </el-card>
+        </div>
         </div>
     </div>
 </template>
@@ -54,6 +61,8 @@
                         email: email,
                     }
                 )
+                this.getPotentialInstructors()
+                window.location.reload()
             },
 
             // send email to validated instructor saying their account has been made successfully
@@ -109,7 +118,6 @@
                 )
                 this.sendConfirmationEmail(potentialI)
                 this.removePotentialInstructor(potentialI.email)
-                this.getPotentialInstructors()
             }
         },
     }

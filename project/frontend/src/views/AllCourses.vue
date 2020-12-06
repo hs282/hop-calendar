@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <h1 style="padding-left: 50px">All Courses</h1>
-        <el-input style="width:100%; margin: 20px;" placeholder="Search Courses" v-model="search"></el-input>
-        <div class="div" v-for="course in courses" v-bind:key="course.id">
-            <el-card class="card">
+    <div style="background-color:cornflowerblue;">
+        <h1 style="padding-left:400px; padding-top:40px; padding-bottom:40px">All Courses</h1>
+        <el-input style="width:50%; padding-left:400px" placeholder="Search Courses" v-model="search"></el-input>
+        <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:380px; padding-bottom:20px">
+            <el-card class="card" style="width:70%;">
                 <div
                     class="body"
                     style="height: 100%; display: flex; justify-content: space-between; align-items: center;"

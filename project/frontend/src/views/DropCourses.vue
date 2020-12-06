@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <h1 style="padding-left: 50px">Drop Courses</h1>
-        <div class="div" v-for="course in courses" v-bind:key="course.id">
-            <el-card class="card">
+    <div style="background-color:cornflowerblue;">
+        <h1 style="padding-left:400px; padding-top:40px; padding-bottom:40px">Drop Courses</h1>
+        <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:380px; padding-bottom:20px">
+            <el-card class="card" style="width:40%">
                 <div
                     class="body"
                     style="height: 100%; display: flex; justify-content: space-between; align-items: center;"

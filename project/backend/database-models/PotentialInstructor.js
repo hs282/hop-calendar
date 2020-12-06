@@ -42,6 +42,10 @@ const PotentialInstructor = sequelize.define('PotentialInstructor', {
   courses: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  courseNumbers: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }, {
     freezeTableName: true

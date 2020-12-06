@@ -1,7 +1,7 @@
 
 <template>
     <div
-        style="height : 100vh; display:flex; justify-content:center; align-items:center;"
+        style="background-color:cornflowerblue; height : 100vh; display:flex; justify-content:center; align-items:center;"
     >
         <el-card
             style="height: 800px; width: 500px; display:flex; justify-content:center; align-items:center;"
@@ -130,6 +130,7 @@ export default {
                         name: this.name,
                         email: this.email,
                         courses: this.courseIDs,
+                        courseNumbers: this.courseNumbers
                     }
                 )
                 this.alertVisible = true
@@ -280,4 +281,5 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
