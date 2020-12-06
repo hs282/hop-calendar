@@ -8,7 +8,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let url = 'https://www.gradescope.com/auth/saml/jhu'
         let page = (await browser.pages())[0]
         console.log(`Navigating to ${url}...`)
-        await page.goto(url)
+        await page.goto(url, {timeout: 60000, waitUntil: 'domcontentloaded'})
         let scrapedData = []
 
         //logging in through school authorization
