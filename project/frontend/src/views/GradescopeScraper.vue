@@ -65,6 +65,10 @@
                         password: this.password,
                         type: this.type
                     });
+                    this.$message({
+                        message: 'Successfully updated courses.',
+                        type: 'success'
+                    });
                 } catch (err) {
                     this.$message({
                         message: 'Incorrect email or password.',
