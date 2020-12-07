@@ -25,11 +25,11 @@ Our app will be an assignment/deadline aggregator that helps students stay on to
 
 ### Nice to have
 - Q&A board for each upcoming assignment object
-- Search bar with filters where students can search for courses to add 
+- Search bar with filters where students can search for courses to add (COMPLETED)
 - Students can choose from monthly, weekly, and daily calendar views (COMPLETED)
 - Student can view tasks by class in list view on the My Courses page (COMPLETED)
-- Students can mark tasks as being complete
-- External links to Gradescope, Piazza, instructors' personal course websites
+- Students can mark tasks as being complete (COMPLETED)
+- External links to Gradescope, Piazza, instructors' personal course websites (Gradescope COMPLETED)
 - Connections to SIS, Blackboard
 - Course info is scraped and loaded into database from SIS, Blackboard, etc so that instructors don't have to make an account for this app
 - Students can view list of tasks in order of priority
@@ -43,10 +43,12 @@ This application will only be for Web (browser) based users, although it will be
 - AS A: Hopkins student using the app
     - I WANT: to be able to see and manage all deadlines for assignments, quizzes, exams, etc.
     - SO THAT: I can meet my academic requirements on time even in a 100% online learning environment
+    (COMPLETED)
   
 - AS A: member of the teaching staff at Hopkins using the app
     - I WANT: to have a main hub where I can post all academic deadlines and manage them at once
     - SO THAT: I can see how the workload is separated and communicate better with my students regarding academic work and workload
+    (COMPLETED)
   
 - AS A: first-year Hopkins student using the app
     - I WANT: a calendar that tells me which assignments/quizzes/exams are coming up
