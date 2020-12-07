@@ -6,7 +6,10 @@
         <el-card
             style="height: 800px; width: 500px; display:flex; justify-content:center; align-items:center;"
         >
-        <v-alert type="success" :value="alertVisible" >
+        <v-alert type="success" :value="instrAlertVisible" >
+            Your information has been received. You'll receive an email if approved.
+        </v-alert>
+        <v-alert type="success" :value="studentAlertVisible" >
             Account successfully created!
         </v-alert>
         <v-alert type="warning" dismissible :value="invalidEmailAlertVisible" >
@@ -32,7 +35,7 @@
                 <el-form-item label="Name">
                     <el-input v-model="name" id="input_name"></el-input>
                 </el-form-item>
-                <el-form-item v-if="role == 'instructor'" label="Course ID(s) (if entering multiple courses, please separate with commas like this: 500132,500133)">
+                <el-form-item style="padding-right:80px" v-if="role == 'instructor'" label="Course ID(s) (if entering multiple courses, please separate with commas like this: 500132,500133)">
                     <el-input v-model="courseNumbers" id="input_course"></el-input>
                 </el-form-item>
             </el-form>
@@ -93,7 +96,8 @@ export default {
             email: '',
             courseNumbers: '',
             dialogCodeVisible: false,
-            alertVisible: false,
+            instrAlertVisible: false,
+            studentAlertVisible: false,
             invalidEmailAlertVisible: false,
             validInput: false,
             validJHEDEmail: false,
@@ -118,7 +122,7 @@ export default {
                         name: this.name,
                     }
                 )
-                this.alertVisible = true
+                this.studentAlertVisible = true
                 var r = this.$router
                 setTimeout(function(){ r.push('/') }, 2000);
             } catch (err) {
@@ -140,9 +144,9 @@ export default {
                         courseNumbers: this.courseNumbers
                     }
                 )
-                this.alertVisible = true
+                this.instrAlertVisible = true
                 var r = this.$router
-                setTimeout(function(){ r.push('/') }, 2000);
+                setTimeout(function(){ r.push('/') }, 4000);
             } catch (err) {
                 this.$message({
                     message: 'Existing email',
@@ -221,24 +225,6 @@ export default {
             }
         },
         checkEmptyFields() {
-            /*if (this.role == 'student'){
-                if (this.email == '' || this.password == '' || this.name == '') {
-                    this.$message({
-                        message: 'Please fill out all fields',
-                        type: 'warning'
-                    });
-                    this.noFieldsEmpty = false
-                }
-            } else {
-                if (this.email == '' || this.password == '' || this.name == '' || this.courseNumbers =='') {
-                    this.$message({
-                        message: 'Please fill out all fields',
-                        type: 'warning'
-                    });
-                    this.noFieldsEmpty = false
-                }
-            }*/
-
             if (this.email == '' || this.password == '' || this.name == '') {
                 this.noFieldsEmpty = false
             }

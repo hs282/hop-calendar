@@ -62,7 +62,6 @@
                     }
                 )
                 this.getPotentialInstructors()
-                window.location.reload()
             },
 
             // send email to validated instructor saying their account has been made successfully
@@ -118,6 +117,7 @@
                 )
                 this.sendConfirmationEmail(potentialI)
                 this.removePotentialInstructor(potentialI.email)
+                alert("Successfully authenticated")
             }
         },
     }

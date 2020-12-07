@@ -179,6 +179,7 @@ app.post('/createpotentialinstructor', async (req, res) => {
             courses: courses,
             courseNumbers: courseNums
         })
+        res.sendStatus(200)
     } catch (error) {
         res.sendStatus(500)
     }
@@ -208,7 +209,7 @@ app.post('/removepotentialinstructor', async (req, res) => {
                 email: email
             }
         });
-        
+        res.sendStatus(200)
     } catch (error) {
         res.sendStatus(500)
     }
