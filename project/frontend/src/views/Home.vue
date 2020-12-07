@@ -14,7 +14,7 @@ home.vue
                     ref="calendar"
                     v-model="focus"
                     :weekdays="weekday"
-                    :type="type"
+                    :type="getMode"
                     :events="events"
                     @click:event="showEvent"
                     @click:more="viewDay"
@@ -47,7 +47,7 @@ home.vue
 <script>
 import axios from 'axios'
 import {BASE_URL} from '../api.js'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
     data: () => ({
         focus: '',
@@ -89,6 +89,9 @@ export default {
         ...mapGetters(['getUser', 'getMode']),
     },
     methods: {
+        ...mapActions([
+            'setMode'
+        ]),
         // go to All Courses page
         pushAddCourse() {
             this.$router.push('AllCourses')
@@ -108,8 +111,7 @@ export default {
         viewDay ({ date }) {
             this.focus= date
             this.type = 'day'
-            this.setMode = "day"
-            //document.getElementById("d").checked="checked"
+            this.setMode("day")
         },
         getEvents({ start, end }) {
             this.courses.forEach(course => {
