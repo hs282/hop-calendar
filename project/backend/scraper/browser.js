@@ -2,21 +2,21 @@
 //const puppeteer = require('puppeteer');
 import puppeteer from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
-puppeteer.use(StealthPlugin());
+puppeteer.use(StealthPlugin())
 
 async function startBrowser() {
-    let browser;
+    let browser
     try {
-        console.log("Opening the browser......");
+        console.log('Opening the browser......')
         browser = await puppeteer.launch({
             headless: true,
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
-            'ignoreHTTPSErrors': true
-        });
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--incognito'],
+            ignoreHTTPSErrors: true,
+        })
     } catch (err) {
-        console.log("Could not create a browser instance => : ", err);
+        console.log('Could not create a browser instance => : ', err)
     }
-    return browser;
+    return browser
 }
 
 export default startBrowser
