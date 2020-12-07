@@ -1,4 +1,21 @@
 //test
+// import cloudinary from 'cloudinary';
+// // const cloudinary = require('cloudinary').v2;
+// cloudinary.config({
+//     cloud_name: 'dcbtlfrbq', 
+//     api_key: '359755717668621', 
+//     api_secret: '18T4HjdGbvBtuaudLL2GcIqEfZg'
+//   });
+
+// async function uploadScreenshot(screenshot) {
+//     return new Promise((resolve, reject) => {
+//       const uploadOptions = {};
+//       cloudinary.uploader.upload_stream(uploadOptions, (error, result) => {
+//         if (error) console.log(error)
+//         else resolve(result);
+//       }).end(screenshot);
+//     });
+//   }
 
 async function scraper(browser, my_id, my_pw, my_type) {
     const gradescope_year = 'Fall 2020'
@@ -147,18 +164,25 @@ async function scraper(browser, my_id, my_pw, my_type) {
         await page.waitForSelector('div.form-group.col-md-24')
         await page.type('#i0116', my_id, { delay: 100 })
         await page.waitForSelector('#idSIButton9')
-        await page.focus('#idSIButton9')
-        await page.click('#idSIButton9')
+        // await page.focus('#idSIButton9')
+        // await page.click('#idSIButton9')
+        await page.$eval('[type="submit"]', button => button.click());
        
 
         await page.waitForSelector('div.form-group.col-md-24')
         await page.type('#i0118', my_pw)
         await page.waitFor(4000)
         //await page.waitForSelector('#idSIButton9');
-        await page.focus('#idSIButton9')
-        await page.click('#idSIButton9')
-
+        // await page.focus('#idSIButton9')
+        // await page.click('#idSIButton9')
+        await page.$eval('[type="submit"]', button => button.click());
         console.log(page.url())
+        // let screenshot = await page.screenshot({
+        //     omitBackground: true,
+        //     encoding: 'binary'
+        //   });
+        // console.log(screenshot)
+        // uploadScreenshot(screenshot)
         // Wait for the required DOM to be rendered
         await page.waitForSelector('#loginBox-JHU')
         await page.click('#loginBox-JHU > h2 > a:nth-child(5)')
