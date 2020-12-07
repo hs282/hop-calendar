@@ -10,10 +10,10 @@
                     v-bind:key="task.id"
                 >
                     <br>
-                    <span style="padding-right: 30px; display:block"><strong>{{ task.deadline }}</strong>: {{ task.type }}<br />{{ task.info }}</span>
+                    <span style="padding-right: 30px; display:block"><strong>Date: </strong> {{ task.deadline }}<br><strong>Title: </strong>{{ task.type }}<br><strong>Details: </strong>{{ task.info }}</span>
 
                     <!-- Edit Task form -->
-                    <el-dialog
+                    <!--<el-dialog
                         title="Edit Task"
                         :visible.sync="dialogVisible"
                         width="30%"
@@ -22,22 +22,34 @@
                             newDeadline = task.deadline
                             newInfo = task.info
                         "
-                    >
-                        <el-form>
-                            <el-input
-                                placeholder="Type"
-                                v-model="newType"
+                    >-->
+                        <!-- Edit task form -->
+                        <el-form style="display:none;" :id="task.id">
+                            <br>
+                            <el-input style="width:70%; padding-bottom:5px"
+                                placeholder="Title"
+                                v-model="updatedType"
                             ></el-input>
-                            <el-input
-                                placeholder="Deadline"
-                                v-model="newDeadline"
+                            <el-input style="width:70%; padding-bottom:5px"
+                                placeholder="Date"
+                                v-model="updatedDeadline"
                             ></el-input>
-                            <el-input
-                                placeholder="Info"
-                                v-model="newInfo"
+                            <el-input style="width:70%; padding-bottom:10px"
+                                placeholder="Details"
+                                v-model="updatedInfo"
                             ></el-input>
+                            
+                            <span style="padding-left:210px;">
+                            <el-button style="background-color:deepskyblue; color:white" @click="editTask(task.id, task)">
+                                Update
+                            </el-button>
+                            <el-button style="background-color:red; color:white" @click="hideEditTaskForm(task.id)">
+                                Cancel
+                            </el-button>
+                            <br><br>
+                            </span>
                         </el-form>
-                        <span slot="footer" class="dialog-footer">
+                        <!--<span slot="footer" class="dialog-footer">
                             <el-button @click="dialogVisible = false">Cancel</el-button>
                             <el-button
                                 type="primary"
@@ -45,14 +57,16 @@
                                     dialogVisible = false
                                     editTask(prevTask.id)
                                 ">Confirm</el-button>
-                        </span>
-                    </el-dialog>
+                        </span>-->
+                    <!--</el-dialog>-->
 
                     <el-button
                         style="background-color:#008CBA; color:white"
                         @click="
-                            dialogVisible = true
-                            prevTask = task
+                            showEditForm(task.id)
+                            updatedType = task.type
+                            updatedDeadline = task.deadline
+                            updatedInfo = task.info
                         "
                     >
                         Edit task</el-button
@@ -140,9 +154,9 @@ export default {
             tasks: [],
             dialogVisible: false,
             dialogAddVisible: false,
-            newType: '',
-            newDeadline: '',
-            newInfo: '',
+            updatedType: '',
+            updatedDeadline: '',
+            updatedInfo: '',
             newT: '',
             newD: '',
             newI: ''
@@ -192,13 +206,20 @@ export default {
             this.getCourses()
         },
 
+        showEditForm(taskID) {
+            document.getElementById(taskID).style.display = ''
+        },
+        hideEditTaskForm(taskID) {
+            document.getElementById(taskID).style.display = 'none'
+        },
         // update task
-        async editTask(taskID) {
+        async editTask(taskID, task) {
+            this.hideEditTaskForm(taskID)
             const res = await axios.post(`${BASE_URL}/edit_task`, {
                 taskId: taskID,
-                type: this.newType,
-                deadline: this.newDeadline,
-                info: this.newInfo,
+                type: this.updatedType,
+                deadline: this.updatedDeadline,
+                info: this.updatedInfo,
             })
             this.getCourses()
         },
