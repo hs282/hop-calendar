@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color:cornflowerblue; height : 100vh">
+    <div style="background-color:cornflowerblue; height:100%">
         <h1 style="padding-left: 500px; padding-top: 20px; padding-bottom: 20px">Welcome, Admin</h1>
         <div v-if="potentialInstructors.length == 0">
             <h2 style="padding-left: 500px">0 pending instructors</h2>

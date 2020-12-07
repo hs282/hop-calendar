@@ -1,7 +1,7 @@
 
 <template>
     <div
-        style="background-color:cornflowerblue; height : 100vh; display:flex; justify-content:center; align-items:center;"
+        style="background-color:cornflowerblue; height:100%; display:flex; justify-content:center; align-items:center;"
     >
         <el-card
             style="height: 800px; width: 500px; display:flex; justify-content:center; align-items:center;"

@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color:cornflowerblue;">
+    <div style="background-color:cornflowerblue; height:100%">
         <h1 style="padding-left:400px; padding-top:40px; padding-bottom:40px">Drop Courses</h1>
         <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:380px; padding-bottom:20px">
             <el-card class="card" style="width:40%">

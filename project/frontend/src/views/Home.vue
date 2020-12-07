@@ -1,7 +1,7 @@
 home.vue
 
 <template>
-    <div class="home" style="padding-top:20px;">
+    <div class="home" style="padding-top:20px; background-color:cornflowerblue; height:100%">
         <v-toolbar-title v-if="$refs.calendar" style="padding-bottom: 20px; text-align:center; font-size:30px">
             {{ $refs.calendar.title }}
         </v-toolbar-title>
@@ -12,11 +12,13 @@ home.vue
             <v-sheet height="600" style="width: 100%">
                 <v-calendar
                     ref="calendar"
-                    v-model="value"
+                    v-model="focus"
                     :weekdays="weekday"
-                    :type="getMode"
+                    :type="type"
                     :events="events"
                     @click:event="showEvent"
+                    @click:more="viewDay"
+                    @click:date="viewDay"
                     :event-overlap-mode="mode"
                     :event-overlap-threshold="30"
                     :event-color="getEventColor"
@@ -34,10 +36,10 @@ home.vue
             class="buttons"
             style="display: flex; justify-content: flex-end; margin-top: 20px; margin-right: 50px;"
         >
-            <el-button type="primary" @click="pushMyCourse">My Courses</el-button>
-            <el-button type="primary" @click="pushAddCourse">Add Course</el-button>
-            <el-button type="primary" @click="pushDropCourse">Drop Course</el-button>
-            <el-button type="primary" @click="pushGradescope">Update Tasks</el-button>
+            <el-button type="primary" @click="pushMyCourse" style="background-color:white; color:darkblue">My Courses</el-button>
+            <el-button type="primary" @click="pushAddCourse" style="background-color:white; color:darkblue">Add Course</el-button>
+            <el-button type="primary" @click="pushDropCourse" style="background-color:white; color:darkblue">Drop Course</el-button>
+            <el-button type="primary" @click="pushGradescope" style="background-color:white; color:darkblue">Update Tasks</el-button>
         </div>
     </div>
 </template>
@@ -48,6 +50,8 @@ import {BASE_URL} from '../api.js'
 import { mapGetters } from 'vuex'
 export default {
     data: () => ({
+        focus: '',
+        type: 'month',
         mode: 'stack',
         modes: ['stack', 'column'],
         weekday: [0, 1, 2, 3, 4, 5, 6],
@@ -101,6 +105,12 @@ export default {
         pushGradescope() {
             this.$router.push('GradescopeScraper')
         },
+        viewDay ({ date }) {
+            this.focus= date
+            this.type = 'day'
+            this.setMode = "day"
+            //document.getElementById("d").checked="checked"
+        },
         getEvents({ start, end }) {
             this.courses.forEach(course => {
                 course.taskObjs = []
@@ -121,7 +131,7 @@ export default {
             for (let course of this.courses) {
                 for (let task of course.taskObjs) {
                     events.push({
-                        name: course.name + ':' + task.type,
+                        name: course.name + ': ' + task.type,
                         info: task.info,
                         start: new Date(Date.parse(task.deadline)),
                         end: new Date(Date.parse(task.deadline)),
