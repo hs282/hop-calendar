@@ -11,7 +11,7 @@ Site can be accessed at https://fervent-leakey-a2a33e.netlify.app/#/ which is th
 CI/CD hasn't been set up yet but will be soon.
 
 ### LOGIN INFO
-Current dummy data login is student: janedoe@jhu.edu, hellokitty; and instructor: darvish@jhu.edu, computer. These fields should be automatically be filled in on the login page to make it easier for instructor grading. 
+Current dummy data login is student: janedoe@jhu.edu, hellokitty; and instructor: darvish@jhu.edu, computer. These fields should be automatically be filled in on the login page to make it easier for instructor grading. To log in as Admin, enter abc for both email and password. 
 
 Locally, please run 'node db.js' in the /project/backend/ directory to instantiate PSQL tables as well as dummy data. This has already been done on the deploy. 
 
