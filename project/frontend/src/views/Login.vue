@@ -3,7 +3,9 @@
     <div style="background-color:cornflowerblue; height:100%; display:flex; justify-content:center; align-items:center;">
         <el-card style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;">
             <!-- <h1>Hop Calendar</h1> -->
-            <img src="https://github.com/jhu-oose/2020-fall-group-fantastic-sniffle/blob/master/project/frontend/HopCalendar%20Logo.png" alt="HopCalendar">
+            <img :src="logo" alt="HopCalendar"
+                height="100px"
+                width="300px">
             <el-form>
                 <el-form-item>
                     <el-radio v-model="role" label="student" id="student">Student</el-radio>
@@ -43,7 +45,8 @@
             return {
                 role: 'student',
                 email: 'janedoe@jhu.edu',
-                password: 'hellokitty'
+                password: 'hellokitty',
+                logo: require("../../HopCalendarLogo.png")
             }
         },
         watch: {
