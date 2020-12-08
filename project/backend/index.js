@@ -603,6 +603,9 @@ app.post('/gradescope_scraper', async (req, res) => {
             console.log('failed')
             data = await startScraper(name, pw, type)
         }
+        if (!data) {
+            res.sendStatus(500)
+        }
         //we call gradescope scraper
         //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
         for (let i = 0; i < data.length; i++) {

@@ -59,7 +59,7 @@
             },
             async update() {
                 try {
-                    const response = await axios.post('http://localhost:3000/gradescope_scraper',//`https://immense-garden-94246.herokuapp.com/gradescope_scraper`,
+                    const response = await axios.post(`${BASE_URL}/gradescope_scraper`,
                     {
                         username: this.email,
                         password: this.password,

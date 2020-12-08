@@ -47,6 +47,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
         console.log(page.url())
         let str = page.url()
         if (str.substring(str.length - 6) == "/login") {
+            page2.close()
+            page.close()
             return null
         }
         //in gradescope
@@ -182,6 +184,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
         console.log(page.url())
         let str = page.url()
         if (str.substring(str.length - 6) == '/login') {
+            page.close()
             return null
         }
         // let screenshot = await page.screenshot({
