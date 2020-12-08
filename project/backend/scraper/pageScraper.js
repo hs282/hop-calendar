@@ -42,13 +42,13 @@ async function scraper(browser, my_id, my_pw, my_type) {
         await page.focus('#idSIButton9')
         await page.click('#idSIButton9')
         // Wait for the required DOM to be rendered
-        let page2 = await browser.newPage()
-        await page2.goto(url)
+        //let page2 = await browser.newPage() original
+        //await page2.goto(url)    original
         console.log(page.url())
         //in gradescope
-        await page2.waitForSelector('.courseList--coursesForTerm')
+        await page.waitForSelector('.courseList--coursesForTerm')
 
-        let urls = await page2.$$eval(
+        let urls = await page.$$eval(
             'div.courseList > div:nth-child(2) > a',
             (links) => {
                 //has to be a course
@@ -122,7 +122,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
                 scrapedData.push(currentPageData)
             }
         }
-        page2.close()
+        //page2.close()
         page.close()
         console.log(scrapedData)
         return scrapedData
