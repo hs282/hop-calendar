@@ -25,7 +25,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let url = 'https://www.gradescope.com/auth/saml/jhu'
         let page = (await browser.pages())[0]
         console.log(`Navigating to ${url}...`)
-        await page.goto(url, {timeout: 60000, waitUntil: 'domcontentloaded'})
+        await page.goto(url, {timeout: 20000, waitUntil: 'domcontentloaded'})
         let scrapedData = []
 
         //logging in through school authorization
@@ -45,6 +45,10 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let page2 = await browser.newPage()
         await page2.goto(url)
         console.log(page.url())
+        let str = page.url()
+        if (str.substring(str.length - 6) == "/login") {
+            return null
+        }
         //in gradescope
         await page2.waitForSelector('.courseList--coursesForTerm')
 
@@ -130,9 +134,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
     else if (my_type == "blackboard") {
         let url = 'https://blackboard.jhu.edu/webapps/login/sm/index.jsp?new_loc=/webapps/login'
         let page = (await browser.pages())[0]
-        await page.setViewport({ width: 1280, height: 800 })
         console.log(`Navigating to ${url}...`)
-        await page.goto(url)
+        await page.goto(url, { timeout: 20000, waitUntil: 'domcontentloaded' })
         let scrapedData = []
 
 
@@ -177,6 +180,10 @@ async function scraper(browser, my_id, my_pw, my_type) {
         // await page.click('#idSIButton9')
         await page.$eval('[type="submit"]', button => button.click());
         console.log(page.url())
+        let str = page.url()
+        if (str.substring(str.length - 6) == '/login') {
+            return null
+        }
         // let screenshot = await page.screenshot({
         //     omitBackground: true,
         //     encoding: 'binary'
