@@ -59,7 +59,7 @@
             },
             async update() {
                 try {
-                    const response = await axios.post(`${BASE_URL}/gradescope_scraper`,
+                    const response = await axios.post(`http://localhost:3000/gradescope_scraper`,
                     {
                         username: this.email,
                         password: this.password,
@@ -71,7 +71,7 @@
                     });
                 } catch (err) {
                     this.$message({
-                        message: 'Incorrect email or password.',
+                        message: 'There was an issue updating courses.',
                         type: 'warning'
                     });
                 }
