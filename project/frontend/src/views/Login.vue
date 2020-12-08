@@ -4,8 +4,8 @@
         <el-card style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;">
             <!-- <h1>Hop Calendar</h1> -->
             <img :src="logo" alt="HopCalendar"
-                height="100px"
-                width="300px">
+                height="40px"
+                width="380px">
             <el-form>
                 <el-form-item>
                     <el-radio v-model="role" label="student" id="student">Student</el-radio>
@@ -46,7 +46,7 @@
                 role: 'student',
                 email: 'janedoe@jhu.edu',
                 password: 'hellokitty',
-                logo: require("../../HopCalendarLogo.png")
+                logo: require("../../HopCalendarLogoWhite.png")
             }
         },
         watch: {
