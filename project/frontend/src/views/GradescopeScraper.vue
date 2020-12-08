@@ -12,7 +12,7 @@
                     <el-input v-model="email" id="input_email"></el-input>
                 </el-form-item>
                 <el-form-item label="JHED Password">
-                    <el-input v-model="password" id="input_pw"></el-input>
+                    <el-input v-model="password" id="input_pw" type="password"></el-input>
                 </el-form-item>
             </el-form>
             <el-button id="update" @click="checkJHEDEmail()">
@@ -30,8 +30,8 @@
         data() {
             return {
                 type: "gradescope",
-                email: '',
-                password: ''
+                email: 'tchung17@jh.edu',
+                password: '@kA<sKLmYj2!&9_'
             }
         },
         methods: {

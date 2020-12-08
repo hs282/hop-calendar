@@ -9,8 +9,8 @@ async function startBrowser() {
     try {
         console.log('Opening the browser......')
         browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox', '--singe-process', '--incognito', '--no-zygote'],
+            headless: false,
+            args: ['--no-sandbox', '--single-process', '--incognito', '--no-zygote'],
             ignoreHTTPSErrors: true,
         })
     } catch (err) {
