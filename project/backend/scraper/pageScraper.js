@@ -1,22 +1,3 @@
-//test
-// import cloudinary from 'cloudinary';
-// // const cloudinary = require('cloudinary').v2;
-// cloudinary.config({
-//     cloud_name: 'dcbtlfrbq', 
-//     api_key: '359755717668621', 
-//     api_secret: '18T4HjdGbvBtuaudLL2GcIqEfZg'
-//   });
-
-// async function uploadScreenshot(screenshot) {
-//     return new Promise((resolve, reject) => {
-//       const uploadOptions = {};
-//       cloudinary.uploader.upload_stream(uploadOptions, (error, result) => {
-//         if (error) console.log(error)
-//         else resolve(result);
-//       }).end(screenshot);
-//     });
-//   }
-
 async function scraper(browser, my_id, my_pw, my_type) {
     const gradescope_year = 'Fall 2020'
     const blackboard_year = 'FA20'
@@ -47,8 +28,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
         console.log(page.url())
         let str = page.url()
         if (str.substring(str.length - 6) == "/login") {
-            page2.close()
-            page.close()
+            await page2.close()
+            await page.close()
             return null
         }
         //in gradescope
@@ -128,8 +109,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
                 scrapedData.push(currentPageData)
             }
         }
-        page2.close()
-        page.close()
+        await page2.close()
+        await page.close()
         console.log(scrapedData)
         return scrapedData
     }
@@ -140,31 +121,6 @@ async function scraper(browser, my_id, my_pw, my_type) {
         await page.goto(url, { timeout: 20000, waitUntil: 'domcontentloaded' })
         let scrapedData = []
 
-
-            // //switch this part w comment and it will work locally at least
-            // const navigationPromise = page.waitForNavigation();
-            // console.log("inside login page?")
-            // console.log(page.url())
-            // await page.waitForSelector('[name="loginfmt"]');
-            // await page.type('[name="loginfmt"]', my_id);
-            // await page.evaluate(selector=>{
-            //     return document.querySelector(selector).click();
-            // },'[type="submit"]')
-            // console.log('clicked');
-            // //await page.click('[type="submit"]');
-            // await navigationPromise;
-            // console.log("inside pw page?")
-            // console.log(page.url())
-            // //await page.waitForSelector('input[type="password"]', { visible: true });
-            // await page.waitForSelector('input[type="password"]');
-            // await page.type('input[type="password"]', my_pw);
-            // //await page.keyboard.press("Enter");
-            // //await page.waitFor(4000)
-            // await page.evaluate(selector=>{
-            //     return document.querySelector(selector).click();
-            // },'[type="submit"]')
-            // console.log('clicked');
-            // await navigationPromise;
         // logging in through school authorization
         await page.waitForSelector('div.form-group.col-md-24')
         await page.type('#i0116', my_id, { delay: 100 })
@@ -184,16 +140,10 @@ async function scraper(browser, my_id, my_pw, my_type) {
         console.log(page.url())
         let str = page.url()
         if (str.substring(str.length - 6) == '/login') {
-            page.close()
+            await page.close()
             return null
         }
-        // let screenshot = await page.screenshot({
-        //     omitBackground: true,
-        //     encoding: 'binary'
-        //   });
-        // console.log(screenshot)
-        // uploadScreenshot(screenshot)
-        // Wait for the required DOM to be rendered
+
         await page.waitForSelector('#loginBox-JHU')
         await page.click('#loginBox-JHU > h2 > a:nth-child(5)')
         //in blackboard
@@ -255,6 +205,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
                     dataObj['taskName'] = await newPage.$$eval(
                         'div.cell.gradable > a',
                         (names) => {
+                            //has to have a matching due date
+                            names = names.filter((name) => name.nextSibling.nextSibling.textContent.indexOf('Due') != -1)
                             names = names.map((name) => name.textContent)
                             return names
                         }
@@ -282,7 +234,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
                 scrapedData.push(currentPageData)
             }
         }
-        page.close()
+        await page.close()
         console.log(scrapedData)
         return scrapedData
     }

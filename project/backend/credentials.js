@@ -6,9 +6,9 @@ var database
 var dbUri
 var path
 
-user = '';
+user = 'postgres';
 host = 'localhost';
-password = '';
+password = 'postgres';
 port = '5432';
 database = 'oose';
 path = '';
