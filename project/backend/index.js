@@ -595,9 +595,17 @@ app.post('/gradescope_scraper', async (req, res) => {
         var total_new_tasks = 0;
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         const year = "2020"
-
         data = await startScraper(name, pw, type)
-        
+        for (let i = 0; i < 5; i++) {
+            if (data) {
+                break
+            }
+            console.log('failed')
+            data = await startScraper(name, pw, type)
+        }
+        if (!data) {
+            res.sendStatus(500)
+        }
         //we call gradescope scraper
         //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
         for (let i = 0; i < data.length; i++) {
@@ -624,26 +632,34 @@ app.post('/gradescope_scraper', async (req, res) => {
                     total_new_tasks += num_new_tasks;
                     for (let i = 0; i < num_new_tasks; i++) {
                         var newTask;
-                        if (type == "gradescope") {
-                            let timeArray = taskduedates[i].split(" ");
-                            let month = months.indexOf(timeArray[0]) + 1;
-                            let day = timeArray[1];
-                            newTask = await Task.create({
-                                type: tasknames[i],
-                                deadline: month + "/" + day + "/" + year,
-                                info: taskblob,
-                            });
-                        } else if (type == "blackboard") {
-                            console.log("creating...")
-                            console.log(taskduedates[i]);
-                            let timeArray = taskduedates[i].replace(',','').split(" ");
-                            let month = months.indexOf(timeArray[1]) + 1;
-                            let day = timeArray[2];
-                            newTask = await Task.create({
-                                type: tasknames[i],
-                                deadline: month + "/" + day + "/" + year,
-                                info: taskblob,
-                            });
+                        try {
+                            if (type == "gradescope") {
+                                console.log("creating...")
+                                console.log(taskduedates[i]);
+                                let timeArray = taskduedates[i].split(" ");
+                                let month = months.indexOf(timeArray[0]) + 1;
+                                let day = timeArray[1];
+                                newTask = await Task.create({
+                                    type: tasknames[i],
+                                    deadline: month + "/" + day + "/" + year,
+                                    info: taskblob,
+                                });
+                            } else if (type == "blackboard") {
+                                console.log("creating...")
+                                console.log(taskduedates[i]);
+                                let timeArray = taskduedates[i].replace(',','').split(" ");
+                                let month = months.indexOf(timeArray[1]) + 1;
+                                let day = timeArray[2];
+                                newTask = await Task.create({
+                                    type: tasknames[i],
+                                    deadline: month + "/" + day + "/" + year,
+                                    info: taskblob,
+                                });
+                            }
+                        }
+                        catch (error) {
+                            console.log("failed to create an item...")
+                            continue
                         }
                         let taskId = newTask.dataValues.id
                         let courseId = course.dataValues.id
