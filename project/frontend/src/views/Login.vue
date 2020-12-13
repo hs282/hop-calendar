@@ -37,6 +37,7 @@
 </template>
 
 <script>
+    import state from '../store/index.js'
     import axios from 'axios'
     import {BASE_URL} from '../api.js'
     import { mapActions } from 'vuex'
@@ -80,7 +81,8 @@
                 } else {
                     if (this.role == "admin") {
                         if (this.email == "abc" && this.password == "abc") {
-                        this.$router.push('/HopCalAdmin')
+                            state.authenticatedUser = true
+                            this.$router.push('/HopCalAdmin')
                         } else {
                             this.$message({
                                 message: 'Incorrect email or password.',
@@ -98,8 +100,10 @@
 
                             // go to user's homepage
                             if (this.role == 'student' || this.role == 'Student') {
+                                state.authenticatedUser = true
                                 this.$router.push('/home')
                             } else {
+                                state.authenticatedUser = true
                                 this.$router.push('/InstructorCourses')
                             }
                             

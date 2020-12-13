@@ -11,7 +11,8 @@ export default new Vuex.Store({
     plugins: [vuexPersist.plugin],
     state: {
         user: "",
-        mode: "month"
+        mode: "month",
+        authenticatedUser: false
     },
     getters: {
         getUser(state) {
@@ -19,7 +20,10 @@ export default new Vuex.Store({
         },
         getMode(state) {
             return state.mode
-        }
+        },
+        /*getAuthUser(state) {
+            return state.authenticatedUser
+        }*/
     },
     mutations: {
         setUser(state, params) {
@@ -27,7 +31,10 @@ export default new Vuex.Store({
         },
         setMode(state, params) {
             state.mode = params
-        }
+        },
+        /*setAuthUser(state, params) {
+            state.authenticatedUser = params
+        }*/
     },
     actions: {
         setUser({ commit }, params) {
@@ -35,6 +42,9 @@ export default new Vuex.Store({
         },
         setMode({ commit }, params) {
             commit('setMode', params)
-        }
+        },
+        /*setAuthUser({ commit }, params) {
+            commit('setAuthUser', params)
+        }*/
     },
 })

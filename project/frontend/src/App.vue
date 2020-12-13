@@ -28,6 +28,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import state from './store/index.js'
 export default {
     
     name: 'App',
@@ -49,6 +50,7 @@ export default {
             'setMode'
         ]),
         pushLogin() {
+            state.authenticatedUser = false
             this.$router.push('/')
         },
         pushHome() {
