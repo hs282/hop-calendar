@@ -47,10 +47,11 @@ export default {
     },
     methods: {
         ...mapActions([
-            'setMode'
+            'setMode',
+            'setAuthUser'
         ]),
         pushLogin() {
-            state.authenticatedUser = false
+            this.setAuthUser(false)
             this.$router.push('/')
         },
         pushHome() {

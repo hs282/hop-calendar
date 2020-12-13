@@ -64,7 +64,8 @@
         },
         methods: {
             ...mapActions([
-                'setUser'
+                'setUser',
+                'setAuthUser'
             ]),
             async login() {
                 //FOR INSTRUCTOR
@@ -81,7 +82,7 @@
                 } else {
                     if (this.role == "admin") {
                         if (this.email == "abc" && this.password == "abc") {
-                            state.authenticatedUser = true
+                            this.setAuthUser(true)
                             this.$router.push('/HopCalAdmin')
                         } else {
                             this.$message({
@@ -100,10 +101,10 @@
 
                             // go to user's homepage
                             if (this.role == 'student' || this.role == 'Student') {
-                                state.authenticatedUser = true
+                                this.setAuthUser(true)
                                 this.$router.push('/home')
                             } else {
-                                state.authenticatedUser = true
+                                this.setAuthUser(true)
                                 this.$router.push('/InstructorCourses')
                             }
                             

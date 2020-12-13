@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import VuexPersist from 'vuex-persist'
 const vuexPersist = new VuexPersist({
     key: 'my-app',
-    storage: window.sessionStorage,
+    storage: window.localStorage,
 })
 Vue.use(Vuex)
 
@@ -21,9 +21,9 @@ export default new Vuex.Store({
         getMode(state) {
             return state.mode
         },
-        /*getAuthUser(state) {
+        getAuthUser(state) {
             return state.authenticatedUser
-        }*/
+        }
     },
     mutations: {
         setUser(state, params) {
@@ -32,9 +32,9 @@ export default new Vuex.Store({
         setMode(state, params) {
             state.mode = params
         },
-        /*setAuthUser(state, params) {
+        setAuthUser(state, params) {
             state.authenticatedUser = params
-        }*/
+        }
     },
     actions: {
         setUser({ commit }, params) {
@@ -43,8 +43,8 @@ export default new Vuex.Store({
         setMode({ commit }, params) {
             commit('setMode', params)
         },
-        /*setAuthUser({ commit }, params) {
+        setAuthUser({ commit }, params) {
             commit('setAuthUser', params)
-        }*/
+        }
     },
 })
