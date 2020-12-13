@@ -31,13 +31,21 @@ async function scraper(browser, my_id, my_pw, my_type) {
         // Wait for the required DOM to be rendered
         
         console.log(page.url())
+        let page_dummy = await browser.newPage()
+        await page_dummy.goto('https://www.google.com')
+        await page_dummy.close()
         let str = page.url()
         if (str.substring(str.length - 6) == "/login") {
             // await page2.close()
             // await page.close()
             // return null
+            console.log("waiting triggered...")
             await delay(20000)
         }
+        console.log(page.url())
+        await page.focus('#idSIButton9')
+        await page.click('#idSIButton9')
+        console.log("clicked..?")
         console.log(page.url())
         let page2 = await browser.newPage()
         await page2.goto(url)
