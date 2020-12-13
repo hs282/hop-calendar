@@ -43,8 +43,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
             await delay(20000)
         }
         console.log(page.url())
-        await page.focus('#idSIButton9')
-        await page.click('#idSIButton9')
+        //await page.focus('#idSIButton9')
+        //await page.click('#idSIButton9')
         console.log("clicked..?")
         console.log(page.url())
         let page2 = await browser.newPage()

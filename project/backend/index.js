@@ -596,7 +596,7 @@ app.post('/gradescope_scraper', async (req, res) => {
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         const year = "2020"
         data = await startScraper(name, pw, type)
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 1; i++) {
             if (data) {
                 break
             }
