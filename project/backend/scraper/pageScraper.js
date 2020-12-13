@@ -1,3 +1,9 @@
+ async function delay(time) {
+    return new Promise(function(resolve) { 
+        setTimeout(resolve, time)
+    });
+ }
+
 async function scraper(browser, my_id, my_pw, my_type) {
     const gradescope_year = 'Fall 2020'
     const blackboard_year = 'FA20'
@@ -6,7 +12,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let url = 'https://www.gradescope.com/auth/saml/jhu'
         let page = (await browser.pages())[0]
         console.log(`Navigating to ${url}...`)
-        await page.goto(url, {timeout: 20000, waitUntil: 'domcontentloaded'})
+        await page.goto(url, {timeout: 50000, waitUntil: 'domcontentloaded'})
         let scrapedData = []
 
         //logging in through school authorization
@@ -23,15 +29,18 @@ async function scraper(browser, my_id, my_pw, my_type) {
         await page.focus('#idSIButton9')
         await page.click('#idSIButton9')
         // Wait for the required DOM to be rendered
-        let page2 = await browser.newPage()
-        await page2.goto(url)
+        
         console.log(page.url())
         let str = page.url()
         if (str.substring(str.length - 6) == "/login") {
-            await page2.close()
-            await page.close()
-            return null
+            // await page2.close()
+            // await page.close()
+            // return null
+            await delay(20000)
         }
+        console.log(page.url())
+        let page2 = await browser.newPage()
+        await page2.goto(url)
         //in gradescope
         await page2.waitForSelector('.courseList--coursesForTerm')
 
