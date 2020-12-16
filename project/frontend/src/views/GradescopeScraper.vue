@@ -45,8 +45,8 @@
                 // equality comparison (==) does not work if JSON.stringify used, need to use toString() here for some reason
                 const emailDomain = inputEmail.split('@', 2)[1].toString()
 
-                if (emailDomain == 'jhu.edu' || emailDomain == 'jh.edu'
-                    || emailDomain == "jhu.edu" || emailDomain == "jh.edu") {
+                if (emailDomain == 'jh.edu' || emailDomain == 'jh.edu'
+                    || emailDomain == "jh.edu" || emailDomain == "jh.edu") {
                     this.validJHEDEmail = true
                 }
                 if (!this.validJHEDEmail) {

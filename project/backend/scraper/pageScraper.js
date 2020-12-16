@@ -34,25 +34,20 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let page_dummy = await browser.newPage()
         await page_dummy.goto('https://www.google.com')
         await page_dummy.close()
+        await delay(1000)
         let str = page.url()
         if (str.substring(str.length - 6) == "/login") {
-            // await page2.close()
-            // await page.close()
-            // return null
             console.log("waiting triggered...")
             await delay(20000)
         }
         console.log(page.url())
-        //await page.focus('#idSIButton9')
-        //await page.click('#idSIButton9')
-        console.log("clicked..?")
-        console.log(page.url())
-        let page2 = await browser.newPage()
-        await page2.goto(url)
-        //in gradescope
-        await page2.waitForSelector('.courseList--coursesForTerm')
 
-        let urls = await page2.$$eval(
+        // let page2 = await browser.newPage()
+        // await page2.goto(url)
+        //in gradescope
+        await page.waitForSelector('.courseList--coursesForTerm')
+
+        let urls = await page.$$eval(
             'div.courseList > div:nth-child(2) > a',
             (links) => {
                 //has to be a course
@@ -126,7 +121,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
                 scrapedData.push(currentPageData)
             }
         }
-        await page2.close()
+        //await page2.close()
         await page.close()
         console.log(scrapedData)
         return scrapedData
@@ -155,11 +150,17 @@ async function scraper(browser, my_id, my_pw, my_type) {
         // await page.click('#idSIButton9')
         await page.$eval('[type="submit"]', button => button.click());
         console.log(page.url())
+
+        let page_dummy = await browser.newPage()
+        await page_dummy.goto('https://www.google.com')
+        await page_dummy.close()
+        await delay(1000)
         let str = page.url()
-        if (str.substring(str.length - 6) == '/login') {
-            await page.close()
-            return null
+        if (str.substring(str.length - 6) == "/login") {
+            console.log("waiting triggered...")
+            await delay(20000)
         }
+        console.log(page.url())
 
         await page.waitForSelector('#loginBox-JHU')
         await page.click('#loginBox-JHU > h2 > a:nth-child(5)')
