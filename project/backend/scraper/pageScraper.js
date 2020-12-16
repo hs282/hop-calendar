@@ -259,7 +259,9 @@ async function scraper(browser, my_id, my_pw, my_type) {
             return scrapedData
         }
     }
-    catch(error){}
+    catch(error){
+        return null
+    }
 }
 
 // module.exports = scraperObject;

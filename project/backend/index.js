@@ -597,7 +597,7 @@ app.post('/gradescope_scraper', async (req, res) => {
         const year = "2020"
         data = await startScraper(name, pw, type)
         if (!data) {
-            res.sendStatus(500)
+            res.sendStatus(500).end();
         }
         //we call gradescope scraper
         //scraper data organized as -- coursename(1 element) - taskname(n elements) - task due dates (n) - blob (1 element - fixed as scraped from gradescope)
@@ -673,7 +673,7 @@ app.post('/gradescope_scraper', async (req, res) => {
         res.sendStatus(200)
     } catch (error) {
         console.log(error)
-        res.sendStatus(500)
+        res.sendStatus(500).end();
     }
     
 })
