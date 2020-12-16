@@ -596,13 +596,6 @@ app.post('/gradescope_scraper', async (req, res) => {
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         const year = "2020"
         data = await startScraper(name, pw, type)
-        for (let i = 0; i < 1; i++) {
-            if (data) {
-                break
-            }
-            console.log('failed')
-            data = await startScraper(name, pw, type)
-        }
         if (!data) {
             res.sendStatus(500)
         }
@@ -686,7 +679,7 @@ app.post('/gradescope_scraper', async (req, res) => {
 })
 
 
-var server = app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`app is running on port ${process.env.PORT || 3000}`)
 });
-server.timeout = 120000;
+//server.timeout = 120000;
