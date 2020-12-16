@@ -1,7 +1,7 @@
 
 <template>
     <div style="background-color:cornflowerblue; height : 100%; display:flex; justify-content:center; align-items:center;">
-        <el-card style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;">
+        <el-card v-loading="loading" style="height: 500px; width: 500px; display:flex; justify-content:center; align-items:center;">
             <h1>Update Tasks</h1>
             <el-form>
                 <el-form-item>
@@ -31,7 +31,8 @@
             return {
                 type: "gradescope",
                 email: 'tchung17@jh.edu',
-                password: '@kA<sKLmYj2!&9_'
+                password: '@kA<sKLmYj2!&9_',
+                loading: false,
             }
         },
         methods: {
@@ -59,17 +60,20 @@
             },
             async update() {
                 try {
+                    this.loading = true;
                     const response = await axios.post(`${BASE_URL}/gradescope_scraper`,
                     {
                         username: this.email,
                         password: this.password,
                         type: this.type
                     });
+                    this.loading = false;
                     this.$message({
                         message: 'Successfully updated courses.',
                         type: 'success'
                     });
                 } catch (err) {
+                    this.loading = false;
                     this.$message({
                         message: 'There was an issue updating courses.',
                         type: 'warning'
