@@ -685,6 +685,8 @@ app.post('/gradescope_scraper', async (req, res) => {
     
 })
 
-app.listen(process.env.PORT || 3000, () => {
+
+var server = app.listen(process.env.PORT || 3000, () => {
     console.log(`app is running on port ${process.env.PORT || 3000}`)
 });
+server.timeout = 120000;
