@@ -16,7 +16,7 @@
                     <el-input v-model="email" id="input_email"></el-input>
                 </el-form-item>
                 <el-form-item label="HopCal Password">
-                    <el-input v-model="password" id="input_pw"></el-input>
+                    <el-input v-model="password" id="input_pw" type="password"></el-input>
                 </el-form-item>
             </el-form>
             <span style="padding-left:200px">
