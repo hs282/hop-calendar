@@ -38,7 +38,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let str = page.url()
         if (str.substring(str.length - 6) == "/login") {
             console.log("waiting triggered...")
-            await delay(20000)
+            await delay(30000)
         }
         console.log(page.url())
 
@@ -130,7 +130,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let url = 'https://blackboard.jhu.edu/webapps/login/sm/index.jsp?new_loc=/webapps/login'
         let page = (await browser.pages())[0]
         console.log(`Navigating to ${url}...`)
-        await page.goto(url, { timeout: 20000, waitUntil: 'domcontentloaded' })
+        await page.goto(url, { timeout: 50000, waitUntil: 'domcontentloaded' })
         let scrapedData = []
 
         // logging in through school authorization
@@ -158,7 +158,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
         let str = page.url()
         if (str.substring(str.length - 6) == "/login") {
             console.log("waiting triggered...")
-            await delay(20000)
+            await delay(30000)
         }
         console.log(page.url())
 
