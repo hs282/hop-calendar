@@ -4,6 +4,40 @@
     });
  }
 
+async function login(page, url) {
+    console.log(`Navigating to ${url}...`)
+    await page.goto(url)
+    let scrapedData = []
+
+    //logging in through school authorization
+    await page.waitForSelector('div.form-group.col-md-24')
+    await page.type('#i0116', my_id, { delay: 100 })
+    await page.waitForSelector('#idSIButton9')
+    await page.focus('#idSIButton9')
+    await page.click('#idSIButton9')
+
+    await page.waitForSelector('div.form-group.col-md-24')
+    await page.type('#i0118', my_pw)
+    await page.waitFor(4000)
+    //await page.waitForSelector('#idSIButton9');
+    await page.focus('#idSIButton9')
+    await page.click('#idSIButton9')
+    // Wait for the required DOM to be rendered
+            
+    console.log(page.url())
+            
+    let page_dummy = await browser.newPage()
+    await page_dummy.goto('https://www.google.com')
+    await page_dummy.close()
+    await delay(2000)
+    let str = page.url()
+    if (str.substring(str.length - 6) == "/login") {
+        console.log("waiting triggered...")
+        await delay(20000)
+    }
+    console.log(page.url())
+}
+
 async function scraper(browser, my_id, my_pw, my_type) {
     const gradescope_year = 'Fall 2020'
     const blackboard_year = 'FA20'
@@ -12,40 +46,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
         if (my_type == "gradescope") {
             let url = 'https://www.gradescope.com/auth/saml/jhu'
             let page = (await browser.pages())[0]
-            console.log(`Navigating to ${url}...`)
-            await page.goto(url)
-            let scrapedData = []
-
-            //logging in through school authorization
-            await page.waitForSelector('div.form-group.col-md-24')
-            await page.type('#i0116', my_id, { delay: 100 })
-            await page.waitForSelector('#idSIButton9')
-            await page.focus('#idSIButton9')
-            await page.click('#idSIButton9')
-
-            await page.waitForSelector('div.form-group.col-md-24')
-            await page.type('#i0118', my_pw)
-            await page.waitFor(4000)
-            //await page.waitForSelector('#idSIButton9');
-            await page.focus('#idSIButton9')
-            await page.click('#idSIButton9')
-            // Wait for the required DOM to be rendered
-            
-            console.log(page.url())
-            
-            let page_dummy = await browser.newPage()
-            await page_dummy.goto('https://www.google.com')
-            await page_dummy.close()
-            await delay(2000)
-            let str = page.url()
-            if (str.substring(str.length - 6) == "/login") {
-                console.log("waiting triggered...")
-                await delay(20000)
-            }
-            console.log(page.url())
-
-            // let page2 = await browser.newPage()
-            // await page2.goto(url)
+            page = login(page,url);
+ 
             //in gradescope
             await page.waitForSelector('.courseList--coursesForTerm')
 
@@ -76,10 +78,6 @@ async function scraper(browser, my_id, my_pw, my_type) {
                             'main header > h1',
                             (text) => text.textContent
                         )
-                        // dataObj['courseTitle'] = await newPage.$eval(
-                        //     'nav .sidebar--subtitle',
-                        //     (text) => text.textContent
-                        // )
                         let slash = unconventional.indexOf('/');
                         if (slash >= 0) {
                             unconventional = unconventional.substring(0, slash)
@@ -131,39 +129,9 @@ async function scraper(browser, my_id, my_pw, my_type) {
         else if (my_type == "blackboard") {
             let url = 'https://blackboard.jhu.edu/webapps/login/sm/index.jsp?new_loc=/webapps/login'
             let page = (await browser.pages())[0]
-            console.log(`Navigating to ${url}...`)
-            await page.goto(url, { timeout: 50000, waitUntil: 'domcontentloaded' })
-            let scrapedData = []
-
-            // logging in through school authorization
-            await page.waitForSelector('div.form-group.col-md-24')
-            await page.type('#i0116', my_id, { delay: 100 })
-            await page.waitForSelector('#idSIButton9')
-            // await page.focus('#idSIButton9')
-            // await page.click('#idSIButton9')
-            await page.$eval('[type="submit"]', button => button.click());
-        
-
-            await page.waitForSelector('div.form-group.col-md-24')
-            await page.type('#i0118', my_pw)
-            await page.waitFor(4000)
-            //await page.waitForSelector('#idSIButton9');
-            // await page.focus('#idSIButton9')
-            // await page.click('#idSIButton9')
-            await page.$eval('[type="submit"]', button => button.click());
-            console.log(page.url())
-
-            let page_dummy = await browser.newPage()
-            await page_dummy.goto('https://www.google.com')
-            await page_dummy.close()
-            await delay(1000)
-            let str = page.url()
-            if (str.substring(str.length - 6) == "/login") {
-                console.log("waiting triggered...")
-                await delay(30000)
-            }
-            console.log(page.url())
-
+            page = login(page,url)
+            
+            //inside blackboard
             await page.waitForSelector('#loginBox-JHU')
             await page.click('#loginBox-JHU > h2 > a:nth-child(5)')
             //in blackboard
