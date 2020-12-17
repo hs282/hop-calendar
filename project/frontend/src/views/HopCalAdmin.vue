@@ -1,8 +1,9 @@
 <template>
     <div style="background-color:cornflowerblue; height:100%">
-        <h1 style="padding-left: 500px; padding-top: 20px; padding-bottom: 20px">Welcome, Admin</h1>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Walter Turncoat">
+        <h1 class="heading" style="padding-left: 500px; padding-top: 20px; padding-bottom: 20px">Welcome, Admin</h1>
         <div v-if="potentialInstructors.length == 0">
-            <h2 style="padding-left: 500px">0 pending instructors</h2>
+            <h2 style="padding-left: 500px">There are 0 pending instructors.</h2>
         </div>
         <div v-if="potentialInstructors.length != 0" >
         <div class="div" v-for="potentialI in potentialInstructors" v-bind:key="potentialI.id" style="padding-left:500px">
@@ -11,10 +12,10 @@
                     class="body"
                     style="height: 100%; display: flex; align-items: center; "
                 >
-                    <span class="name" style="padding-right:150px">
+                    <span class="name" >
                         <strong>Pending Instructor</strong><br>Name: {{ potentialI.name }}<br>Email: {{ potentialI.email }}<br>Course(s): {{ potentialI.courseNumbers }} 
                     </span>
-                    
+                    <span style="padding-left:30px">
                     <el-button
                         style="background-color:#008CBA; color:white;"
                         @click="validate(potentialI)"
@@ -27,6 +28,7 @@
                     >
                         Reject
                     </el-button>
+                    </span>
                     
                 </div>
             </el-card>
@@ -117,12 +119,15 @@
                 )
                 this.sendConfirmationEmail(potentialI)
                 this.removePotentialInstructor(potentialI.email)
-                alert("Successfully authenticated")
+                alert(potentialI.name + " has successfully been validated!")
             }
         },
     }
 </script>
 
 <style scoped>
-
+.heading {
+    font-family: 'Walter Turncoat', sans-serif;
+    font-size: 70px
+}
 </style>
