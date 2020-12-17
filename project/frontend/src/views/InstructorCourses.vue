@@ -1,6 +1,7 @@
 <template>
     <div style="background-color:cornflowerblue; height:100%">
-        <h1 style="padding-left: 500px; padding-bottom:20px;">My Courses</h1>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Walter Turncoat">
+        <h1 class="heading" style="padding-left: 500px; padding-bottom:20px;">My Courses</h1>
         <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:500px">
             <el-card style="width: 600px;">
                 <strong>{{ course.name }}</strong>
@@ -88,15 +89,15 @@
                 >
                     <el-form>
                         <el-input
-                            placeholder="Type"
+                            placeholder="Title"
                             v-model="newT"
                         ></el-input>
                         <el-input
-                            placeholder="Deadline"
+                            placeholder="Date"
                             v-model="newD"
                         ></el-input>
                         <el-input
-                            placeholder="Info"
+                            placeholder="Details"
                             v-model="newI"
                         ></el-input>
                     </el-form>
@@ -255,4 +256,9 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.heading {
+    font-family: 'Walter Turncoat', sans-serif;
+    font-size: 70px
+}
+</style>

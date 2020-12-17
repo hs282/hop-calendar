@@ -1,6 +1,7 @@
 <template>
     <div style="background-color:cornflowerblue; height:100%">
-        <h1 style="padding-left:400px; padding-top:40px; padding-bottom:40px">Drop Courses</h1>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Walter Turncoat">
+        <h1 class="heading" style="padding-left:400px; padding-top:40px; padding-bottom:40px">Drop Courses</h1>
         <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:380px; padding-bottom:20px">
             <el-card class="card" style="width:40%">
                 <div
@@ -81,5 +82,9 @@ export default {
     height: 100px;
     width: 1000px;
     margin: 20px;
+}
+.heading {
+    font-family: 'Walter Turncoat', sans-serif;
+    font-size: 70px
 }
 </style>

@@ -19,7 +19,7 @@
                     <el-input v-model="password" id="input_pw" type="password"></el-input>
                 </el-form-item>
             </el-form>
-            <span style="padding-left:200px">
+            <span style="padding-left:350px">
                 <el-button id="login" @click="login()" style="background-color:deepskyblue; color:white; font-size:18px">
                     Login
                 </el-button>
@@ -27,7 +27,7 @@
             
             <br><br>
             <!-- create button redirects to create account view -->
-            <span style="padding-left:150px">
+            <span style="padding-left:300px">
                 <el-button id="create" @click="create()">
                     Create Account
                 </el-button>
@@ -56,9 +56,13 @@
                     this.email = 'darvish@jhu.edu'
                     this.password = 'computer'
                 }
-                if (newValue == 'student') {
+                else if (newValue == 'student') {
                     this.email = 'janedoe@jhu.edu'
                     this.password = 'hellokitty'
+                }
+                else {
+                    this.email = 'fantasticsniffle@gmail.com'
+                    this.password = 'abc'
                 }
             }
         },
@@ -81,7 +85,7 @@
                     });
                 } else {
                     if (this.role == "admin") {
-                        if (this.email == "abc" && this.password == "abc") {
+                        if (this.email == "fantasticsniffle@gmail.com" && this.password == "abc") {
                             this.setAuthUser(true)
                             this.$router.push('/HopCalAdmin')
                         } else {

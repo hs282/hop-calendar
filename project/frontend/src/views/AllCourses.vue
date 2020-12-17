@@ -1,6 +1,7 @@
 <template>
     <div style="background-color:cornflowerblue;">
-        <h1 style="padding-left:400px; padding-top:40px; padding-bottom:40px">All Courses</h1>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Walter Turncoat">
+        <h1 class="heading" style="padding-left:400px; padding-top:40px; padding-bottom:40px; font-size:70px">All Courses</h1>
         <el-input style="width:50%; padding-left:400px" placeholder="Search Courses" v-model="search"></el-input>
         <div class="div" v-for="course in courses" v-bind:key="course.id" style="padding-left:380px; padding-bottom:20px">
             <el-card class="card" style="width:70%;">
@@ -95,5 +96,8 @@ export default {
     height: 100px;
     width: 1000px;
     margin: 20px;
+}
+.heading {
+    font-family: 'Walter Turncoat', sans-serif;
 }
 </style>

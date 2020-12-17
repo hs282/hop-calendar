@@ -1,8 +1,8 @@
 home.vue
-
 <template>
     <div class="home" style="padding-top:20px; background-color:cornflowerblue; height:100%">
-        <v-toolbar-title v-if="$refs.calendar" style="padding-bottom: 20px; text-align:center; font-size:30px">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&effect=3d-float">
+        <v-toolbar-title class="font-effect-3d-float" v-if="$refs.calendar" style="padding-bottom: 20px; text-align:center; font-size:50px">
             {{ $refs.calendar.title }}
         </v-toolbar-title>
         <div class="content" style="display:flex; align-items: center;">
@@ -44,10 +44,16 @@ home.vue
     </div>
 </template>
 
+
+
 <script>
 import axios from 'axios'
 import {BASE_URL} from '../api.js'
 import { mapActions, mapGetters } from 'vuex'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(faUserSecret)
 export default {
     data: () => ({
         focus: '',
@@ -202,3 +208,10 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.font-effect-3d-float {
+    font-family: 'Lobster', sans-serif;
+    color: black;
+}
+</style>

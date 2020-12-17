@@ -1,8 +1,9 @@
 <template>
     <div style="background-color:cornflowerblue; height:100%">
-        <h1 style="padding-left: 500px; padding-top: 20px; padding-bottom: 20px">Welcome, Admin</h1>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Walter Turncoat">
+        <h1 class="heading" style="padding-left: 500px; padding-top: 20px; padding-bottom: 20px">Welcome, Admin</h1>
         <div v-if="potentialInstructors.length == 0">
-            <h2 style="padding-left: 500px">0 pending instructors</h2>
+            <h2 style="padding-left: 500px">There are 0 pending instructors.</h2>
         </div>
         <div v-if="potentialInstructors.length != 0" >
         <div class="div" v-for="potentialI in potentialInstructors" v-bind:key="potentialI.id" style="padding-left:500px">
@@ -124,5 +125,8 @@
 </script>
 
 <style scoped>
-
+.heading {
+    font-family: 'Walter Turncoat', sans-serif;
+    font-size: 70px
+}
 </style>
