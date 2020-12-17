@@ -4,7 +4,7 @@
     });
  }
 
-async function login(page, url) {
+async function login(page, url, my_id, my_pw) {
     console.log(`Navigating to ${url}...`)
     await page.goto(url)
     let scrapedData = []
@@ -46,7 +46,7 @@ async function scraper(browser, my_id, my_pw, my_type) {
         if (my_type == "gradescope") {
             let url = 'https://www.gradescope.com/auth/saml/jhu'
             let page = (await browser.pages())[0]
-            page = login(page,url);
+            page = login(page,url, my_id, my_pw);
  
             //in gradescope
             await page.waitForSelector('.courseList--coursesForTerm')
@@ -129,8 +129,8 @@ async function scraper(browser, my_id, my_pw, my_type) {
         else if (my_type == "blackboard") {
             let url = 'https://blackboard.jhu.edu/webapps/login/sm/index.jsp?new_loc=/webapps/login'
             let page = (await browser.pages())[0]
-            page = login(page,url)
-            
+            page = login(page,url,my_id,my_pw)
+
             //inside blackboard
             await page.waitForSelector('#loginBox-JHU')
             await page.click('#loginBox-JHU > h2 > a:nth-child(5)')
