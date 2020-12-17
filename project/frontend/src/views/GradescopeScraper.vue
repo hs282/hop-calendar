@@ -15,9 +15,11 @@
                     <el-input v-model="password" id="input_pw" type="password"></el-input>
                 </el-form-item>
             </el-form>
-            <el-button id="update" @click="checkJHEDEmail()">
+            <span style="padding-left:200px">
+            <el-button id="update" @click="checkJHEDEmail()" style="background-color:deepskyblue; color:white; font-size:18px">
                 Update
             </el-button>
+            </span>
         </el-card>
     </div>
 </template>

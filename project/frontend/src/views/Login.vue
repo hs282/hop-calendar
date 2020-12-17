@@ -88,6 +88,8 @@
                         if (this.email == "fantasticsniffle@gmail.com" && this.password == "abc") {
                             this.setAuthUser(true)
                             this.$router.push('/HopCalAdmin')
+                            const object = {name: "Admin", role: "admin"}
+                            this.setUser(JSON.stringify(object));
                         } else {
                             this.$message({
                                 message: 'Incorrect email or password.',

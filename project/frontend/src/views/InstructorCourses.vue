@@ -74,7 +74,7 @@
                     >
 
                     <el-button
-                        style="background-color:#008CBA; color:white"
+                        style="background-color:red; color:white"
                         @click="deleteTask(course.id, task.id)"
                     >
                         Delete task
@@ -117,7 +117,7 @@
                 </el-dialog>
                 <br>
                 <el-button
-                    style="background-color:#008CBA; color:white"
+                    style="background-color:#1dbf04; color:white"
                     @click="
                         dialogAddVisible = true
                         prevCourse = course

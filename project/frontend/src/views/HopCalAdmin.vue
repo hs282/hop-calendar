@@ -12,10 +12,10 @@
                     class="body"
                     style="height: 100%; display: flex; align-items: center; "
                 >
-                    <span class="name" style="padding-right:150px">
+                    <span class="name" >
                         <strong>Pending Instructor</strong><br>Name: {{ potentialI.name }}<br>Email: {{ potentialI.email }}<br>Course(s): {{ potentialI.courseNumbers }} 
                     </span>
-                    
+                    <span style="padding-left:30px">
                     <el-button
                         style="background-color:#008CBA; color:white;"
                         @click="validate(potentialI)"
@@ -28,6 +28,7 @@
                     >
                         Reject
                     </el-button>
+                    </span>
                     
                 </div>
             </el-card>
@@ -118,7 +119,7 @@
                 )
                 this.sendConfirmationEmail(potentialI)
                 this.removePotentialInstructor(potentialI.email)
-                alert("Successfully authenticated")
+                alert(potentialI.name + " has successfully been validated!")
             }
         },
     }

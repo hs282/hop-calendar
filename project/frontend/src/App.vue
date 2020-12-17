@@ -58,8 +58,10 @@ export default {
             const user = JSON.parse(this.getUser)
             if (user.role == "student" || user.role == "Student") {
                     this.$router.push('/home')
-            } else {
+            } else if (user.role == "instructor") {
                 this.$router.push('/InstructorCourses')
+            } else {
+                this.$router.push('/HopCalAdmin')
             }
         },
     },
