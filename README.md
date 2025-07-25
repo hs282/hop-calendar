@@ -6,7 +6,7 @@ FRONTEND: npm start (localhost:8080)
 BACKEND: npm start (localhost:3000)
 
 ### DEPLOYMENT
-Site can be accessed at https://fervent-leakey-a2a33e.netlify.app/#/ which is the frontend deployment on netlify platform. Backend and database are deployed on Heroku. 
+Site can be accessed at https://hopcalendar.netlify.app/#/ which is the frontend deployment on netlify platform. Backend and database are deployed on Heroku. 
 
 CI/CD hasn't been set up yet but will be soon.
 
