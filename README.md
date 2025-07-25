@@ -6,12 +6,10 @@ FRONTEND: npm start (localhost:8080)
 BACKEND: npm start (localhost:3000)
 
 ### DEPLOYMENT
-Site can be accessed at https://hopcalendar.netlify.app/#/ which is the frontend deployment on netlify platform. Backend and database are deployed on Heroku. 
-
-CI/CD hasn't been set up yet but will be soon.
+Site can be accessed at https://hopcalendar.netlify.app/#/ which is the frontend deployment on the Netlify platform. Backend and database are deployed on Heroku. 
 
 ### LOGIN INFO
-Current dummy data login is student: janedoe@jhu.edu, hellokitty; and instructor: darvish@jhu.edu, computer. These fields should be automatically be filled in on the login page to make it easier for instructor grading. To log in as Admin, enter abc for both email and password. 
+Current dummy data login for a student role is `janedoe@jhu.edu` as the email and `hellokitty` as the password, and for an instructor it is `darvish@jhu.edu` and `computer`. These fields should be automatically be filled in on the login page to make it easier for instructor grading. To log in as Admin, enter `abc` for both email and password. 
 
 Locally, please run 'node db.js' in the /project/backend/ directory to instantiate PSQL tables as well as dummy data. This has already been done on the deploy. 
 
