@@ -1,5 +1,5 @@
-HopCalendar is an assignment/deadline aggregator that would help students stay on top of their deadlines during online learning and help teachers maintain student engagement as well. Our deadline aggregator will be in the form of a monthly view calendar that has indicators for any upcoming deadlines and assignments. 
-The indicators will also have distinguishing features so that the user will know which class it is for. This way, the user won't need to remember to manually input their assignments and deadlines from the syllabus and from various sources of announcements.
+HopCalendar is an assignment/deadline aggregator that would help students stay on top of their deadlines during online learning and help teachers maintain student engagement as well. Our deadline aggregator is in the form of a monthly view calendar that has indicators for any upcoming deadlines and assignments. 
+The indicators also have distinguishing features so that the user will know which class it is for. This way, the user won't need to remember to manually input their assignments and deadlines from the syllabus and from various sources of announcements.
 Instructors would have to fully commit to using our app as their primary outlet to students in order for HopCalendar to be successful.
 
 FRONTEND: npm start (localhost:8080)
